@@ -1,0 +1,90 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.RegisterViewModel
+
+@{
+
+    ViewBag.Title = "Index";
+
+}
+
+
+
+<h2>Signup</h2>
+
+
+
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary(true)
+
+
+
+<fieldset>
+
+    <legend>Create an account.</legend>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label class="col-md-2" asp-for="FirstName">First Name</label>
+        <div class="col-md-10">
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2" asp-for="LastName">Last Name</label>
+        <div class="col-md-10">
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2" asp-for="Email">Email</label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2" asp-for="Password">Password</label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2" asp-for="ConfirmPassword">Confirm Password</label>
+        <div class="col-md-10">
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class=" col-md-10 offset-md-2">
+            <input type="submit" value="Register" class=" btn btn-success" />
+        </div>
+    </div>
+
+    <p class="col-md-10 offset-md-2">
+        <a asp-action="Login">Already have an account? Click to login</a>
+    </p>
+
+</fieldset>}
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
