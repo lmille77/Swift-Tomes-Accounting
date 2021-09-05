@@ -8,18 +8,27 @@ using System.Threading.Tasks;
 namespace Swift_Tomes_Accounting.Models.ViewModels
 {
     public class RegisterViewModel
-    {
-        public string _Username;
+    {        
+        public string _Username, _FirstName, _LastName;
 
         [Required(ErrorMessage = "The First Name field is required.")]
-        public string FirstName { get; set; }
+        public string FirstName { 
+            get => _FirstName; 
+            set => _FirstName = value.ToLower(); 
+        }
         
         [Required(ErrorMessage = "The Last Name field is required.")]
-        public string LastName { get; set; }
+        public string LastName {
+            get => _LastName;
+            set => _LastName = value.ToLower();
+        }
         
         public string Username {
-            get { return _Username;}
-            set { value = FirstName[0] + LastName + DateTime.Now.Month.ToString("yyMM"); }
+            get => _Username;
+            set 
+            {
+                _Username = _FirstName[0] + _LastName + DateTime.Now.Month.ToString("yyMM"); 
+            }
         }
         
         [Required(ErrorMessage = "The Email field is required.")]
