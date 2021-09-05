@@ -9,12 +9,19 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 {
     public class RegisterViewModel
     {
+        public string _Username;
+
         [Required(ErrorMessage = "The First Name field is required.")]
         public string FirstName { get; set; }
+        
         [Required(ErrorMessage = "The Last Name field is required.")]
         public string LastName { get; set; }
-        public string Username { get; set; }
-
+        
+        public string Username {
+            get { return _Username;}
+            set { value = FirstName[0] + LastName + DateTime.Now.Month.ToString("yyMM"); }
+        }
+        
         [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]
         public string Email { get; set; }
@@ -29,11 +36,9 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [SpecialCharValidate]
         public string Password { get; set; }
 
-
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The passwords do not match.")]
         public string ConfirmPassword { get; set; }
-
-
+        
     }
 }
