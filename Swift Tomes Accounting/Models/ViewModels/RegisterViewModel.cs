@@ -9,28 +9,13 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 {
     public class RegisterViewModel
     {        
-        public string _Username, _FirstName, _LastName;
 
         [Required(ErrorMessage = "The First Name field is required.")]
-        public string FirstName { 
-            get => _FirstName; 
-            set => _FirstName = value.ToLower(); 
-        }
+        public string FirstName { get; set; } 
         
         [Required(ErrorMessage = "The Last Name field is required.")]
-        public string LastName {
-            get => _LastName;
-            set => _LastName = value.ToLower();
-        }
-        
-        public string Username {
-            get => _Username;
-            set 
-            {
-                _Username = _FirstName[0] + _LastName + DateTime.Now.Month.ToString("yyMM"); 
-            }
-        }
-        
+        public string LastName {get;set;}     
+            
         [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]
         public string Email { get; set; }
