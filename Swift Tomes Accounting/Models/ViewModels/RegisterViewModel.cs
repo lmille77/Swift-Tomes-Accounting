@@ -23,6 +23,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [Required]
         [DataType(DataType.Password)]
         [PasswordFormatValidate]
+        [FirstCharCapitalValidate]
         [FirstCharValidate]
         [PasswordLengthValidate]
         [NumberValidate]

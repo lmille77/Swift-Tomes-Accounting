@@ -8,8 +8,11 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 {
     public class ApplicationUser : IdentityUser
     {
+        //columns added to the database
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string CustomUsername { get; set; }
+        public bool isApproved { get; set; }
 
     }
 }
