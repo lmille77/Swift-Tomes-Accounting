@@ -111,6 +111,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     FirstName = obj.FirstName,
                     LastName = obj.LastName,
                     Email = obj.Email,
+                    isApproved = false
                 };
 
                 //creates user
