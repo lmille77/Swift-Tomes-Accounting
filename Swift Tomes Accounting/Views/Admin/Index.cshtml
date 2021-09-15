@@ -1,4 +1,4 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.RegisterViewModel
+﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
 @{
     ViewData["Title"] = "Admin Page";
 }
@@ -7,3 +7,17 @@
     <h1>Admin Dashboard</h1>
 </div>
 
+<h2>Unapproved Users</h2>
+
+@foreach (var item in Model)
+{
+<div>
+    @item.UserName
+    @item.FirstName
+    @item.LastName
+    <button class="btn btn-outline-success">Accept</button>
+    <button class="btn btn-outline-success">Deny</button>
+    <hr />
+</div>
+    
+}

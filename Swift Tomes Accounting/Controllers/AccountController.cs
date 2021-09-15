@@ -19,8 +19,8 @@ namespace Swift_Tomes_Accounting.Controllers
     public class AccountController : Controller
     {
         //variables used to host email service
-        private IConfiguration configuration;
-        private IWebHostEnvironment webHostEnvironment;        
+        private IConfiguration _configuration;
+        private IWebHostEnvironment _webHostEnvironment;        
 
         
         private readonly ApplicationDbContext _db;
@@ -32,14 +32,14 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public AccountController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, 
-         IConfiguration _configuration, IWebHostEnvironment _webHostEnvironment)
+         IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            configuration = _configuration;
-            webHostEnvironment = _webHostEnvironment;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -115,10 +115,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 };
 
                 //creates user
-                var result = await _userManager.CreateAsync(user, obj.Password);
-
-                //gets list of all admin users
-                //var admin_user = await _userManager.GetUsersInRoleAsync("Admin");
+                var result = await _userManager.CreateAsync(user, obj.Password);              
 
                 
                 var admin_user = await _userManager.FindByNameAsync("miller4277@gmail.com");
@@ -128,8 +125,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     //sends an email to admin requesting approval for new user
                     var subject = "Add new user";
                     var body = "<a href='https://localhost:44316/Admin/Index'>Click to Add User </a>";
-                    var mailHelper = new MailHelper(configuration);
-                    mailHelper.Send(configuration["Gmail:Username"], admin_user.Email, subject, body);
+                    var mailHelper = new MailHelper(_configuration);
+                    mailHelper.Send(_configuration["Gmail:Username"], admin_user.Email, subject, body);
                     
                     //adds user to database but without admin approval
                     await _userManager.AddToRoleAsync(user, "Admin");
