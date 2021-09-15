@@ -77,7 +77,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     ModelState.AddModelError("", "Invalid Email or Password.");
                 }
             }
-            return View();
+            return View(obj);
         }
 
         [HttpGet]
@@ -141,8 +141,15 @@ namespace Swift_Tomes_Accounting.Controllers
                     ModelState.AddModelError("", "An account with the entered email already exists.");
                 }
             }
-            return View();
+            return View(obj);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logoff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
