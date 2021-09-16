@@ -3,8 +3,8 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "select2@4.0.13",
-      "destination": "wwwroot/lib/select2/"
+      "library": "twitter-bootstrap@5.1.1",
+      "destination": "wwwroot/lib/bootstrap/"
     }
   ]
 }

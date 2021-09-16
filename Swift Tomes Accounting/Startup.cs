@@ -54,7 +54,7 @@ namespace Swift_Tomes_Accounting
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
