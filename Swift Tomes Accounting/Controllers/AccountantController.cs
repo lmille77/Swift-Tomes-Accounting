@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
-using Swift_Tomes_Accounting.Helpers;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,23 +11,18 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Controllers
 {
-    public class AdminController : Controller
+    public class AccountantController : Controller
     {
-        //variables used to host email service
         private IConfiguration _configuration;
         private IWebHostEnvironment _webHostEnvironment;
-
-
         private readonly ApplicationDbContext _db;
-
-        //variables used to implement management of the user
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
         RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-         SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
-         IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public AccountantController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
+        IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
             _userManager = userManager;
@@ -38,16 +32,16 @@ namespace Swift_Tomes_Accounting.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        
+        public IActionResult Index()
         {
-            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
             {
-                var all_users = await _userManager.GetUsersInRoleAsync("Unapproved");
-                return View(all_users);
-            }            
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+                return View();
+            }
+            else if(_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                return RedirectToAction("Index", "Accountant");
+                return RedirectToAction("Index", "Admin");
             }
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
             {
@@ -61,25 +55,6 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            
         }
-
-
-        [HttpPost]
-        public IActionResult Send()
-        {
-            var body = " ";
-            var subject = " ";
-            var mailHelper = new MailHelper(_configuration);
-            mailHelper.Send(_configuration["Gmail:Username"], " ", " ", " ");            
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Approve()
-        {
-            return View();
-        }
-
     }
 }

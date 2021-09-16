@@ -1,11 +1,12 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.LoginViewModel
 
-<h2>Sign in</h2>
-<div class="row">
-    <div class="col-md-8">
+<h4 class="col-md-8 offset-md-4">Swift Tome's Accounting</h4>
+<h5 class="col-md-8 offset-md-4">Sign in with your email and password</h5>
+
+<div class="row col-md-6 mx-auto">
+    <div class="col-md-8 offset-md-2">
         <section id="loginform">
-            <form id="account" method="post" asp-action="Login" asp-controller="Account">
-                <h4>User your email and password to login.</h4>
+            <form id="account" method="post" asp-action="Login" asp-controller="Account">                
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -26,7 +27,7 @@
 
                 <div class="form-group">
                     <div class=" col-md-10 offset-md-2">
-                        <input type="submit" value="Login" class=" btn btn-outline-success" />
+                        <input type="submit" value="Login" class=" btn btn-success" />
                     </div>
                 </div>
 

@@ -45,8 +45,27 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-           
-            return View();
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+            {
+                return RedirectToAction("Index", "Manager");
+            }            
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+            {
+                return RedirectToAction("Index", "Accountant");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         [HttpPost]
@@ -62,13 +81,25 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     //checks to see if a user has been approved by an admin and redirects accordingly
                     var curr_user = await _userManager.FindByNameAsync(obj.Email);
-                    if (curr_user.isApproved == false)
+                    var admin_role_list = await _userManager.GetUsersInRoleAsync("Admin");
+                    var manager_role_list=await _userManager.GetUsersInRoleAsync("Manager");
+                    var accountant_role_list = await _userManager.GetUsersInRoleAsync("Accountant");
+
+                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Admin");
+                    }
+                    else if(curr_user.isApproved == true && manager_role_list.Contains(curr_user))
+                    {
+                        return RedirectToAction("Index", "Manager");
+                    }
+                    else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
+                    {
+                        return RedirectToAction("Index", "Accountant");
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("Index", "Home");
                     }
                     
                 }
@@ -89,8 +120,27 @@ namespace Swift_Tomes_Accounting.Controllers
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
                 await _roleManager.CreateAsync(new IdentityRole("Manager"));
                 await _roleManager.CreateAsync(new IdentityRole("Accountant"));
+                await _roleManager.CreateAsync(new IdentityRole("Unapproved"));                
             }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+            {
+                return RedirectToAction("Index", "Manager");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+            {
+                return RedirectToAction("Index", "Accountant");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
+            
         }
 
         [HttpPost]
@@ -115,21 +165,31 @@ namespace Swift_Tomes_Accounting.Controllers
                 };
 
                 //creates user
-                var result = await _userManager.CreateAsync(user, obj.Password);              
+                var result = await _userManager.CreateAsync(user, obj.Password);
 
+                //finds  all admin user
+                var admin_users = await _userManager.GetUsersInRoleAsync("Admin");
+                var admin_email = "";
                 
-                var admin_user = await _userManager.FindByNameAsync("miller4277@gmail.com");
+                foreach(ApplicationUser admin_user in admin_users)
+                {
+                    if(admin_user.isApproved == true)
+                    {
+                        admin_email = admin_user.Email;
+                        break;
+                    }
+                }
 
                 if (result.Succeeded)
                 {
                     //sends an email to admin requesting approval for new user
                     var subject = "Add new user";
-                    var body = "<a href='https://localhost:44316/Admin/Index'>Click to Add User </a>";
+                    var body = "<a href='https://localhost:44316/Account/Login'>Click to Add User </a>";
                     var mailHelper = new MailHelper(_configuration);
-                    mailHelper.Send(_configuration["Gmail:Username"], admin_user.Email, subject, body);
+                    mailHelper.Send(_configuration["Gmail:Username"], admin_email, subject, body);
                     
                     //adds user to database but without admin approval
-                    await _userManager.AddToRoleAsync(user, "Admin");
+                    await _userManager.AddToRoleAsync(user, "Unapproved");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
