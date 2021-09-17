@@ -81,27 +81,15 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     //checks to see if a user has been approved by an admin and redirects accordingly
                     var curr_user = await _userManager.FindByNameAsync(obj.Email);
-                    var admin_role_list = await _userManager.GetUsersInRoleAsync("Admin");
-                    var manager_role_list=await _userManager.GetUsersInRoleAsync("Manager");
-                    var accountant_role_list = await _userManager.GetUsersInRoleAsync("Accountant");
-
-                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                    if (curr_user.isApproved == false)
                     {
                         return RedirectToAction("Index", "Admin");
-                    }
-                    else if(curr_user.isApproved == true && manager_role_list.Contains(curr_user))
-                    {
-                        return RedirectToAction("Index", "Manager");
-                    }
-                    else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
-                    {
-                        return RedirectToAction("Index", "Accountant");
                     }
                     else
                     {
                         return RedirectToAction("Index", "Home");
                     }
-                    
+
                 }
                 else
                 {
@@ -161,7 +149,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     FirstName = obj.FirstName,
                     LastName = obj.LastName,
                     Email = obj.Email,
-                    isApproved = false
+                    isApproved = true
                 };
 
                 //creates user
@@ -171,14 +159,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 var admin_users = await _userManager.GetUsersInRoleAsync("Admin");
                 var admin_email = "";
                 
-                foreach(ApplicationUser admin_user in admin_users)
-                {
-                    if(admin_user.isApproved == true)
-                    {
-                        admin_email = admin_user.Email;
-                        break;
-                    }
-                }
+                var admin_user = await _userManager.FindByNameAsync("miller4277@gmail.com");
 
                 if (result.Succeeded)
                 {
