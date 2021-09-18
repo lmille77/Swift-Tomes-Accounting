@@ -29,8 +29,20 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public IActionResult Index()
         {
-            if (_signInManager.IsSignedIn(User))
-            {                
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+            {
+                return RedirectToAction("Index", "Manager");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+            {
+                return RedirectToAction("Index", "Accountant");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
+            {
                 return View();
             }
             else
