@@ -70,20 +70,32 @@ namespace Swift_Tomes_Accounting.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel obj)        
+        public async Task<IActionResult> Login(LoginViewModel obj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //checks database to see if user and password are correct
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, false);
-                
-                if(result.Succeeded)
+
+                if (result.Succeeded)
                 {
                     //checks to see if a user has been approved by an admin and redirects accordingly
                     var curr_user = await _userManager.FindByNameAsync(obj.Email);
-                    if (curr_user.isApproved == false)
+                    var admin_role_list = await _userManager.GetUsersInRoleAsync("Admin");
+                    var manager_role_list = await _userManager.GetUsersInRoleAsync("Manager");
+                    var accountant_role_list = await _userManager.GetUsersInRoleAsync("Accountant");
+
+                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
                     {
                         return RedirectToAction("Index", "Admin");
+                    }
+                    else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
+                    {
+                        return RedirectToAction("Index", "Manager");
+                    }
+                    else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
+                    {
+                        return RedirectToAction("Index", "Accountant");
                     }
                     else
                     {
@@ -158,8 +170,15 @@ namespace Swift_Tomes_Accounting.Controllers
                 //finds  all admin user
                 var admin_users = await _userManager.GetUsersInRoleAsync("Admin");
                 var admin_email = "";
-                
-                var admin_user = await _userManager.FindByNameAsync("bail3yt33@gmail.com");
+
+                foreach (ApplicationUser admin_user in admin_users)
+                {
+                    if (admin_user.isApproved == true)
+                    {
+                        admin_email = admin_user.Email;
+                        break;
+                    }
+                }
 
                 if (result.Succeeded)
                 {
