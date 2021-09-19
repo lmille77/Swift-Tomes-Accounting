@@ -244,45 +244,51 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 bool passcheck = false;
 
+
                 var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
+
+                PasswordVerificationResult passMatch = PasswordVerificationResult.Failed;
+                PasswordVerificationResult passMatch2 = PasswordVerificationResult.Failed;
+
+                if (curr_user.LastPass1 != null)
+                {
+                     passMatch = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass1, obj.NewPass);
+                }
+
+                if (curr_user.LastPass2 != null)
+                {
+                    passMatch2 = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass2, obj.NewPass);
+                }
 
                 if (result == true)
                 {
                     ViewBag.ErrorMessage = "You cannot use your last three passwords.";
                 }
 
-                else if (curr_user.LastPass1 != null)
-                {
-                    PasswordVerificationResult passMatch = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass1, obj.NewPass);
-
-                    if (passMatch == PasswordVerificationResult.Success)
+                else if (passMatch == PasswordVerificationResult.Success)
+                 {
+                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                 }
+                
+                else if (passMatch2 == PasswordVerificationResult.Success)
                     {
                         ViewBag.ErrorMessage = "You cannot use your last three passwords.";
                     }
-                }
-                else if (curr_user.LastPass2 != null)
-                {
-                    PasswordVerificationResult passMatch2 = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass2, obj.NewPass);
-
-                    if (passMatch2 == PasswordVerificationResult.Success)
-                    {
-                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
-                    }
-                }
-
+                
                 else
                     passcheck = true;
 
                 if (passcheck == true)
                 {
-                    if (curr_user.LastPass1 != null)
-                    {
-                        curr_user.LastPass2 = curr_user.LastPass1;
-                    }
 
-                    await _userManager.ChangePasswordAsync(curr_user, curr_user.LastPass1, curr_user.PasswordHash);
+                    curr_user.LastPass2 = curr_user.LastPass1;
+                    curr_user.LastPass1 = curr_user.PasswordHash;
+                    await _userManager.UpdateAsync(curr_user);
 
-                    await _userManager.ChangePasswordAsync(curr_user, curr_user.PasswordHash, obj.NewPass);
+                    await _userManager.RemovePasswordAsync(curr_user);
+                    await _userManager.AddPasswordAsync(curr_user, obj.NewPass);
+
+
                     return RedirectToAction("Login", "Account");
                 }
             }

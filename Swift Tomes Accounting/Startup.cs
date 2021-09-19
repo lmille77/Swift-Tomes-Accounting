@@ -28,8 +28,6 @@ namespace Swift_Tomes_Accounting
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
