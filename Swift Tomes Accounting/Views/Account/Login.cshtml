@@ -6,9 +6,10 @@
 <div class="row col-md-6 mx-auto">
     <div class="col-md-8 offset-md-2">
         <section id="loginform">
-            <form id="account" method="post" asp-action="Login" asp-controller="Account">                
+            <form id="account" method="post" asp-action="Login" asp-controller="Account">
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
+
                 <div class="form-group">
                     <label class="col-md-2" asp-for="Email"></label>
                     <div class="col-md-10">
@@ -34,7 +35,9 @@
                 <p class="col-md-10 offset-md-2">
                     <a asp-action="Register">Create Account</a>
                 </p>
-
+                <p class="col-md-10 offset-md-2">
+                    <a asp-action="ResetPassword">Forgot Password</a>
+                </p>
 
             </form>
         </section>

@@ -159,7 +159,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 var admin_users = await _userManager.GetUsersInRoleAsync("Admin");
                 var admin_email = "";
                 
-                var admin_user = await _userManager.FindByNameAsync("miller4277@gmail.com");
+                var admin_user = await _userManager.FindByNameAsync("bail3yt33@gmail.com");
 
                 if (result.Succeeded)
                 {
@@ -188,6 +188,86 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+        
+        //Password Reset Action
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(Message obj)
+        {
+                var toEmail = obj.ToEmail;
+                var subject = "Password Reset Confirmation";
+                var body = "Please click the link to reset your password. https://localhost:44316/Account/ConfirmResetPassword";
+                var mailHelper = new MailHelper(_configuration);
+                mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+                return RedirectToAction("Index", "Admin");
+         
+        }
+        //Password Reset Confirmation Action
+        [HttpGet]
+        public IActionResult ConfirmResetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmResetPassword(PasswdReset obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var curr_user = await _userManager.FindByNameAsync(obj.Email);
+
+                bool passcheck = false;
+
+                var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
+
+                if (result == true)
+                {
+                    ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                }
+
+                else if (curr_user.LastPass1 != null)
+                {
+                    PasswordVerificationResult passMatch = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass1, obj.NewPass);
+
+                    if (passMatch == PasswordVerificationResult.Success)
+                    {
+                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                    }
+                }
+                else if (curr_user.LastPass2 != null)
+                {
+                    PasswordVerificationResult passMatch2 = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass2, obj.NewPass);
+
+                    if (passMatch2 == PasswordVerificationResult.Success)
+                    {
+                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                    }
+                }
+
+                else
+                    passcheck = true;
+
+                if (passcheck == true)
+                {
+                    if (curr_user.LastPass1 != null)
+                    {
+                        curr_user.LastPass2 = curr_user.LastPass1;
+                    }
+
+                    await _userManager.ChangePasswordAsync(curr_user, curr_user.LastPass1, curr_user.PasswordHash);
+
+                    await _userManager.ChangePasswordAsync(curr_user, curr_user.PasswordHash, obj.NewPass);
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+            return View(obj);
         }
     }
 }

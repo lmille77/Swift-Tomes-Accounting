@@ -63,6 +63,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             
         }
+        //Action for Sending Admin Messages
         [HttpGet]
         public IActionResult Send()
         {
@@ -76,8 +77,8 @@ namespace Swift_Tomes_Accounting.Controllers
             var toEmail = obj.ToEmail;
             var subject = obj.Subject;
             var body = obj.Body;
-            var mailHelper = new MailHelper(configuration);
-            mailHelper.Send(configuration["Gmail:Username"], toEmail, subject, body);            
+            var mailHelper = new MailHelper(_configuration);
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);            
             return RedirectToAction("Index","Admin");
         }
 

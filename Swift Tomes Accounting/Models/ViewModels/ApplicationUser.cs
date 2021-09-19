@@ -14,5 +14,9 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string CustomUsername { get; set; }
         public bool isApproved { get; set; }
 
+        public string LastPass1 { get; set; }
+
+        public string LastPass2 { get; set; }
+
     }
 }
