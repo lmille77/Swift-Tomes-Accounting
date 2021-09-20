@@ -45,42 +45,46 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
             {
-                return RedirectToAction("Index", "Admin");
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
-            {
-                return RedirectToAction("Index", "Manager");
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
-            {
-                return RedirectToAction("Index", "Accountant");
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
-            {
-                return RedirectToAction("Index", "Home");
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                await _roleManager.CreateAsync(new IdentityRole("Manager"));
+                await _roleManager.CreateAsync(new IdentityRole("Accountant"));
+                await _roleManager.CreateAsync(new IdentityRole("Unapproved"));
+                ApplicationUser user = new ApplicationUser()
+                {
+                    UserName = "miller4277@gmail.com",
+                    CustomUsername = "Admin1",
+                    FirstName = "Admin",
+                    Email = "miller4277@gmail.com",
+                    isApproved = true
+                };
+                var result = await _userManager.CreateAsync(user, "Admin123!");
+                await _userManager.AddToRoleAsync(user, "Admin");
             }
             else
             {
-                var admin_list = await _userManager.GetUsersInRoleAsync("Admin");
-                if (admin_list.Count == 0)
+                if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
-                    ApplicationUser user = new ApplicationUser()
-                    {
-                        UserName = "miller4277@gmail.com",
-                        CustomUsername = "Admin1",
-                        FirstName = "Admin",
-                        Email = "miller4277@gmail.com",
-                        isApproved = true
-                    };
-                    var result = await _userManager.CreateAsync(user, "Admin123!");
-                    await _userManager.AddToRoleAsync(user, "Admin");
+                    return RedirectToAction("Index", "Admin");
                 }
-                return View();
+                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+                {
+                    return RedirectToAction("Index", "Manager");
+                }
+                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+                {
+                    return RedirectToAction("Index", "Accountant");
+                }
+                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-
+                return View();
         }
+
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -128,15 +132,8 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-            //if the user roles are not already stored in the database, then they are added
-            if(!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
-            {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                await _roleManager.CreateAsync(new IdentityRole("Manager"));
-                await _roleManager.CreateAsync(new IdentityRole("Accountant"));
-                await _roleManager.CreateAsync(new IdentityRole("Unapproved"));                
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            //if the user roles are not already stored in the database, then they are added            
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
                 return RedirectToAction("Index", "Admin");
             }
