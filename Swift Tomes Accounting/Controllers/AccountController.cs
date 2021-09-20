@@ -43,7 +43,7 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
@@ -52,7 +52,7 @@ namespace Swift_Tomes_Accounting.Controllers
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
             {
                 return RedirectToAction("Index", "Manager");
-            }            
+            }
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
             {
                 return RedirectToAction("Index", "Accountant");
@@ -63,9 +63,23 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             else
             {
+                var admin_list = await _userManager.GetUsersInRoleAsync("Admin");
+                if (admin_list.Count == 0)
+                {
+                    ApplicationUser user = new ApplicationUser()
+                    {
+                        UserName = "miller4277@gmail.com",
+                        CustomUsername = "Admin1",
+                        FirstName = "Admin",
+                        Email = "miller4277@gmail.com",
+                        isApproved = true
+                    };
+                    var result = await _userManager.CreateAsync(user, "Admin123!");
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
                 return View();
             }
-            
+
         }
 
         [HttpPost]
