@@ -151,6 +151,7 @@ namespace NewSwift.Controllers
             {
                 return NotFound();
             }
+           
             _db.ApplicationUser.Remove(objFromDb);
             _db.SaveChanges();
            TempData[SD.Success] = "User deleted succesfully";

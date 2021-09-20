@@ -23,6 +23,10 @@
             </tr>
             @foreach (var item in Model)
             {
+                @if (item.isApproved == false)
+                {
+
+
                 <tr>
                     <td>
                         @item.Email
@@ -34,23 +38,26 @@
                     <td>
                         <div class="text-center">
                             <form asp-action="Delete" asp-route-userId="@item.Id">
-                                @*<a asp-action="Edit" asp-route-userId="@item.Id" class="btn btn-info text-white" style="cursor:pointer">
-                                    Edit
-                                </a>*@
-
-
-                                    @*<button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-success text-white"
+                                
+                                    @if (item.isApproved == false)
+                                    {
+                                        //We want to show them the option to lock
+                                    <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success text-white"
                                             style="cursor:pointer">
-                                        <span>&nbsp; Lock &nbsp;</span>
-                                    </button>*@
-
-                                    <button  class="btn btn-info text-white"
-                                            style="cursor:pointer">
-                                        <span> Accept </span>
+                                        <span>&nbsp; Accept &nbsp;</span>
                                     </button>
-    
+                                    }
+                                    else
+                                    {
+                                        //We want to show them the option to unlock
+                                    <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-warning text-white"
+                                            style="cursor:pointer">
+                                        <span> Approved </span>
+                                    </button>
+                                    }
 
-                                <button  onclick="return confirm('Are you sure you want to reject this user?')"
+
+                                <button onclick="return confirm('Are you sure you want to reject this user?')"
                                         class="btn btn-danger">
                                     Reject
                                 </button>
@@ -58,7 +65,8 @@
                         </div>
                     </td>
                 </tr>
-            }
+                    }
+                }
         </table>
     }
 </div>
