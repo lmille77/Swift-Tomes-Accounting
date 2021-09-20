@@ -93,8 +93,11 @@ namespace Swift_Tomes_Accounting.Controllers
             if (ModelState.IsValid)
             {
                 //checks database to see if user and password are correct
-                var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, false);
-
+                var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
+                if (result.IsLockedOut)
+                {
+                    return View("Lockout");
+                }
                 if (result.Succeeded)
                 {
                     //checks to see if a user has been approved by an admin and redirects accordingly

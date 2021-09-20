@@ -12,11 +12,11 @@ namespace NewSwift.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _db;
         
 
-        public UserController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
             _db = db;
