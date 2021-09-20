@@ -34,6 +34,10 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The passwords do not match.")]
         public string ConfirmPassword { get; set; }
-        
+
+        public string Address { get; set; }
+
+        public string DOB { get; set; }
+
     }
 }
