@@ -7,17 +7,7 @@
     <h1>Admin Dashboard</h1>
 </div>
 
-<h2>Unapproved Users</h2>
+<p class="col-md-10 offset-md-2">
+    <a asp-action="Send" class="btn btn-outline-primary">Send Message</a>
+</p>
 
-@foreach (var user in Model)
- {
-    <div>
-        <form id="unapproved" method="post" asp-action="Approve" asp-controller="Admin">
-            @user.UserName
-            @user.FirstName
-            @user.LastName
-            <button type="submit" class="btn btn-success">Accept</button>
-            <button class="btn btn-success">Deny</button>
-        </form>
-    </div>
- }
