@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Swift_Tomes_Accounting;
 
 namespace NewSwift.Controllers
 {
@@ -99,7 +100,7 @@ namespace NewSwift.Controllers
                 await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);
                 objFromDb.CustomUsername = user.CustomUsername;
                 _db.SaveChanges();
-               ///TempData[SD.Success] = "User has been edited successfully.";
+               TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -126,13 +127,13 @@ namespace NewSwift.Controllers
                 //this mean user is locked and will remain lcoked until lockoutend time
                 //clickng will unlock user
                 objFromdb.LockoutEnd = DateTime.Now;
-               // TempData[SD.Success] = "User unlocked successfully.";
+               TempData[SD.Success] = "User unlocked successfully.";
             }
             else
             {
                 //user is not locked and we want to lock the user
                 objFromdb.LockoutEnd = DateTime.Now.AddYears(1000);
-              //  TempData[SD.Success] = "User locked successfully.";
+              TempData[SD.Success] = "User locked successfully.";
             }
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -148,7 +149,7 @@ namespace NewSwift.Controllers
             }
             _db.ApplicationUser.Remove(objFromDb);
             _db.SaveChanges();
-           // TempData[SD.Success] = "User deleted succesfully";
+           TempData[SD.Success] = "User deleted succesfully";
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Swift_Tomes_Accounting;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
@@ -59,14 +60,14 @@ namespace NewSwift.Controllers
             if (await _roleManager.RoleExistsAsync(roleObj.Name))
             {
                 //error
-                //TempData[SD.Error] = "Role already exists";
+                TempData[SD.Error] = "Role already exists";
                 return RedirectToAction(nameof(Index));
             }
             if (string.IsNullOrEmpty(roleObj.Id))
             {
                 //create
                 await _roleManager.CreateAsync(new IdentityRole() { Name = roleObj.Name });
-               // TempData[SD.Success] = "Role created successfully";
+                TempData[SD.Success] = "Role created successfully";
             }
             else
             {
@@ -74,14 +75,14 @@ namespace NewSwift.Controllers
                 var objRoleFromDb = _db.Roles.FirstOrDefault(u => u.Id == roleObj.Id);
                 if (objRoleFromDb == null)
                 {
-                   // TempData[SD.Error] = "Role nto found";
+                    TempData[SD.Error] = "Role nto found";
                     return RedirectToAction(nameof(Index));
                 }
                 objRoleFromDb.Name = roleObj.Name;
                 objRoleFromDb.NormalizedName = roleObj.Name.ToUpper();
                 //updates database
                 var result = await _roleManager.UpdateAsync(objRoleFromDb);
-               // TempData[SD.Success] = "Role was udpated successfully";
+               TempData[SD.Success] = "Role was udpated successfully";
             }
             
             return RedirectToAction(nameof(Index));
@@ -95,17 +96,17 @@ namespace NewSwift.Controllers
             var objFromDb = _db.Roles.FirstOrDefault(u => u.Id == id);
             if (objFromDb == null)
             {
-              //  TempData[SD.Error] = "Role not found.";
+               TempData[SD.Error] = "Role not found.";
                 return RedirectToAction(nameof(Index));
             }
             var userRolesForThisRole = _db.UserRoles.Where(u => u.RoleId == id).Count();
             if (userRolesForThisRole > 0)
             {
-               // TempData[SD.Error] = "Cannot delete this role, since there are users assigned to this role.";
+               TempData[SD.Error] = "Cannot delete this role, since there are users assigned to this role.";
                 return RedirectToAction(nameof(Index));
             }
             await _roleManager.DeleteAsync(objFromDb);
-           //TempData[SD.Success] = "Role deleted successfully";
+           TempData[SD.Success] = "Role deleted successfully";
 
 
             return RedirectToAction(nameof(Index));
