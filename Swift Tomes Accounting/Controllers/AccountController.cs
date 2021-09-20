@@ -108,14 +108,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
                     {
+                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Admin");
                     }
                     else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
                     {
+                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Manager");
                     }
                     else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
                     {
+                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Accountant");
                     }
                     else
@@ -175,7 +178,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     FirstName = obj.FirstName,
                     LastName = obj.LastName,
                     Email = obj.Email,
-                    isApproved = false
+                    isApproved = false,
+                    PasswordDate = DateTime.Now
                 };
 
                 //creates user

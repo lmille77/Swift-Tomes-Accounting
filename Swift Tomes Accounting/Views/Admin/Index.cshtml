@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
 @{
     ViewData["Title"] = "Admin Page";
 }
@@ -9,28 +9,44 @@
 
 <p class="col-md-10 offset-md-2">
     <a asp-action="Send" class="btn btn-outline-primary">Send Message</a>
-</p>*@
+</p>
 
-@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
-@{
-    ViewData["Title"] = "Admin Page";
-}
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="Unapprovedusers" asp-action="Index" class="btn btn-outline-primary">Unapproved Users List</a>
+</p>
 
-<div class="text-center">
-    <h1>Admin Dashboard</h1>
-</div>
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="User" asp-action="Index" class="btn btn-outline-primary"> Users List</a>
+</p>
 
-<h2>Unapproved Users</h2>
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="Roles" asp-action="Index" class="btn btn-outline-primary"> Roles List</a>
+</p>
 
-@foreach (var user in Model)
-{
-    <div>
-        <form id="unapproved" method="post" asp-action="Approve" asp-controller="Admin">
-            @user.UserName
-            @user.FirstName
-            @user.LastName
-            <button type="submit" class="btn btn-success">Accept</button>
-            <button class="btn btn-success">Deny</button>
-        </form>
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="expiredpass" asp-action="Index" class="btn btn-outline-primary"> Expired Passwords List</a>
+</p>
+
+@*@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+    @{
+        ViewData["Title"] = "Admin Page";
+    }
+
+    <div class="text-center">
+        <h1>Admin Dashboard</h1>
     </div>
-}
+
+    <h2>Unapproved Users</h2>
+
+    @foreach (var user in Model)
+    {
+        <div>
+            <form id="unapproved" method="post" asp-action="Approve" asp-controller="Admin">
+                @user.UserName
+                @user.FirstName
+                @user.LastName
+                <button type="submit" class="btn btn-success">Accept</button>
+                <button class="btn btn-success">Deny</button>
+            </form>
+        </div>
+    }*@

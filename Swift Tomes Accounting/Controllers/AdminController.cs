@@ -42,8 +42,8 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                var all_users = await _userManager.GetUsersInRoleAsync("Unapproved");
-                return View(all_users);
+               // var all_users = await _userManager.GetUsersInRoleAsync("Unapproved");
+                return View();
             }            
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
             {
@@ -81,6 +81,19 @@ namespace Swift_Tomes_Accounting.Controllers
             mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);            
             return RedirectToAction("Index","Admin");
         }
+
+        //public IActionResult ExpiredPass()
+        //{
+           
+        //  var exp_pass = _db.Users.FirstOrDefault(u => u.LastPass1 != null);
+
+
+        //    return View(exp_pass);
+
+
+
+        //}
+
 
     }
 }
