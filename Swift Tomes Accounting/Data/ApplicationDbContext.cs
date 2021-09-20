@@ -10,11 +10,12 @@ namespace Swift_Tomes_Accounting.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
         }
 
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
     }
 }

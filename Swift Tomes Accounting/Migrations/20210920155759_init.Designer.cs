@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Tomes_Accounting.Data;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210920155759_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,17 +160,11 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomUsername")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DOB")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -203,9 +199,6 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("PasswordDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
