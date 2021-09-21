@@ -8,21 +8,21 @@
             <form id="message" method="post" asp-action="Send" asp-controller="Admin">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label class="col-md-2" asp-for="ToEmail"></label>
+                    <label class="col-md-2" asp-for="ToEmail">To Email:</label>
                     <div class="col-md-10">
                         <input asp-for="ToEmail" class="form-control" />
                         <span asp-validation-for="ToEmail" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2" asp-for="Subject"></label>
+                    <label class="col-md-2" asp-for="Subject">Subject:</label>
                     <div class="col-md-10">
                         <input asp-for="Subject" class="form-control" />
                         <span asp-validation-for="Subject" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2"  asp-for="Body"></label>
+                    <label class="col-md-2"  asp-for="Body">Body:</label>
                     <div class="col-md-10">
                         <textarea asp-for="Body" class="form-control" rows="4" ></textarea>
                         <span asp-validation-for="Body" class="text-danger"></span>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group">
                     <div class=" col-md-10 offset-md-2">
-                        <input type="submit" value="Send" class=" btn btn-outline-primary" />
+                        <input type="submit" value="Send" class=" btn btn-primary" />
                     </div>
                 </div>
 
@@ -39,3 +39,4 @@
     </div>
 
 </div>
+

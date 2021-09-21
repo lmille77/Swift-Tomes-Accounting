@@ -81,10 +81,17 @@ namespace Swift_Tomes_Accounting.Controllers
             mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);            
             return RedirectToAction("Index","Admin");
         }
+        
+        [HttpPost]
+        public IActionResult GoBack()
+        {
+            return RedirectToAction("Index", "Admin");
+
+        }
 
         //public IActionResult ExpiredPass()
         //{
-           
+
         //  var exp_pass = _db.Users.FirstOrDefault(u => u.LastPass1 != null);
 
 
