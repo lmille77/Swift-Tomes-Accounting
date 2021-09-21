@@ -179,6 +179,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     LastName = obj.LastName,
                     Email = obj.Email,
                     isApproved = false,
+                    DOB = obj.DOB,
+                    Address = obj.Address,
                     PasswordDate = DateTime.Now
                 };
 

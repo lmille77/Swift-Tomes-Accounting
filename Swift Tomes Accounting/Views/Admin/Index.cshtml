@@ -6,93 +6,36 @@
 <div class="text-center">
     <h1>Admin Dashboard</h1>
 </div>
-<style>
-    .sidebar-container {
-        position: fixed;
-        width: 220px;
-        height: 100%;
-        left: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
-        background: #36454F;
-        color: #fff;
-    }
 
-    .content-container {
-        padding-top: 20px;
-    }
 
-    .sidebar-logo {
-        padding: 10px 15px 10px 30px;
-        font-size: 20px;
-        background-color: #2574A9;
-    }
 
-    .sidebar-navigation {
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-        position: relative;
-    }
+<p class="col-md-10 offset-md-2">
+    <a asp-action="Send" class="btn btn-success">Send Message</a>
+</p>
 
-        .sidebar-navigation li {
-            background-color: transparent;
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            line-height: 20px;
-        }
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="Unapprovedusers" asp-action="Index" class="btn btn-success">Unapproved Users List</a>
+</p>
 
-            .sidebar-navigation li a {
-                padding: 10px 15px 10px 30px;
-                display: block;
-                color: #fff;
-            }
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="User" asp-action="Index" class="btn btn-success"> Users List</a>
+</p>
 
-            .sidebar-navigation li .fa {
-                margin-right: 10px;
-            }
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="Roles" asp-action="Index" class="btn btn-success"> Roles List</a>
+</p>
 
-            .sidebar-navigation li a:active,
-            .sidebar-navigation li a:hover,
-            .sidebar-navigation li a:focus {
-                text-decoration: none;
-                outline: none;
-            }
+<p class="col-md-10 offset-md-2">
+    <a asp-controller="expiredpass" asp-action="Index" class="btn btn-success"> Expired Passwords List</a>
+</p>
 
-            .sidebar-navigation li::before {
-                background-color: #2574A9;
-                position: absolute;
-                content: '';
-                height: 100%;
-                left: 0;
-                top: 0;
-                -webkit-transition: width 0.2s ease-in;
-                transition: width 0.2s ease-in;
-                width: 3px;
-                z-index: -1;
-            }
 
-            .sidebar-navigation li:hover::before {
-                width: 100%;
-            }
 
-        .sidebar-navigation .header {
-            font-size: 12px;
-            text-transform: uppercase;
-            background-color: #151515;
-            padding: 10px 15px 10px 30px;
-        }
 
-            .sidebar-navigation .header::before {
-                background-color: transparent;
-            }
 
-    .content-container {
-        padding-left: 220px;
-    }
 
-</style>
+
+<!--
 <div class="sidebar-container">
     <div class="sidebar-logo">
         Swift Tomes
@@ -125,30 +68,4 @@
             </a>
         </li>
     </ul>
-</div>
-
-
-
-@*@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
-    @{
-        ViewData["Title"] = "Admin Page";
-    }
-
-    <div class="text-center">
-        <h1>Admin Dashboard</h1>
-    </div>
-
-    <h2>Unapproved Users</h2>
-
-    @foreach (var user in Model)
-    {
-        <div>
-            <form id="unapproved" method="post" asp-action="Approve" asp-controller="Admin">
-                @user.UserName
-                @user.FirstName
-                @user.LastName
-                <button type="submit" class="btn btn-success">Accept</button>
-                <button class="btn btn-success">Deny</button>
-            </form>
-        </div>
-    }*@
+</div>-->
