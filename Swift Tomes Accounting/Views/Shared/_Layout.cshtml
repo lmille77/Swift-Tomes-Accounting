@@ -1,11 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Swift_Tomes_Accounting</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+    
 </head>
 <body style="background-color: #dcedc8">
     <header>
@@ -23,11 +27,12 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <partial name="_Notifications" />
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted border-dark">
+    <footer class="border-top footer text-muted bg-dark border-white">
         <div class="container">
             &copy; 2021 - Swift Tomes Accounting<!--<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> -->
         </div>

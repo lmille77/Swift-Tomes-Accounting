@@ -158,11 +158,17 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomUsername")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DOB")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -178,6 +184,12 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LastPass1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastPass2")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -191,6 +203,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("PasswordDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");

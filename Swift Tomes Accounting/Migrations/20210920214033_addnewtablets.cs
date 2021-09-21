@@ -2,7 +2,7 @@
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class TestMigration : Migration
+    public partial class addnewtablets : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

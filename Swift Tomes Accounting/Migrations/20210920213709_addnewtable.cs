@@ -2,7 +2,7 @@
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class SwiftTomesDb : Migration
+    public partial class addnewtable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+<br />
+<div>
+    <div class="col-6">
+        <h2 class="text-primary">Unapproved User List</h2>
+
+    </div>
+</div>
+<div class="p-4 border rounded">
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped border">
+            <tr class="table-secondary">
+
+                <th>
+                    Email
+                </th>
+                <th>
+                    Name
+                </th>
+
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                @if (item.isApproved == false)
+                {
+
+
+                    <tr>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.FirstName  @item.LastName
+                        </td>
+
+                        <td>
+                            <div class="text-center">
+                                <form asp-action="Delete" asp-route-userId="@item.Id">
+
+                                    @if (item.isApproved == false)
+                                    {
+                                        //We want to show them the option to lock
+                                        <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success text-white"
+                                                style="cursor:pointer">
+                                            <span>&nbsp; Accept &nbsp;</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        //We want to show them the option to unlock
+                                        <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-warning text-white"
+                                                style="cursor:pointer">
+                                            <span> Approved </span>
+                                        </button>
+                                    }
+
+
+                                    <button onclick="return confirm('Are you sure you want to reject this user?')"
+                                            class="btn btn-danger">
+                                        Reject
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    }
+</div>
+<br />
+<br />
+<br />
+<form asp-action="GoBack" asp-controller="Admin">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <button type="submit" class="btn btn-warning">Done</button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -43,30 +43,48 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
             {
-                return RedirectToAction("Index", "Admin");
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
-            {
-                return RedirectToAction("Index", "Manager");
-            }            
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
-            {
-                return RedirectToAction("Index", "Accountant");
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
-            {
-                return RedirectToAction("Index", "Home");
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                await _roleManager.CreateAsync(new IdentityRole("Manager"));
+                await _roleManager.CreateAsync(new IdentityRole("Accountant"));
+                await _roleManager.CreateAsync(new IdentityRole("Unapproved"));
+                ApplicationUser user = new ApplicationUser()
+                {
+                    UserName = "miller4277@gmail.com",
+                    CustomUsername = "Admin1",
+                    FirstName = "Admin",
+                    Email = "miller4277@gmail.com",
+                    isApproved = true
+                };
+                var result = await _userManager.CreateAsync(user, "Admin123!");
+                await _userManager.AddToRoleAsync(user, "Admin");
             }
             else
             {
-                return View();
+                if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+                {
+                    return RedirectToAction("Index", "Manager");
+                }
+                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+                {
+                    return RedirectToAction("Index", "Accountant");
+                }
+                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            
+                return View();
         }
+
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -75,8 +93,11 @@ namespace Swift_Tomes_Accounting.Controllers
             if (ModelState.IsValid)
             {
                 //checks database to see if user and password are correct
-                var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, false);
-
+                var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
+                if (result.IsLockedOut)
+                {
+                    return View("Lockout");
+                }
                 if (result.Succeeded)
                 {
                     //checks to see if a user has been approved by an admin and redirects accordingly
@@ -87,14 +108,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
                     {
+                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Admin");
                     }
                     else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
                     {
+                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Manager");
                     }
                     else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
                     {
+                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Accountant");
                     }
                     else
@@ -114,15 +138,8 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-            //if the user roles are not already stored in the database, then they are added
-            if(!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
-            {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                await _roleManager.CreateAsync(new IdentityRole("Manager"));
-                await _roleManager.CreateAsync(new IdentityRole("Accountant"));
-                await _roleManager.CreateAsync(new IdentityRole("Unapproved"));                
-            }
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            //if the user roles are not already stored in the database, then they are added            
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
                 return RedirectToAction("Index", "Admin");
             }
@@ -161,7 +178,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     FirstName = obj.FirstName,
                     LastName = obj.LastName,
                     Email = obj.Email,
-                    isApproved = true
+                    isApproved = false,
+                    DOB = obj.DOB,
+                    Address = obj.Address,
+                    PasswordDate = DateTime.Now
                 };
 
                 //creates user
@@ -207,6 +227,92 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+        
+        //Password Reset Action
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(Message obj)
+        {
+                var toEmail = obj.ToEmail;
+                var subject = "Password Reset Confirmation";
+                var body = "Please click the link to reset your password. https://localhost:44316/Account/ConfirmResetPassword";
+                var mailHelper = new MailHelper(_configuration);
+                mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+                return RedirectToAction("Index", "Admin");
+         
+        }
+        //Password Reset Confirmation Action
+        [HttpGet]
+        public IActionResult ConfirmResetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmResetPassword(PasswdReset obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var curr_user = await _userManager.FindByNameAsync(obj.Email);
+
+                bool passcheck = false;
+
+
+                var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
+
+                PasswordVerificationResult passMatch = PasswordVerificationResult.Failed;
+                PasswordVerificationResult passMatch2 = PasswordVerificationResult.Failed;
+
+                if (curr_user.LastPass1 != null)
+                {
+                     passMatch = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass1, obj.NewPass);
+                }
+
+                if (curr_user.LastPass2 != null)
+                {
+                    passMatch2 = _userManager.PasswordHasher.VerifyHashedPassword(curr_user, curr_user.LastPass2, obj.NewPass);
+                }
+
+                if (result == true)
+                {
+                    ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                }
+
+                else if (passMatch == PasswordVerificationResult.Success)
+                 {
+                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                 }
+                
+                else if (passMatch2 == PasswordVerificationResult.Success)
+                    {
+                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                    }
+                
+                else
+                    passcheck = true;
+
+                if (passcheck == true)
+                {
+
+                    curr_user.LastPass2 = curr_user.LastPass1;
+                    curr_user.LastPass1 = curr_user.PasswordHash;
+                    await _userManager.UpdateAsync(curr_user);
+
+                    await _userManager.RemovePasswordAsync(curr_user);
+                    await _userManager.AddPasswordAsync(curr_user, obj.NewPass);
+
+
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+            return View(obj);
         }
     }
 }

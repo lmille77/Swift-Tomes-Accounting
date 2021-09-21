@@ -28,12 +28,19 @@ namespace Swift_Tomes_Accounting
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+            services.Configure<IdentityOptions>(opt =>
+            {
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                opt.Lockout.MaxFailedAccessAttempts = 3;
+                //requires user to confirm email before loggin in
+                //opt.SignIn.RequireConfirmedEmail = true;
 
+                //opt.SignIn.RequireConfirmedAccount = true;
+
+            });
             services.AddControllersWithViews();
         }
 

@@ -3,6 +3,12 @@
  {
     <form method ="post" id="logoutForm" asp-action="Logoff" asp-controller="Account">
         <ul class="nav navbar-nav">
+            <li>
+                <img src="~/frontend/STLogo.png" alt=”Image” style="width:40px; height:40px;position:absolute; top:10px; left:10px">
+            </li>
+            <li>
+                <img src="~/frontend/user_icon.png" alt=”Image” style="width:40px; height:40px;">
+            </li>
             <li class="text-white nav-link">Hello, @User.Identity.Name! </li>
             <li><a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
         </ul>

@@ -7,20 +7,13 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Models.ViewModels
 {
-    public class RegisterViewModel
-    {        
-
-        [Required(ErrorMessage = "The First Name field is required.")]
-        public string FirstName { get; set; } 
-        
-        [Required(ErrorMessage = "The Last Name field is required.")]
-        public string LastName {get;set;}     
-            
+    public class PasswdReset
+    {
         [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         [DataType(DataType.Password)]
         [PasswordFormatValidate]
         [FirstCharCapitalValidate]
@@ -29,15 +22,11 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [NumberValidate]
         [LetterValidate]
         [SpecialCharValidate]
-        public string Password { get; set; }
+        public string NewPass { get; set; }
 
+        [Required(ErrorMessage = "This field is required.")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The passwords do not match.")]
-        public string ConfirmPassword { get; set; }
-
-        public string Address { get; set; }
-
-        public string DOB { get; set; }
-
+        [Compare("NewPass", ErrorMessage = "The passwords do not match.")]
+        public string ConfirmPass { get; set; }
     }
 }
