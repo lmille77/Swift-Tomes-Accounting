@@ -27,50 +27,52 @@
                 {
 
 
-                <tr>
-                    <td>
-                        @item.Email
-                    </td>
-                    <td>
-                        @item.FirstName  @item.LastName
-                    </td>
+                    <tr>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.FirstName  @item.LastName
+                        </td>
 
-                    <td>
-                        <div class="text-center">
-                            <form asp-action="Delete" asp-route-userId="@item.Id">
-                                
+                        <td>
+                            <div class="text-center">
+                                <form asp-action="Delete" asp-route-userId="@item.Id">
+
                                     @if (item.isApproved == false)
                                     {
                                         //We want to show them the option to lock
-                                    <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success text-white"
-                                            style="cursor:pointer">
-                                        <span>&nbsp; Accept &nbsp;</span>
-                                    </button>
+                                        <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success text-white"
+                                                style="cursor:pointer">
+                                            <span>&nbsp; Accept &nbsp;</span>
+                                        </button>
                                     }
                                     else
                                     {
                                         //We want to show them the option to unlock
-                                    <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-warning text-white"
-                                            style="cursor:pointer">
-                                        <span> Approved </span>
-                                    </button>
+                                        <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-warning text-white"
+                                                style="cursor:pointer">
+                                            <span> Approved </span>
+                                        </button>
                                     }
 
 
-                                <button onclick="return confirm('Are you sure you want to reject this user?')"
-                                        class="btn btn-danger">
-                                    Reject
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                    }
+                                    <button onclick="return confirm('Are you sure you want to reject this user?')"
+                                            class="btn btn-danger">
+                                        Reject
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                 }
+            }
         </table>
     }
 </div>
-
+<br />
+<br />
+<br />
 <form asp-action="GoBack" asp-controller="Admin">
     <div class="container">
         <div class="row">
