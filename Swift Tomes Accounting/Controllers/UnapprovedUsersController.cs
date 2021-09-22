@@ -64,8 +64,8 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 //sends an email to admin requesting approval for new user
                 var email = objFromdb.Email;
-                var subject = "Add new user";
-                var body = "<a href='https://localhost:44316/Account/Login'>Click to Add User </a>";
+                var subject = "Accepted";
+                var body = "<a href='https://localhost:44316/Account/Login'>Click here to sign in </a>";
                 var mailHelper = new MailHelper(_configuration);
                 mailHelper.Send(_configuration["Gmail:Username"], email, subject, body);
                 objFromdb.isApproved = true;
