@@ -39,6 +39,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         
         public string State { get; set; }
         public string ZipCode { get; set; }
+        [DateFormatValidation]
         public string DOB { get; set; }
 
     }
