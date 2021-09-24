@@ -1,81 +1,96 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.RegisterViewModel
+<br />
 
-<h4 class="col-md-8 offset-md-4">Create an Account</h4>
-
-<div class="row col-md-10 mx-auto">
-    <div class="col-md-8 offset-md-2">
-        <form method="post" asp-action="Register" asp-controller="Account">
-
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label class="col-md-4" asp-for="FirstName">First Name</label>
-                <div class="col-md-10">
-                    <input asp-for="FirstName" class="form-control" />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4" asp-for="LastName">Last Name</label>
-                <div class="col-md-10">
-                    <input asp-for="LastName" class="form-control" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4" asp-for="DOB">DOB</label>
-                <div class="col-md-10">
-                    <input asp-for="DOB" class="form-control" />
-                    <span asp-validation-for="DOB" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4" asp-for="Address">Address</label>
-                <div class="col-md-10">
-                    <input asp-for="Address" class="form-control" />
-                    <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4" asp-for="Email">Email</label>
-                <div class="col-md-10">
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4" asp-for="Password">Password</label>
-                <div class="col-md-10">
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4" asp-for="ConfirmPassword">Confirm Password</label>
-                <div class="col-md-10">
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-            </div>
-
-
-
-            <div class="form-group">
-                <div class=" col-md-10 offset-md-2">
-                    <input type="submit" value="Register" class=" btn btn-success" />
-                </div>
-            </div>
-
-            <p class="col-md-10 offset-md-2">
-                <a asp-action="Login">Already have an account? Click to login</a>
-            </p>
-
-        </form>
+<div style="border: 1px solid; border-color: lightgray; width: 550px; margin: 0 auto;">
+    <br />
+    <div class="text-center">
+        <img src="~/frontend/STLogo.png" alt=”Image” style="width:50px; height:50px">
     </div>
+    <br />
+    <h4 class="text-center">Create an Account</h4>
+    <br />
+    <form method="post" asp-action="Register" asp-controller="Account">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-xs-2">
+                <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-xs-2">
+                <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-5">
+                <input asp-for="DOB" class="form-control" placeholder="DOB" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Address" class="form-control" placeholder="Street Address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-xs-2">
+                <input asp-for="ZipCode" class="form-control" placeholder="Zip Code" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-xs-2">
+                <input asp-for="State" class="form-control" placeholder="State" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-6">
+                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-6">
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+
+
+        <div class="form-group">
+            <div class=" col-md-10 offset-md-2">
+                <input type="submit" value="Request Access" class=" btn btn-success" />
+            </div>
+        </div>
+
+        <p class="col-md-10 offset-md-2">
+            <a asp-action="Login">Already have an account? Click to login</a>
+        </p>
+
+    </form>
 </div>
 
 

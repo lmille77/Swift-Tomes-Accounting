@@ -181,7 +181,9 @@ namespace Swift_Tomes_Accounting.Controllers
                     isApproved = false,
                     DOB = obj.DOB,
                     Address = obj.Address,
-                    PasswordDate = DateTime.Now
+                    PasswordDate = DateTime.Now,
+                    ZipCode = obj.ZipCode,
+                    State = obj.State
                 };
 
                 //creates user
