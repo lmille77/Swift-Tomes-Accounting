@@ -16,6 +16,7 @@ namespace Swift_Tomes_Accounting.Models.ValidationClasses
             PasswordLengthValidate pwl = new PasswordLengthValidate();
             SpecialCharValidate sch = new SpecialCharValidate();
             FirstCharValidate fch = new FirstCharValidate();
+            FirstCharCapitalValidate fchcap = new FirstCharCapitalValidate();
 
             if (l.IsValid(value) != true)
             {
@@ -34,6 +35,10 @@ namespace Swift_Tomes_Accounting.Models.ValidationClasses
                 return new ValidationResult("Password does not meet required criteria.");
             }
             if (fch.IsValid(value) != true)
+            {
+                return new ValidationResult("Password does not meet required criteria.");
+            }
+            if(fchcap.IsValid(value) != true)
             {
                 return new ValidationResult("Password does not meet required criteria.");
             }
