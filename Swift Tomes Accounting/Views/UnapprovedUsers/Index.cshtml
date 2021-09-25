@@ -44,7 +44,7 @@
                                         //We want to show them the option to lock
                                         <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success text-white"
                                                 style="cursor:pointer">
-                                            <span>&nbsp; Accept &nbsp;</span>
+                                            <span>&nbsp; Approve &nbsp;</span>
                                         </button>
                                     }
                                     else
@@ -59,7 +59,7 @@
 
                                     <button onclick="return confirm('Are you sure you want to reject this user?')"
                                             class="btn btn-danger">
-                                        Reject
+                                        Deny
                                     </button>
                                 </form>
                             </div>

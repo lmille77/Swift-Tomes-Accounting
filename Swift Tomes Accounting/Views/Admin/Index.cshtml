@@ -5,15 +5,15 @@
 
 <style>
     .sidebar-container {
-        position: fixed;
+        position: absolute;
         width: 220px;
-        height: 100%;
+        height: 90%;
         left: 0;
         overflow-x: hidden;
         overflow-y: auto;
         background: #36454F;
         color: #fff;
-        top: 55px;
+        top: 57px;
         border-style: solid;
     }
 
@@ -101,22 +101,17 @@
     <h1>Admin Dashboard</h1>
 </div>
 
-<div class="sidebar-container border-info">
+<div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center">Quick Actions</div>
+        <div class="text-center border-info">Quick Actions</div>
         <br />
     </div>
 
     <ul class="sidebar-navigation">
         <li>
             <a asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
-        </li>
-        <li>
-            <a asp-controller="Unapprovedusers" asp-action="Index" class="btn btn-dark btn-outline-info">
-                Unapproved Users List
-            </a>
-        </li>
+        </li>        
         <li>
             <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
         </li>
@@ -129,31 +124,5 @@
     </ul>
 </div>
 
-<!--
 
 
-
-
-
-
-<p class="col-md-10 offset-md-2">
-    <a asp-action="Send" class="btn btn-success">Send Message</a>
-</p>
-
-<p class="col-md-10 offset-md-2">
-    <a asp-controller="Unapprovedusers" asp-action="Index" class="btn btn-success">Unapproved Users List</a>
-</p>
-
-<p class="col-md-10 offset-md-2">
-    <a asp-controller="User" asp-action="Index" class="btn btn-success"> Users List</a>
-</p>
-
-<p class="col-md-10 offset-md-2">
-    <a asp-controller="Roles" asp-action="Index" class="btn btn-success"> Roles List</a>
-</p>
-
-<p class="col-md-10 offset-md-2">
-    <a asp-controller="expiredpass" asp-action="Index" class="btn btn-success"> Expired Passwords List</a>
-</p>
-
--->
