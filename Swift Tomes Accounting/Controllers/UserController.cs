@@ -8,19 +8,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Swift_Tomes_Accounting;
+using Swift_Tomes_Accounting.Helpers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace NewSwift.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _db;
-        
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private IConfiguration _configuration;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+
+        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            _userManager = userManager;
             _db = db;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -158,7 +167,45 @@ namespace NewSwift.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Approve(string userId)
+        {
+            var objFromdb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
+            var roleList = _roleManager.Roles.ToList();
+            var unapprovedID = "";
+            foreach(var role in roleList)
+            {
+                if(role.Name == "Unapproved")
+                {
+                    unapprovedID = role.Id;
+                }
+            }
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
 
+            if (objFromdb.isApproved == false && userRole.RoleId != unapprovedID)
+            {
+                //sends an email to admin requesting approval for new user
+                var email = objFromdb.Email;
+                var subject = "Accepted";
+                var body = "<a href='https://localhost:44316/Account/Login'>Click here to sign in </a>";
+                var mailHelper = new MailHelper(_configuration);
+                mailHelper.Send(_configuration["Gmail:Username"], email, subject, body);
+                objFromdb.isApproved = true;
+                TempData[SD.Success] = "User approved successfully.";
+            }
+            else
+            {
+                
+            }
+
+
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 
 }
