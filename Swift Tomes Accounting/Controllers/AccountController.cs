@@ -94,6 +94,10 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 //checks database to see if user and password are correct
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
+                var user = await _userManager.FindByNameAsync(obj.Email);
+                var num = 3 - user.AccessFailedCount;
+
+
                 if (result.IsLockedOut)
                 {
                     return View("Lockout");
@@ -130,6 +134,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Invalid Email or Password.");
+                    TempData[SD.Error] = "Attempts remaining: " + num;
                 }
             }
             return View(obj);
@@ -240,22 +245,39 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResetPassword(Message obj)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(Message obj)
         {
-                var toEmail = obj.ToEmail;
-                var subject = "Password Reset Confirmation";
-                var body = "Please click the link to reset your password. https://localhost:44316/Account/ConfirmResetPassword";
-                var mailHelper = new MailHelper(_configuration);
-                mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
-                return RedirectToAction("Index", "Admin");
+            var user = await _userManager.FindByEmailAsync(obj.ToEmail);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            //sends them to 
+            var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+            //"<a href='https://localhost:44316/Account/Login'>Click to Add User </a>"
+
+            var toEmail = obj.ToEmail;
+            var subject = "Password Reset Confirmation";
+            var body = "Please reset your password by clicking here: <a href=\"" + callbackurl + "\"> link </a";
+            var mailHelper = new MailHelper(_configuration);
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            
+            TempData[SD.Success] = "Check email for password reset link.";
+            return RedirectToAction("Index", "Admin");
          
         }
+       
+
+        
         //Password Reset Confirmation Action
         [HttpGet]
-        public IActionResult ConfirmResetPassword()
+        public IActionResult ConfirmResetPassword(string code = null)
         {
-            return View();
+            return code == null ? View("Error") : View();
         }
+        
+        
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmResetPassword(PasswdReset obj)
@@ -263,8 +285,10 @@ namespace Swift_Tomes_Accounting.Controllers
             if (ModelState.IsValid)
             {
                 var curr_user = await _userManager.FindByNameAsync(obj.Email);
-
+                
                 bool passcheck = false;
+                
+
 
 
                 var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
@@ -308,9 +332,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     await _userManager.UpdateAsync(curr_user);
 
                     await _userManager.RemovePasswordAsync(curr_user);
+                    await _userManager.ResetPasswordAsync(curr_user, obj.Code, obj.NewPass);
                     await _userManager.AddPasswordAsync(curr_user, obj.NewPass);
 
-
+                    TempData[SD.Success] = "Password was successfully reset.";
                     return RedirectToAction("Login", "Account");
                 }
             }
