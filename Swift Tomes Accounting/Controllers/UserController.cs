@@ -133,13 +133,13 @@ namespace NewSwift.Controllers
 
                 //add new role
                 await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);
-                objFromDb.CustomUsername = user.CustomUsername;
+
                 objFromDb.FirstName = user.FirstName;
                 objFromDb.LastName = user.LastName;
                 objFromDb.DOB = user.DOB;
                 objFromDb.Address = user.Address;
                 _db.SaveChanges();
-               TempData[SD.Success] = "User has been edited successfully.";
+                TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -166,13 +166,13 @@ namespace NewSwift.Controllers
                 //this mean user is locked and will remain lcoked until lockoutend time
                 //clickng will unlock user
                 objFromdb.LockoutEnd = DateTime.Now;
-               TempData[SD.Success] = "User unlocked successfully.";
+                TempData[SD.Success] = "User unlocked successfully.";
             }
             else
             {
                 //user is not locked and we want to lock the user
                 objFromdb.LockoutEnd = DateTime.Now.AddYears(1000);
-              TempData[SD.Success] = "User locked successfully.";
+                TempData[SD.Success] = "User locked successfully.";
             }
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -186,10 +186,10 @@ namespace NewSwift.Controllers
             {
                 return NotFound();
             }
-           
+
             _db.ApplicationUser.Remove(objFromDb);
             _db.SaveChanges();
-           TempData[SD.Success] = "User deleted succesfully";
+            TempData[SD.Success] = "User deleted succesfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -200,9 +200,9 @@ namespace NewSwift.Controllers
             var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
             var roleList = _roleManager.Roles.ToList();
             var unapprovedID = "";
-            foreach(var role in roleList)
+            foreach (var role in roleList)
             {
-                if(role.Name == "Unapproved")
+                if (role.Name == "Unapproved")
                 {
                     unapprovedID = role.Id;
                 }
@@ -225,14 +225,45 @@ namespace NewSwift.Controllers
             }
             else
             {
-                
+
             }
 
 
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignRole(ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == user.Id);
+                if (objFromDb == null)
+                {
+                    return NotFound();
+                }
+                var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == objFromDb.Id);
+                if (userRole != null)
+                {
+                    var previousRoleName = _db.Roles.Where(u => u.Id == userRole.RoleId).Select(e => e.Name).FirstOrDefault();
+                    //removing the old role
+                    await _userManager.RemoveFromRoleAsync(objFromDb, previousRoleName);
 
+                }
+
+                //add new role
+                await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);
+
+                objFromDb.FirstName = user.FirstName;
+                objFromDb.LastName = user.LastName;
+                _db.SaveChanges();
+                TempData[SD.Success] = "User has been edited successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
+
+    }
 }
 
