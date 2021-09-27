@@ -253,10 +253,7 @@ namespace NewSwift.Controllers
                 }
 
                 //add new role
-                await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);
-
-                objFromDb.FirstName = user.FirstName;
-                objFromDb.LastName = user.LastName;
+                await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);                
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));
