@@ -225,7 +225,7 @@ namespace NewSwift.Controllers
             }
             else
             {
-
+                TempData[SD.Error] = "Assign a role before approving a user.";
             }
 
 

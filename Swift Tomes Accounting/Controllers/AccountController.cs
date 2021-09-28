@@ -110,19 +110,26 @@ namespace Swift_Tomes_Accounting.Controllers
                     var manager_role_list = await _userManager.GetUsersInRoleAsync("Manager");
                     var accountant_role_list = await _userManager.GetUsersInRoleAsync("Accountant");
 
-                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                    //find DateTime of when password was created
+                    var lastpassdate = curr_user.PasswordDate;
+                    if(lastpassdate.AddDays(1) < DateTime.Now)
                     {
                         TempData[SD.Error] = "Your password will expire in three days.";
+                    }
+                    
+
+
+
+                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                    {                        
                         return RedirectToAction("Index", "Admin");
                     }
                     else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
-                    {
-                        TempData[SD.Error] = "Your password will expire in three days.";
+                    {                        
                         return RedirectToAction("Index", "Manager");
                     }
                     else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
                     {
-                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Accountant");
                     }
                     else
@@ -330,17 +337,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result == true)
                 {
-                    ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                    ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
                 }
 
                 else if (passMatch == PasswordVerificationResult.Success)
                  {
-                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
                  }
                 
                 else if (passMatch2 == PasswordVerificationResult.Success)
                     {
-                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
                     }
                 
                 else
