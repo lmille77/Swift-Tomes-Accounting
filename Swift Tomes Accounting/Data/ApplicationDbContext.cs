@@ -16,6 +16,7 @@ namespace Swift_Tomes_Accounting.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<AccountDB> Account { get; set; }
 
     }
 }
