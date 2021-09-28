@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Models.ViewModels
 {
-    public class PasswdReset
+    public class PasswdReset : ApplicationUser
     {
         [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]

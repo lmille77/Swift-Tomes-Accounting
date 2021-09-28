@@ -141,7 +141,7 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             //if the user roles are not already stored in the database, then they are added            
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -258,7 +258,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             var toEmail = obj.ToEmail;
             var subject = "Password Reset Confirmation";
-            var body = "Please reset your password by clicking here: <a href=\"" + callbackurl + "\"> link </a";
+            var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here";
             var mailHelper = new MailHelper(_configuration);
             mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
             
@@ -270,14 +270,36 @@ namespace Swift_Tomes_Accounting.Controllers
 
         
         //Password Reset Confirmation Action
+        
         [HttpGet]
-        public IActionResult ConfirmResetPassword(string code = null)
+        public IActionResult ConfirmResetPassword(string userId, string code = null)
         {
-            return code == null ? View("Error") : View();
+            var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+
+
+            var userRole = _db.UserRoles.ToList();
+            var roles = _db.Roles.ToList();
+
+            //this will find if there are any roles assigned to the user
+            var role = userRole.FirstOrDefault(u => u.UserId == objFromDb.Id);
+            if (role != null)
+            {
+                objFromDb.RoleId = roles.FirstOrDefault(u => u.Id == role.RoleId).Id;
+            }
+            objFromDb.RoleList = _db.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id
+            });
+            PasswdReset newobj = new PasswdReset();
+            newobj.Email = objFromDb.Email;
+            return code == null ? View("Error") : View(newobj);
         }
-        
-        
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmResetPassword(PasswdReset obj)

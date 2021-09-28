@@ -39,7 +39,7 @@ namespace Swift_Tomes_Accounting.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
@@ -76,7 +76,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 SelectListItem li = new SelectListItem
                 {
                     Value = user.Email,
-                    Text = user.LastName + ", " + user.FirstName + " - "+ user.Email
+                    Text = user.LastName + ", " + user.FirstName + " <" + user.Email + ">"
 
                 };
                 users.Add(li);
