@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Helpers;
@@ -112,22 +113,6 @@ namespace Swift_Tomes_Accounting.Controllers
                 return NotFound();
             }
 
-
-            var userRole = _db.UserRoles.ToList();
-            var roles = _db.Roles.ToList();
-
-            //this will find if there are any roles assigned to the user
-            var role = userRole.FirstOrDefault(u => u.UserId == objFromDb.Id);
-            if (role != null)
-            {
-                objFromDb.RoleId = roles.FirstOrDefault(u => u.Id == role.RoleId).Id;
-            }
-            objFromDb.RoleList = _db.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-            {
-                Text = u.Name,
-                Value = u.Id
-            });
-
             return View(objFromDb);
         }
         [HttpPost]
@@ -157,7 +142,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 objFromDb.State = user.State;
                 objFromDb.City = user.City;
                 //add new role
-                await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);
+                await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));

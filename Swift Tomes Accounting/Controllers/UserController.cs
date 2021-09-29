@@ -107,7 +107,7 @@ namespace NewSwift.Controllers
                 }
 
                 //add new role
-                await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);
+                await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
 
                 objFromDb.FirstName = user.FirstName;
                 objFromDb.LastName = user.LastName;

@@ -33,6 +33,10 @@
                 @item.FirstName  @item.LastName
             </td>
             <td>
+                @if(item.Role == "Unapproved")
+                {
+                    item.Role = "Not Assigned";
+                }
                 @item.Role
             </td>
 
