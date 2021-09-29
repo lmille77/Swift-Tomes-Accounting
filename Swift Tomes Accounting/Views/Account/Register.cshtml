@@ -38,12 +38,12 @@
             <div class="col-md-5">
                 <input asp-for="DOB" class="form-control" style="color:gray" />
                 <span asp-validation-for="DOB" class="text-danger"></span>
-                <h6 style="font-size:10px; color:gray">*Enter your date of birth.</h6>
-            </div>           
-            
+                <h6 style="font-size:10px; color:gray">&nbsp;&nbsp;&nbsp;*Enter your date of birth.</h6>
+            </div>
+
         </div>
-        
-        <br style="display: block; margin-bottom: 8px;"/>
+
+        <br style="display: block; margin-bottom: 8px;" />
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
@@ -55,10 +55,18 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-xs-2">
+                <input asp-for="City" class="form-control" placeholder="City" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-xs-2">
                 <input asp-for="ZipCode" class="form-control" placeholder="Zip Code" />
                 <span asp-validation-for="ZipCode" class="text-danger"></span>
             </div>
-            <div>&nbsp;</div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-xs-2">
                 <input asp-for="State" class="form-control" placeholder="State" />
                 <span asp-validation-for="State" class="text-danger"></span>

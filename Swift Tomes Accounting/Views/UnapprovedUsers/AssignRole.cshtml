@@ -1,0 +1,59 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser
+<br />
+    <h2 class="text-center">Assign a Role</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post" asp-action="AssignRole" asp-controller="UnapprovedUsers">
+                <input asp-for="@Model.Id" hidden />
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" readonly class="form-control" />
+                    <input asp-for="Email" hidden class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="DOB">DOB</label>
+                    <input asp-for="DOB" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address">Street Address</label>
+                    <input asp-for="Address" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="City">City</label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ZipCode">Zip Code</label>
+                    <input asp-for="ZipCode" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="State">State</label>
+                    <input asp-for="State" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoleId">Role</label>
+                    @*Might be form select with the newer bootstrap*@
+                    <select asp-for="RoleId" asp-items="@Model.RoleList" class="form-control">
+                        <option disabled selected>--Select Role--</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Assign Role</button>
+                    @*link to go back*@
+                    <a asp-action="Index" class="btn btn-warning" style="width:auto">Back to User List</a>
+                </div>
+            </form>
+        </div>
+    </div>

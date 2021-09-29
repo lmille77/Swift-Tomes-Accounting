@@ -1,17 +1,16 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.Message
+<br />
+<h2 class="text-center">Message User</h2>
+<hr />
 
-<h1>Message User</h1>
-
-
-
-<div class="row">
-    <div class="col-md-8">
-        <section id="messageform">
+<div style="width: 450px; margin: 0 auto; padding-left: 25px">
+    
+      
             <form id="message" method="post" asp-action="Send" asp-controller="Admin">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label class="col-md-2" asp-for="ToEmail">To Email: </label>
-                    <div class="col-md-10">
+                    <label class="col-md-2" asp-for="ToEmail">To: </label>
+                    <div style="width:400px">
                         <select asp-for="ToEmail" asp-items="@ViewBag.Users" class="form-control">
                             <option disabled selected>--Select User Email--</option>
                         </select>
@@ -20,14 +19,14 @@
                 </div>
                 <div class="form-group">
                     <label class="col-md-2" asp-for="Subject">Subject:</label>
-                    <div class="col-md-10">
+                    <div style="width:400px">
                         <input asp-for="Subject" class="form-control" />
                         <span asp-validation-for="Subject" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2" asp-for="Body">Body:</label>
-                    <div class="col-md-10">
+                    <div style="width:400px">
                         <textarea asp-for="Body" class="form-control" rows="4"></textarea>
                         <span asp-validation-for="Body" class="text-danger"></span>
                     </div>
@@ -39,7 +38,7 @@
                 </div>
 
             </form>
-        </section>
+        
     </div>
 
 </div>

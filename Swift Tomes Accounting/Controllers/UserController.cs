@@ -84,32 +84,7 @@ namespace NewSwift.Controllers
             return View(objFromDb);
         }
 
-        public IActionResult AssignRole(string userId)
-        {
-            var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
-            if (objFromDb == null)
-            {
-                return NotFound();
-            }
-
-
-            var userRole = _db.UserRoles.ToList();
-            var roles = _db.Roles.ToList();
-
-            //this will find if there are any roles assigned to the user
-            var role = userRole.FirstOrDefault(u => u.UserId == objFromDb.Id);
-            if (role != null)
-            {
-                objFromDb.RoleId = roles.FirstOrDefault(u => u.Id == role.RoleId).Id;
-            }
-            objFromDb.RoleList = _db.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-            {
-                Text = u.Name,
-                Value = u.Id
-            });
-
-            return View(objFromDb);
-        }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -138,6 +113,9 @@ namespace NewSwift.Controllers
                 objFromDb.LastName = user.LastName;
                 objFromDb.DOB = user.DOB;
                 objFromDb.Address = user.Address;
+                objFromDb.ZipCode = user.ZipCode;
+                objFromDb.State = user.State;
+                objFromDb.City = user.City;
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));
@@ -193,73 +171,8 @@ namespace NewSwift.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Approve(string userId)
-        {
-            var objFromdb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
-            var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
-            var roleList = _roleManager.Roles.ToList();
-            var unapprovedID = "";
-            foreach (var role in roleList)
-            {
-                if (role.Name == "Unapproved")
-                {
-                    unapprovedID = role.Id;
-                }
-            }
-            if (objFromdb == null)
-            {
-                return NotFound();
-            }
-
-            if (objFromdb.isApproved == false && userRole.RoleId != unapprovedID)
-            {
-                //sends an email to admin requesting approval for new user
-                var email = objFromdb.Email;
-                var subject = "Accepted";
-                var body = "<a href='https://localhost:44316/Account/Login'>Click here to sign in </a>";
-                var mailHelper = new MailHelper(_configuration);
-                mailHelper.Send(_configuration["Gmail:Username"], email, subject, body);
-                objFromdb.isApproved = true;
-                TempData[SD.Success] = "User approved successfully.";
-            }
-            else
-            {
-                TempData[SD.Error] = "Assign a role before approving a user.";
-            }
-
-
-            _db.SaveChanges();
-            return RedirectToAction(nameof(Index));
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignRole(ApplicationUser user)
-        {
-            if (ModelState.IsValid)
-            {
-                var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == user.Id);
-                if (objFromDb == null)
-                {
-                    return NotFound();
-                }
-                var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == objFromDb.Id);
-                if (userRole != null)
-                {
-                    var previousRoleName = _db.Roles.Where(u => u.Id == userRole.RoleId).Select(e => e.Name).FirstOrDefault();
-                    //removing the old role
-                    await _userManager.RemoveFromRoleAsync(objFromDb, previousRoleName);
-
-                }
-
-                //add new role
-                await _userManager.AddToRoleAsync(objFromDb, _db.Roles.FirstOrDefault(u => u.Id == user.RoleId).Name);                
-                _db.SaveChanges();
-                TempData[SD.Success] = "User has been edited successfully.";
-                return RedirectToAction(nameof(Index));
-            }
-            return View(user);
-        }
+        
+        
 
     }
 }

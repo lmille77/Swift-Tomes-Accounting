@@ -2,12 +2,8 @@
 
 
 <br />
-<div>
-    <div class="col-6">
-        <h2 class="text-primary">Expired Passwords List</h2>
-
-    </div>
-</div>
+<h2 class="text-center">Expired Password List</h2>
+<hr />
 
 <div class="p-4 border rounded">
     @if (Model.Any())
@@ -30,19 +26,19 @@
             </tr>
             @foreach (var user in Model)
             {
-        <tr>
-            <td>
-                @user.Email
-            </td>
-            <td>
-                @user.FirstName  @user.LastName
-            </td>
-            <td>
-                @user.LastPass1
-            </td>
+                <tr>
+                    <td>
+                        @user.Email
+                    </td>
+                    <td>
+                        @user.FirstName  @user.LastName
+                    </td>
+                    <td>
+                        @user.LastPass1
+                    </td>
 
 
-        </tr>
+                </tr>
             }
         </table>
     }

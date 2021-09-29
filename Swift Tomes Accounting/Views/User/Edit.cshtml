@@ -16,20 +16,31 @@
                 <input asp-for="LastName" class="form-control" />
             </div>
             <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" readonly class="form-control" />
+                <input asp-for="Email" hidden class="form-control" />
+            </div>
+            <div class="form-group">
                 <label asp-for="DOB">DOB</label>
                 <input asp-for="DOB" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Address">Address</label>
+                <label asp-for="Address">Street Address</label>
                 <input asp-for="Address" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" readonly class="form-control" />
-                <input asp-for="Email" hidden class="form-control" />
-                @*can check if email has been used but needs to be implemented*@
-                @*<span asp-validation-for="Email" class="text-danger"></span>*@
+                <label asp-for="City">City</label>
+                <input asp-for="City" class="form-control" />
             </div>
+            <div class="form-group">
+                <label asp-for="ZipCode">Zip Code</label>
+                <input asp-for="ZipCode" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="State">State</label>
+                <input asp-for="State" class="form-control" />
+            </div>
+
             <div class="form-group">
                 <label asp-for="RoleId">Role</label>
                 @*Might be form select with the newer bootstrap*@

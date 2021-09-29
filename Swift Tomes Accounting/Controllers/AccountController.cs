@@ -195,7 +195,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     Address = obj.Address,
                     PasswordDate = DateTime.Now,
                     ZipCode = obj.ZipCode,
-                    State = obj.State
+                    State = obj.State,
+                    City = obj.City
                 };
 
                 //creates user
