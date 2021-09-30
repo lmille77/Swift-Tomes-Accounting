@@ -40,19 +40,43 @@
                 <label asp-for="State">State</label>
                 <input asp-for="State" class="form-control" />
             </div>
-
-            <div class="form-group">
-                <label asp-for="RoleId">Role</label>
-                @*Might be form select with the newer bootstrap*@
-            <select asp-for="RoleId" class="form-control">
-                <option disabled selected>--Select Role--</option>
-                <option>Admin</option>
-                <option>Manager</option>
-                <option>Accountant</option>
-
-
-            </select>
-            </div>
+            @if (Model.Role == "Admin")
+            {
+                <div class="form-group">
+                    <label asp-for="RoleId">Role</label>
+                    <select asp-for="RoleId" class="form-control">
+                        <option disabled>--Select Role--</option>
+                        <option selected>Admin</option>
+                        <option>Manager</option>
+                        <option>Accountant</option>
+                    </select>
+                </div>
+            }
+            @if (Model.Role == "Manager")
+            {
+                <div class="form-group">
+                    <label asp-for="RoleId">Role</label>
+                    <select asp-for="RoleId" class="form-control">
+                        <option disabled>--Select Role--</option>
+                        <option>Admin</option>
+                        <option selected>Manager</option>
+                        <option>Accountant</option>
+                    </select>
+                </div>
+            }
+            @if (Model.Role == "Accountant")
+            {
+                <div class="form-group">
+                    <label asp-for="RoleId">Role</label>
+                    <select asp-for="RoleId" class="form-control">
+                        <option disabled>--Select Role--</option>
+                        <option>Admin</option>
+                        <option>Manager</option>
+                        <option selected>Accountant</option>
+                    </select>
+                </div>
+             }
+            
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Update</button>
                 @*link to go back*@

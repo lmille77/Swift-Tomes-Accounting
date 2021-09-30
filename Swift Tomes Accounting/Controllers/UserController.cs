@@ -73,7 +73,7 @@ namespace NewSwift.Controllers
             var role = userRole.FirstOrDefault(u => u.UserId == objFromDb.Id);
             if (role != null)
             {
-                objFromDb.RoleId = roles.FirstOrDefault(u => u.Id == role.RoleId).Id;
+                objFromDb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
             }
             objFromDb.RoleList = _db.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
