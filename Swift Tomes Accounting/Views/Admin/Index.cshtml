@@ -11,7 +11,7 @@
         left: 0;
         overflow-x: hidden;
         overflow-y: auto;
-        background: #36454F;
+        background: #343a40;
         color: #fff;
         top: 57px;
         border-style: solid;
@@ -94,13 +94,44 @@
 </style>
 
 
-
-
-
-
 <div class="text-center">
     <h1>Admin Dashboard</h1>
-    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card btn-outline-info">
+                    <div class="box p-2 rounded bg-dark text-center">
+                        <a asp-controller="Account" asp-action="Index"><h1 class="text-white">Charts of Accounts</h1></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-dark text-center">
+                        <h1 class="text-white">General Journal</h1>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-dark text-center">
+                        <h1 class="text-white">Trial of Balance</h1>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-dark text-center">
+                        <a asp-controller="Send" asp-action="Index"><h1 class="text-white">Bounce of Rate</h1></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="sidebar-container border-dark">
