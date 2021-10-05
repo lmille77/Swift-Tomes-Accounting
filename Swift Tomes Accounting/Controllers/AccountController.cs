@@ -55,7 +55,8 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     UserName = "miller4277@gmail.com",
                     CustomUsername = "Admin1",
-                    FirstName = "Admin",
+                    FirstName = "Default",
+                    LastName = "Admin",
                     Email = "miller4277@gmail.com",
                     isApproved = true
                 };
