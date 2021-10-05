@@ -36,7 +36,7 @@ namespace Swift_Tomes_Accounting.Controllers
             account.UserName = _userManager.GetUserAsync(User).Result.CustomUsername;
             if (account.Order < 0)
             {
-                ViewBag.ErrorMessage = "Liquidity cannot by negative.";
+                ViewBag.ErrorMessage = "Liquidity cannot be negative.";
                 return View(account);
             }
 
@@ -49,17 +49,17 @@ namespace Swift_Tomes_Accounting.Controllers
             if (User.IsInRole("Admin"))
             {
                 account.CreatedOn = DateTime.Now;
-                _db.Account.Add(account);
+                var result = _db.Account.Add(account);
                 await _db.SaveChangesAsync();
-
                 return RedirectToAction("Index", "Admin");
             }
-
+            
             else
             {
                 ViewBag.ErrorMessage = "User not allowed to create Accounts";
                 return View(account);
             }
+            
         }
 
     }

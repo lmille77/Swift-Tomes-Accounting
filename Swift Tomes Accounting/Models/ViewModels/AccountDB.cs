@@ -32,7 +32,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public double Balance { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
-        [Required]
+        
         public string UserName { get; set; }
         [Required]
         public int Order { get; set; }
