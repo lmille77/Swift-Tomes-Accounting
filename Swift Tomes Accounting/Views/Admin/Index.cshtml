@@ -3,11 +3,47 @@
     ViewData["Title"] = "Admin Page";
 }
 
+
+<h2 class="text-center">Admin Dashboard</h2>
+<hr style="width:950px" />
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-info btn-outline-light">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin"asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+        </li>
+        <li>
+            <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
+        </li>
+        <li>
+            <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
+        </li>
+        <li>
+            <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info">Create Account</a>
+        </li>
+    </ul>
+</div>
+
 <style>
     .sidebar-container {
         position: absolute;
-        width: 220px;
-        height: 90%;
+        width: 250px;
+        height: 95%;
         left: 0;
         overflow-x: hidden;
         overflow-y: auto;
@@ -91,73 +127,4 @@
         padding-left: 220px;
     }
 </style>
-
-
-<div class="text-center">
-    <h1>Admin Dashboard</h1>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-                <div class="card btn-outline-info">
-                    <div class="box p-2 rounded bg-dark text-center">
-                        <a asp-controller="Account" asp-action="Index"><h1 class="text-white">Charts of Accounts</h1></a>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-                <div class="card">
-                    <div class="box p-2 rounded bg-dark text-center">
-                        <h1 class="text-white">General Journal</h1>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-                <div class="card">
-                    <div class="box p-2 rounded bg-dark text-center">
-                        <h1 class="text-white">Trial of Balance</h1>
-                    </div>
-                </div>
-            </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-                <div class="card">
-                    <div class="box p-2 rounded bg-dark text-center">
-                        <a asp-controller="Send" asp-action="Index"><h1 class="text-white">Bounce of Rate</h1></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="sidebar-container border-dark">
-    <div>
-        <br />
-        <div class="text-center border-info">Quick Actions</div>
-        <br />
-    </div>
-
-    <ul class="sidebar-navigation">
-        <li>
-            <a asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
-        </li>
-        <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
-        </li>
-        <li>
-            <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
-        </li>
-        <li>
-            <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
-        </li>
-    </ul>
-</div>
-
-
-
-
-
 

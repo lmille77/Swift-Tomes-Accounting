@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210928011406_addAccountTable")]
-    partial class addAccountTable
+    [Migration("20211005231405_dbconfig")]
+    partial class dbconfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,17 +154,14 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
-                    b.Property<int>("AccoutNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("AccountName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Balance")
-                        .HasColumnType("int");
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -173,20 +170,20 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedOn")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Credit")
-                        .HasColumnType("int");
+                    b.Property<double>("Credit")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Debit")
-                        .HasColumnType("int");
+                    b.Property<double>("Debit")
+                        .HasColumnType("float");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Initial")
-                        .HasColumnType("int");
+                    b.Property<double>("Initial")
+                        .HasColumnType("float");
 
                     b.Property<string>("NormSide")
                         .IsRequired()
@@ -201,10 +198,11 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("SubCategory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccoutNumber");
+                    b.HasKey("AccountNumber", "AccountName");
 
                     b.ToTable("Account");
                 });
@@ -218,6 +216,9 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")

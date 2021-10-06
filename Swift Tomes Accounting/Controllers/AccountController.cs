@@ -94,6 +94,10 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 //checks database to see if user and password are correct
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
+                var user = await _userManager.FindByNameAsync(obj.Email);
+                var num = 3 - user.AccessFailedCount;
+
+
                 if (result.IsLockedOut)
                 {
                     return View("Lockout");
@@ -106,19 +110,26 @@ namespace Swift_Tomes_Accounting.Controllers
                     var manager_role_list = await _userManager.GetUsersInRoleAsync("Manager");
                     var accountant_role_list = await _userManager.GetUsersInRoleAsync("Accountant");
 
-                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                    //find DateTime of when password was created
+                    var lastpassdate = curr_user.PasswordDate;
+                    if(lastpassdate.AddDays(1) < DateTime.Now)
                     {
                         TempData[SD.Error] = "Your password will expire in three days.";
+                    }
+                    
+
+
+
+                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                    {                        
                         return RedirectToAction("Index", "Admin");
                     }
                     else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
-                    {
-                        TempData[SD.Error] = "Your password will expire in three days.";
+                    {                        
                         return RedirectToAction("Index", "Manager");
                     }
                     else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
                     {
-                        TempData[SD.Error] = "Your password will expire in three days.";
                         return RedirectToAction("Index", "Accountant");
                     }
                     else
@@ -130,13 +141,14 @@ namespace Swift_Tomes_Accounting.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Invalid Email or Password.");
+                    TempData[SD.Error] = "Attempts remaining: " + num;
                 }
             }
             return View(obj);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             //if the user roles are not already stored in the database, then they are added            
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -183,7 +195,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     Address = obj.Address,
                     PasswordDate = DateTime.Now,
                     ZipCode = obj.ZipCode,
-                    State = obj.State
+                    State = obj.State,
+                    City = obj.City
                 };
 
                 //creates user
@@ -240,22 +253,61 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResetPassword(Message obj)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(Message obj)
         {
-                var toEmail = obj.ToEmail;
-                var subject = "Password Reset Confirmation";
-                var body = "Please click the link to reset your password. https://localhost:44316/Account/ConfirmResetPassword";
-                var mailHelper = new MailHelper(_configuration);
-                mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
-                return RedirectToAction("Index", "Admin");
+            var user = await _userManager.FindByEmailAsync(obj.ToEmail);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            //sends them to 
+            var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+            //"<a href='https://localhost:44316/Account/Login'>Click to Add User </a>"
+
+            var toEmail = obj.ToEmail;
+            var subject = "Password Reset Confirmation";
+            var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here";
+            var mailHelper = new MailHelper(_configuration);
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            
+            TempData[SD.Success] = "Check email for password reset link.";
+            return RedirectToAction("Index", "Admin");
          
         }
+       
+
+        
         //Password Reset Confirmation Action
+        
         [HttpGet]
-        public IActionResult ConfirmResetPassword()
+        public IActionResult ConfirmResetPassword(string userId, string code = null)
         {
-            return View();
+            var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+
+
+            var userRole = _db.UserRoles.ToList();
+            var roles = _db.Roles.ToList();
+
+            //this will find if there are any roles assigned to the user
+            var role = userRole.FirstOrDefault(u => u.UserId == objFromDb.Id);
+            if (role != null)
+            {
+                objFromDb.RoleId = roles.FirstOrDefault(u => u.Id == role.RoleId).Id;
+            }
+            objFromDb.RoleList = _db.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id
+            });
+            PasswdReset newobj = new PasswdReset();
+            newobj.Email = objFromDb.Email;
+            return code == null ? View("Error") : View(newobj);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmResetPassword(PasswdReset obj)
@@ -263,8 +315,10 @@ namespace Swift_Tomes_Accounting.Controllers
             if (ModelState.IsValid)
             {
                 var curr_user = await _userManager.FindByNameAsync(obj.Email);
-
+                
                 bool passcheck = false;
+                
+
 
 
                 var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
@@ -284,17 +338,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result == true)
                 {
-                    ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                    ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
                 }
 
                 else if (passMatch == PasswordVerificationResult.Success)
                  {
-                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
                  }
                 
                 else if (passMatch2 == PasswordVerificationResult.Success)
                     {
-                        ViewBag.ErrorMessage = "You cannot use your last three passwords.";
+                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
                     }
                 
                 else
@@ -308,9 +362,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     await _userManager.UpdateAsync(curr_user);
 
                     await _userManager.RemovePasswordAsync(curr_user);
+                    await _userManager.ResetPasswordAsync(curr_user, obj.Code, obj.NewPass);
                     await _userManager.AddPasswordAsync(curr_user, obj.NewPass);
 
-
+                    TempData[SD.Success] = "Password was successfully reset.";
                     return RedirectToAction("Login", "Account");
                 }
             }

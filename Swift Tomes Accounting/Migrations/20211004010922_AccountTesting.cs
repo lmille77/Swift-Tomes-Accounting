@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class addAccountTable : Migration
+    public partial class AccountTesting : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,26 +11,25 @@ namespace Swift_Tomes_Accounting.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    AccoutNumber = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountNumber = table.Column<int>(type: "int", nullable: false),
+                    AccountName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormSide = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Initial = table.Column<int>(type: "int", nullable: false),
-                    Debit = table.Column<int>(type: "int", nullable: false),
-                    Credit = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Initial = table.Column<double>(type: "float", nullable: false),
+                    Debit = table.Column<double>(type: "float", nullable: false),
+                    Credit = table.Column<double>(type: "float", nullable: false),
+                    Balance = table.Column<double>(type: "float", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Order = table.Column<int>(type: "int", nullable: false),
                     Statement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.AccoutNumber);
+                    table.PrimaryKey("PK_Account", x => new { x.AccountNumber, x.AccountName });
                 });
 
             migrationBuilder.CreateTable(
@@ -61,6 +60,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     PasswordDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

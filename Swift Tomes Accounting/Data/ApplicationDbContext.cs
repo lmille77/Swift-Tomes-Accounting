@@ -16,7 +16,13 @@ namespace Swift_Tomes_Accounting.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
-        public DbSet<AccountDB> Account { get; set; }
 
+        public DbSet<AccountDB> Account { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountDB>().HasKey(a => new { a.AccountNumber, a.AccountName });
+            base.OnModelCreating(modelBuilder);
+        }
     }
+   
 }
