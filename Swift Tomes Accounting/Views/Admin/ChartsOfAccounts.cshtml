@@ -42,9 +42,9 @@
         <p>
             <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info">Add Account</a>
         </p>
-        <form asp-controller="Admin" asp-action="ChartsOfAccounts">
+        <form asp-controller="Account" asp-action="ChartsOfAccounts" method="get">
             <p>
-                Search: <input type="text" name="SearchString" />
+                <right><input type="text" name="SearchString" /></right>
                 <input type="submit" value="Filter" />
             </p>
         </form>
@@ -61,9 +61,6 @@
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.NormSide)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Category)
                     </th>
                     <th>
@@ -72,12 +69,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Initial)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Debit)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Credit)
-                    </th>
+                    
                     <th>
                         @Html.DisplayNameFor(model => model.Balance)
                     </th>
@@ -91,9 +83,6 @@
                         @Html.DisplayNameFor(model => model.Order)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Statement)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Comments)
                     </th>
                     <th></th>
@@ -104,7 +93,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AccountNumber)
+                            @Html.DisplayFor(modelItem =>item.AccountNumber)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.AccountName)
@@ -112,9 +101,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NormSide)
-                        </td>
+                        
                         <td>
                             @Html.DisplayFor(modelItem => item.Category)
                         </td>
@@ -124,12 +111,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Initial)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Debit)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Credit)
-                        </td>
+                        
                         <td>
                             @Html.DisplayFor(modelItem => item.Balance)
                         </td>
@@ -143,21 +125,18 @@
                             @Html.DisplayFor(modelItem => item.Order)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Statement)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Comments)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+                            
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+   
     <style>
         .sidebar-container {
             position: absolute;
