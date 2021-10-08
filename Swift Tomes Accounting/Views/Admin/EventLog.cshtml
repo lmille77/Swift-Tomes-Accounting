@@ -1,0 +1,43 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.EventModel
+@{
+    List<DateTime> eventTime = new List<DateTime>();
+    foreach (var item in Model.EventUser)
+    {
+        eventTime.Add(item.eventTime);
+    }
+    foreach (var item in Model.EventAccount)
+    {
+        eventTime.Add(item.eventTime);
+    }
+    //Add both list datetimes to this list then sort
+    eventTime.Sort((x, y) => DateTime.Compare(y, x));
+}
+
+
+@foreach (var time in eventTime)
+{
+    foreach (var user in Model.EventUser)
+    {
+        @if (time == user.eventTime)
+        {
+            <div>
+                @user.AfterLname
+                @user.AfterFname
+                @user.eventTime
+            </div>
+
+        }
+
+    }
+    foreach (var account in Model.EventAccount)
+    {
+        @if (time == account.eventTime)
+        {
+            <div>
+                @account.AfterAccountName
+                @account.eventTime
+            </div>
+        }
+
+    }
+}

@@ -13,7 +13,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [Required]
         public string AccountName { get; set; }
         [Key]
-        public int AccoutNumber { get; set; }
+        public int AccountNumber { get; set; }
         public string Description { get; set; }
         [Required]
         public char NormSide { get; set; }

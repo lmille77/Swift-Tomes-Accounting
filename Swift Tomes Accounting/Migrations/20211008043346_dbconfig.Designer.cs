@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211002193805_initial")]
-    partial class initial
+    [Migration("20211008043346_dbconfig")]
+    partial class dbconfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,14 +154,11 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
-                    b.Property<int>("AccoutNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("AccountName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Balance")
                         .HasColumnType("int");
@@ -204,7 +201,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("AccoutNumber");
+                    b.HasKey("AccountNumber", "AccountName");
 
                     b.ToTable("Account");
                 });
@@ -308,6 +305,162 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>
+                {
+                    b.Property<int>("AccoutNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AfterAccountName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AfterAccoutNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AfterBalance")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AfterCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AfterCredit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AfterDebit")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AfterDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AfterInitial")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AfterNormSide")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<int>("AfterOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AfterStatement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterSubCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AfterUserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BeforeAccountName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BeforeBalance")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BeforeCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BeforeCredit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BeforeDebit")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BeforeDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BeforeInitial")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BeforeNormSide")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<int>("BeforeOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BeforeStatement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeSubCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BeforeUserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("eventPerformedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("eventTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("eventType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("EventAccount");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventUser", b =>
+                {
+                    b.Property<string>("AfterAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterFname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterLname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterRole")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("AfterisActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("AfteruserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeFname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeLname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeRole")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("BeforeisActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BeforeuserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("eventPerformedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("eventTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("eventType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("EventUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

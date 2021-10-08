@@ -102,17 +102,50 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
-        //public IActionResult ExpiredPass()
-        //{
+        [HttpGet]
+        public IActionResult EventLog()
+        {
+            var userevents = _db.EventUser.ToList();
+            var accountevents = _db.EventAccount.ToList();
 
-        //  var exp_pass = _db.Users.FirstOrDefault(u => u.LastPass1 != null);
+            EventUser new_event = new EventUser
+            {
+                AfterFname = "Fred",
+                AfterLname = "Jones",
+                eventTime = DateTime.Now
+                
+
+            };
+            EventUser ted_event = new EventUser
+            {
+                AfterFname = "Teddy",
+                AfterLname = "Freeman",
+                eventTime = DateTime.Now.AddDays(-.5)
 
 
-        //    return View(exp_pass);
+            };
+            EventAccount newacc = new EventAccount
+            {
+                AfterAccountName = "TestAcc",
+                eventTime = DateTime.Now.AddDays(-2)
 
 
+            };
 
-        //}
+
+            accountevents.Add(newacc);
+            userevents.Add(new_event);
+            userevents.Add(ted_event);
+
+            EventModel EventModel = new EventModel()
+            {
+                EventUser = userevents,
+                EventAccount = accountevents
+                
+            };
+            
+            return View(EventModel);
+        }
 
 
     }
