@@ -21,7 +21,7 @@ namespace Swift_Tomes_Accounting.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
-    
+
         [HttpGet]
         public IActionResult CreateAccount()
         {
@@ -47,24 +47,24 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     ModelState.AddModelError("", "Account Name already in use.");
                     return View(account);
-                } 
-                
+                }
+
                 if (item.Order.Equals(account.Order))
                 {
                     ModelState.AddModelError("", "Liquidity Order already in use.");
                     return View(account);
                 }
-            } 
+            }
 
             if (account.Order <= 0)
             {
-                ModelState.AddModelError("","Liquidity must be a positive number.");
+                ModelState.AddModelError("", "Liquidity must be a positive number.");
                 return View(account);
             }
 
             if (account.Initial < 0)
             {
-                ModelState.AddModelError("","Initial Balance cannot be negative.");
+                ModelState.AddModelError("", "Initial Balance cannot be negative.");
                 return View(account);
             }
 
@@ -72,7 +72,7 @@ namespace Swift_Tomes_Accounting.Controllers
             var result = _db.Account.Add(account);
             await _db.SaveChangesAsync();
             return RedirectToAction("ChartofAccounts", "Admin");
-            
+
         }
         [HttpGet]
 
@@ -80,7 +80,7 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var sortList = _db.Account.ToList();
             return View(sortList);
-            
+
         }
 
         [HttpPost]
@@ -93,7 +93,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
-        public  IEnumerable<AccountDB> SearchResult (string search)
+        public IEnumerable<AccountDB> SearchResult(string search)
         {
             var list = _db.Account.ToList();
 
@@ -121,6 +121,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         resultList.Add(item);
                     }
+
                 }
 
                 return resultList;
@@ -134,12 +135,6 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult EditAccount()
         {
             return View();
-        }
-
-        [HttpPost]
-        public IActionResult EditAccount(AccountDB obj)
-        {
-            return RedirectToAction("EditAccount", "Money");
         }
     }
 }
