@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211009175650_addTalya")]
-    partial class addTalya
+    [Migration("20211009182920_Silly")]
+    partial class Silly
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
