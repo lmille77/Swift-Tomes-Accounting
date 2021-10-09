@@ -122,6 +122,6 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             return View();
         }
-        public 
+       
     }
 }
