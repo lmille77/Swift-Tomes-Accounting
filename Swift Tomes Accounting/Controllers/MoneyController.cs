@@ -72,9 +72,16 @@ namespace Swift_Tomes_Accounting.Controllers
             account.CreatedOn = DateTime.Now;
             var result = _db.Account.Add(account);
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("ChartofAccounts", "Admin");
             
         }
 
+
+        [HttpGet]
+        public IActionResult EditAccount()
+        {
+            return View();
+        }
+        public 
     }
 }
