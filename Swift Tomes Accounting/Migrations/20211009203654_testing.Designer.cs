@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211006014628_addNewDatabase")]
-    partial class addNewDatabase
+    [Migration("20211009203654_testing")]
+    partial class testing
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,11 +154,15 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
-                    b.Property<int>("AccountNumber")
-                        .HasColumnType("int");
+                    b.Property<double>("AccountNumber")
+                        .HasColumnType("float");
 
                     b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Balance")
                         .HasColumnType("float");
@@ -167,8 +171,14 @@ namespace Swift_Tomes_Accounting.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ChartOfAccounts")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Contra")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -187,7 +197,7 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<string>("NormSide")
                         .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -201,7 +211,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber", "AccountName");
+                    b.HasKey("AccountNumber");
 
                     b.ToTable("Account");
                 });

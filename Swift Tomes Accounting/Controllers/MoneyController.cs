@@ -43,7 +43,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     return View(account);
                 }
 
-                if (item.AccountName.Contains(account.AccountName))
+                if (item.AccountName.Equals(account.AccountName))
                 {
                     ModelState.AddModelError("", "Account Name already in use.");
                     return View(account);
@@ -69,14 +69,14 @@ namespace Swift_Tomes_Accounting.Controllers
             }
 
             account.CreatedOn = DateTime.Now;
-            var result = _db.Account.Add(account);
+            _db.Account.Add(account);
             await _db.SaveChangesAsync();
-            return RedirectToAction("ChartofAccounts", "Admin");
+            return RedirectToAction("ChartofAccounts", "Money");
             
         }
         [HttpGet]
 
-        public IActionResult ChartsOfAccounts()
+        public IActionResult ChartOfAccounts()
         {
             var sortList = _db.Account.ToList();
             return View(sortList);
@@ -85,7 +85,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         [HttpPost]
 
-        public IActionResult ChartsOfAccounts(string searchString)
+        public IActionResult ChartOfAccounts(string searchString)
         {
             var sortList = SearchResult(searchString);
             ViewBag.result = searchString;
@@ -112,6 +112,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 List<AccountDB> resultList = new List<AccountDB>();
                 foreach (var item in activeList)
                 {
+
                     if (item.AccountName.Contains(search))
                     {
                         resultList.Add(item);
@@ -121,6 +122,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         resultList.Add(item);
                     }
+
                 }
 
                 return resultList;
@@ -137,9 +139,41 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditAccount(AccountDB obj)
+        public async Task<IActionResult> EditAccount(AccountDB obj)
         {
-            return RedirectToAction("EditAccount", "Money");
+            var accountlist = _db.Account.ToList();
+
+            foreach (var item in accountlist)
+            {
+
+                if (item.AccountName.Equals(obj.AccountName))
+                {
+                    ModelState.AddModelError("", "Account Name already in use.");
+                    return View(obj);
+                }
+
+                if (item.Order.Equals(obj.Order))
+                {
+                    ModelState.AddModelError("", "Liquidity Order already in use.");
+                    return View(obj);
+                }
+
+            }
+
+            obj.AccountNumber = 101;
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == obj.AccountNumber);
+            objFromDb.AccountName = obj.AccountName;
+            objFromDb.Description = obj.Description;
+            objFromDb.NormSide = obj.NormSide;
+            objFromDb.Category = obj.Category;
+            objFromDb.SubCategory = obj.SubCategory;
+            objFromDb.Order = obj.Order;
+            objFromDb.Statement = obj.Statement;
+            objFromDb.Comments = obj.Comments;
+            
+            await _db.SaveChangesAsync();
+            return RedirectToAction("ChartofAccounts", "Money");
+
         }
     }
 }

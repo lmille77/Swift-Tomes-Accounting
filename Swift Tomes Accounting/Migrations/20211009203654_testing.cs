@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class AccountTesting : Migration
+    public partial class testing : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,10 +11,10 @@ namespace Swift_Tomes_Accounting.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    AccountNumber = table.Column<int>(type: "int", nullable: false),
-                    AccountName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AccountNumber = table.Column<double>(type: "float", nullable: false),
+                    AccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormSide = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    NormSide = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Initial = table.Column<double>(type: "float", nullable: false),
@@ -33,7 +33,6 @@ namespace Swift_Tomes_Accounting.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Account", x => x.AccountNumber);
-                    table.UniqueConstraint("AK_Account_AccountName", x => x.AccountName);
                 });
 
             migrationBuilder.CreateTable(
