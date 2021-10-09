@@ -34,31 +34,45 @@ namespace Swift_Tomes_Accounting.Controllers
         public async Task<IActionResult> CreateAccount(AccountDB account)
         {
             account.UserName = _userManager.GetUserAsync(User).Result.CustomUsername;
-            if (account.Order < 0)
+            var accountlist = _db.Account.ToList();
+            foreach (var item in accountlist)
             {
-                ViewBag.ErrorMessage = "Liquidity cannot be negative.";
+                if (item.AccountNumber.Equals(account.AccountNumber))
+                {
+                    ModelState.AddModelError("", "Account Number already in use.");
+                    return View(account);
+                }
+
+                if (item.AccountName.Contains(account.AccountName))
+                {
+                    ModelState.AddModelError("", "Account Name already in use.");
+                    return View(account);
+                } 
+                
+                if (item.Order.Equals(account.Order))
+                {
+                    ModelState.AddModelError("", "Liquidity Order already in use.");
+                    return View(account);
+                }
+            } 
+   
+
+            if (account.Order <= 0)
+            {
+                ModelState.AddModelError("","Liquidity must be a positive number.");
                 return View(account);
             }
 
             if (account.Initial < 0)
             {
-                ViewBag.ErrorMessage = "Initial Balance cannot be negative.";
+                ModelState.AddModelError("","Initial Balance cannot be negative.");
                 return View(account);
             }
 
-            if (User.IsInRole("Admin"))
-            {
-                account.CreatedOn = DateTime.Now;
-                var result = _db.Account.Add(account);
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index", "Admin");
-            }
-            
-            else
-            {
-                ViewBag.ErrorMessage = "User not allowed to create Accounts";
-                return View(account);
-            }
+            account.CreatedOn = DateTime.Now;
+            var result = _db.Account.Add(account);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index", "Admin");
             
         }
         [HttpGet]

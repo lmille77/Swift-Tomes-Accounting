@@ -156,7 +156,11 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AccountName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Balance")
                         .HasColumnType("float");
@@ -165,8 +169,14 @@ namespace Swift_Tomes_Accounting.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ChartOfAccounts")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Contra")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -199,7 +209,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber", "AccountName");
+                    b.HasKey("AccountNumber");
+
+                    b.HasAlternateKey("AccountName");
 
                     b.ToTable("Account");
                 });
