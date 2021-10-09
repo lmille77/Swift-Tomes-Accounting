@@ -114,16 +114,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         //}
         
-        [HttpGet]
-
-        public IActionResult ChartsOfAccounts()
-        {
-            var AccountsList = _db.Account.ToList();
-            
-            {
-               return View(AccountsList);
-            }
-        }
+       
 
 
 

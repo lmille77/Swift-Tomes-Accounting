@@ -61,6 +61,46 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             
         }
+        [HttpGet]
+
+        public IActionResult ChartsOfAccounts()
+        {
+            var sortList = _db.Account.ToList();
+            return View(sortList);
+            
+        }
+
+        [HttpPost]
+
+        public IActionResult ChartsOfAccounts(string searchString)
+        {
+            var sortList = SearchResult(searchString);
+            ViewBag.result = searchString;
+            return View(sortList);
+
+        }
+
+        public  IEnumerable<AccountDB> SearchResult (string search)
+        {
+            var list = _db.Account.ToList();
+            List<AccountDB> resultList = new List<AccountDB>();
+
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                foreach(var item in list)
+                {
+                    if (item.AccountName.Contains(search))
+                    {
+                        resultList.Add(item);
+                    }
+                }
+
+                return resultList;
+            }
+
+            return list;
+        }
 
     }
 }
