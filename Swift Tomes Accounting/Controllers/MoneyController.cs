@@ -55,7 +55,6 @@ namespace Swift_Tomes_Accounting.Controllers
                     return View(account);
                 }
             } 
-   
 
             if (account.Order <= 0)
             {
@@ -97,14 +96,28 @@ namespace Swift_Tomes_Accounting.Controllers
         public  IEnumerable<AccountDB> SearchResult (string search)
         {
             var list = _db.Account.ToList();
-            List<AccountDB> resultList = new List<AccountDB>();
 
+            List<AccountDB> activeList = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.ChartOfAccounts)
+                {
+                    activeList.Add(item);
+                }
+            }
 
             if (!String.IsNullOrEmpty(search))
             {
-                foreach(var item in list)
+                List<AccountDB> resultList = new List<AccountDB>();
+                foreach (var item in activeList)
                 {
                     if (item.AccountName.Contains(search))
+                    {
+                        resultList.Add(item);
+                    }
+
+                    else if (item.AccountNumber.ToString().Contains(search))
                     {
                         resultList.Add(item);
                     }
@@ -113,7 +126,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 return resultList;
             }
 
-            return list;
+            return activeList;
         }
 
 
@@ -122,6 +135,11 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             return View();
         }
-        public 
+
+        [HttpPost]
+        public IActionResult EditAccount(AccountDB obj)
+        {
+            return RedirectToAction("EditAccount", "Money");
+        }
     }
 }
