@@ -36,7 +36,11 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
-                <input asp-for="NormSide" class="form-control" placeholder="Normal Side" />
+                <select asp-for="NormSide" class="form-control">
+                    <option disabled>--Select a Normal Side--</option>
+                    <option>Left</option>
+                    <option>Right</option>    
+                </select>
                 <span asp-validation-for="NormSide" class="text-danger"></span>
             </div>
         </div>
@@ -44,7 +48,14 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
-                <input asp-for="Category" class="form-control" placeholder="Category" />
+                <select asp-for="Category" class="form-control">
+                    <option disabled>--Select an Account Type--</option>
+                    <option>Asset</option>
+                    <option>Expenses</option>
+                    <option>Liability</option>
+                    <option>Equity</option>
+                    <option>Revenue</option>
+                </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
         </div>
@@ -52,7 +63,12 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
-                <input asp-for="SubCategory" class="form-control" placeholder="Sub-Category" />
+                <select asp-for="SubCategory" class="form-control">
+                    <option disabled>--Select a Sub-Type--</option>
+                    <option>Permanent</option>
+                    <option>Long-Term</option>
+                    <option>Short-Term</option>
+                </select>
                 <span asp-validation-for="SubCategory" class="text-danger"></span>
             </div>
         </div>

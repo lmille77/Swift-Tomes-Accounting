@@ -18,7 +18,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string AccountName { get; set; }
         public string Description { get; set; }
         [Required]
-        public char NormSide { get; set; }
+        public string NormSide { get; set; }
         [Required]
         public string Category { get; set; }
         public string SubCategory { get; set; }
