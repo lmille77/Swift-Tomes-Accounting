@@ -20,7 +20,8 @@ namespace Swift_Tomes_Accounting.Data
         public DbSet<AccountDB> Account { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccountDB>().HasKey(a => new { a.AccountNumber, a.AccountName });
+            modelBuilder.Entity<AccountDB>().HasKey(a => new { a.AccountNumber });
+            modelBuilder.Entity<AccountDB>().HasAlternateKey(b => new { b.AccountName });
             base.OnModelCreating(modelBuilder);
         }
     }

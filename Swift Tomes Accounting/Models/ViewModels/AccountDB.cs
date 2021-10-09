@@ -32,11 +32,13 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public double Balance { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
-        
         public string UserName { get; set; }
         [Required]
         public int Order { get; set; }
         public string Statement { get; set; }
         public string Comments { get; set; }
+        public bool Active { get; set; }
+        public bool Contra { get; set; }
+        public bool ChartOfAccounts { get; set; }
     }
 }

@@ -22,14 +22,18 @@ namespace Swift_Tomes_Accounting.Migrations
                     Credit = table.Column<double>(type: "float", nullable: false),
                     Balance = table.Column<double>(type: "float", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Order = table.Column<int>(type: "int", nullable: false),
                     Statement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Contra = table.Column<bool>(type: "bit", nullable: false),
+                    ChartOfAccounts = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => new { x.AccountNumber, x.AccountName });
+                    table.PrimaryKey("PK_Account", x => x.AccountNumber);
+                    table.UniqueConstraint("AK_Account_AccountName", x => x.AccountName);
                 });
 
             migrationBuilder.CreateTable(
