@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class Silly : Migration
+    public partial class addmigrationSilly : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     AccountNumber = table.Column<int>(type: "int", nullable: false),
                     AccountName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormSide = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    NormSide = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Initial = table.Column<double>(type: "float", nullable: false),

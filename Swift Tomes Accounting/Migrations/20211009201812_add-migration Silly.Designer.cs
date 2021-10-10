@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211009182920_Silly")]
-    partial class Silly
+    [Migration("20211009201812_add-migration Silly")]
+    partial class addmigrationSilly
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -197,7 +197,7 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<string>("NormSide")
                         .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
