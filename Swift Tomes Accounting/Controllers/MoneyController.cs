@@ -43,7 +43,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     return View(account);
                 }
 
-                if (item.AccountName.Contains(account.AccountName))
+                if (item.AccountName.Equals(account.AccountName))
                 {
                     ModelState.AddModelError("", "Account Name already in use.");
                     return View(account);
@@ -69,14 +69,14 @@ namespace Swift_Tomes_Accounting.Controllers
             }
 
             account.CreatedOn = DateTime.Now;
-            var result = _db.Account.Add(account);
+            _db.Account.Add(account);
             await _db.SaveChangesAsync();
-            return RedirectToAction("ChartofAccounts", "Admin");
-
+            return RedirectToAction("ChartofAccounts", "Money");
+            
         }
         [HttpGet]
 
-        public IActionResult ChartsOfAccounts()
+        public IActionResult ChartOfAccounts()
         {
             var sortList = _db.Account.ToList();
             return View(sortList);
@@ -85,7 +85,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         [HttpPost]
 
-        public IActionResult ChartsOfAccounts(string searchString)
+        public IActionResult ChartOfAccounts(string searchString)
         {
             var sortList = SearchResult(searchString);
             ViewBag.result = searchString;
@@ -112,6 +112,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 List<AccountDB> resultList = new List<AccountDB>();
                 foreach (var item in activeList)
                 {
+
                     if (item.AccountName.Contains(search))
                     {
                         resultList.Add(item);
@@ -135,6 +136,12 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult EditAccount()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditAccount(AccountDB obj)
+        {
+            return RedirectToAction("EditAccount", "Money");
         }
     }
 }

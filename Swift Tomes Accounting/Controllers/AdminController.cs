@@ -101,22 +101,5 @@ namespace Swift_Tomes_Accounting.Controllers
             return RedirectToAction("Index", "Admin");
 
         }
-
-        //public IActionResult ExpiredPass()
-        //{
-
-        //  var exp_pass = _db.Users.FirstOrDefault(u => u.LastPass1 != null);
-
-
-        //    return View(exp_pass);
-
-
-
-        //}
-        
-       
-
-
-
     }
 }

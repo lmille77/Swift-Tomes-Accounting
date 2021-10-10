@@ -21,7 +21,6 @@ namespace Swift_Tomes_Accounting.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AccountDB>().HasKey(a => new { a.AccountNumber });
-            modelBuilder.Entity<AccountDB>().HasAlternateKey(b => new { b.AccountName });
             base.OnModelCreating(modelBuilder);
         }
     }

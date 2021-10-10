@@ -15,7 +15,7 @@
                 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
             </li>
             <li>
-                <a asp-controller="Admin" asp-action="Send" class="btn btn-info btn-outline-light">Send Message </a>
+                <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
             </li>
             <li>
                 <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
@@ -30,26 +30,26 @@
                 <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
             </li>
             <li>
-                <a asp-controller="Money" asp-action="ChartsOfAccounts" class="btn btn-dark btn-outline-info">Charts of Accounts</a>
+                <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
             </li>
         </ul>
     </div>
 
     <div class="container-fluid">
 
-        <center><h1>Charts Of Accounts</h1></center>
+        <center><h1>Chart Of Accounts</h1></center>
 
         <p>
             <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white">Add Account</a>
         </p>
-        <form asp-controller="Money" asp-action="ChartsOfAccounts" method="post">
+        <form asp-controller="Money" asp-action="ChartOfAccounts" method="post">
             <p>
                 <input type="text" name="SearchString" asp-items=ViewBag.result />
                 <input type="submit" value="Filter" />
 
             </p>
         </form>
-        <form asp-controller="Money" asp-action="ChartsOfAccounts" method="get">
+        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
             <p>
                 <input type="submit" value="Reset">
             </p>
@@ -138,7 +138,7 @@
                                         @Html.DisplayFor(modelItem => item.Comments)
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                                        @Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })
 
                                     </td>
                                 </tr>
