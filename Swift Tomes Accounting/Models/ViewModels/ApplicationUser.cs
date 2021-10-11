@@ -42,6 +42,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         [NotMapped]
         public IEnumerable<SelectListItem> RoleList { get; set; }
+        [NotMapped]
+        public ApplicationUser eventPerformedBy { get; set; }
 
 
     }

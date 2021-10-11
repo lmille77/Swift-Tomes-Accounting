@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211008043346_dbconfig")]
-    partial class dbconfig
+    [Migration("20211011205450_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -395,8 +395,8 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("BeforeUserID")
                         .HasColumnType("int");
 
-                    b.Property<string>("eventPerformedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("eventPerformedById")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("eventTime")
                         .HasColumnType("datetime2");
@@ -404,12 +404,17 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("eventType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasIndex("eventPerformedById");
+
                     b.ToTable("EventAccount");
                 });
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventUser", b =>
                 {
                     b.Property<string>("AfterAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterDOB")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AfterEmail")
@@ -433,6 +438,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("BeforeAddress")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BeforeDOB")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BeforeEmail")
                         .HasColumnType("nvarchar(max)");
 
@@ -451,14 +459,16 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("BeforeuserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("eventPerformedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("eventPerformedById")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("eventTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("eventType")
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("eventPerformedById");
 
                     b.ToTable("EventUser");
                 });
@@ -512,6 +522,24 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>
+                {
+                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser", "eventPerformedBy")
+                        .WithMany()
+                        .HasForeignKey("eventPerformedById");
+
+                    b.Navigation("eventPerformedBy");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventUser", b =>
+                {
+                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser", "eventPerformedBy")
+                        .WithMany()
+                        .HasForeignKey("eventPerformedById");
+
+                    b.Navigation("eventPerformedBy");
                 });
 #pragma warning restore 612, 618
         }

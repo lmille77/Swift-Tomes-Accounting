@@ -15,12 +15,14 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string BeforeAddress { get; set; }
         public string BeforeuserName { get; set; }
         public bool BeforeisActive { get; set; }
+        public string BeforeDOB { get; set; }
         public string BeforeRole { get; set; }
 
         public string AfterEmail { get; set; }
 
         public string AfterFname { get; set; }
         public string AfterLname { get; set; }
+        public string AfterDOB { get; set; }
         public string AfterAddress { get; set; }
         public string AfteruserName { get; set; }
         public bool AfterisActive { get; set; }
@@ -28,7 +30,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         public DateTime eventTime { get; set; }
         public string eventType { get; set; }
-        public string eventPerformedBy { get; set; }
+        public ApplicationUser eventPerformedBy { get; set; }
         [NotMapped]
         public EventModel eventmodel { get; set; }
     }

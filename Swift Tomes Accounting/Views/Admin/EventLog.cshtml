@@ -1,4 +1,41 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.EventModel
+
+<br />
+<h2 class="text-center" style="margin-left:50px">Event Log</h2>
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+        </li>
+        <li>
+            <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
+        </li>
+        <li>
+            <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-info btn-outline-light">Expired Passwords List</a>
+        </li>
+    </ul>
+</div>
+
+
+
 @{
     List<DateTime> eventTime = new List<DateTime>();
     foreach (var item in Model.EventUser)
@@ -13,31 +50,210 @@
     eventTime.Sort((x, y) => DateTime.Compare(y, x));
 }
 
+<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
+    <table class="table table-striped border">
+        <tr class="table-secondary">
 
-@foreach (var time in eventTime)
-{
-    foreach (var user in Model.EventUser)
-    {
-        @if (time == user.eventTime)
+            <th>
+                Event ID
+            </th>
+            <th>
+                Field
+            </th>
+            <th>
+                Before
+            </th>
+            <th>
+                After
+            </th>
+            <th>
+                Changed By
+            </th>
+            <th>
+                Date of Event
+            </th>
+        </tr>
+        @foreach (var time in eventTime)
         {
-            <div>
-                @user.AfterLname
-                @user.AfterFname
-                @user.eventTime
-            </div>
+            foreach (var user in Model.EventUser)
+            {
+                @if (time == user.eventTime)
+                {
+                    <tr>
+                        <td>
+                            Event ID
+                        </td>
+                        <td>
+                            First Name:<br />
+                            Last Name:<br />
+                            Username:<br />
+                            Date of Birth:<br />
+                            Address:<br />
+                            Role:<br />
+                        </td>
+                        <td>
+                            @user.BeforeFname
+                            @user.BeforeLname
+                            @user.BeforeuserName
+                            @user.BeforeDOB
+                            @user.BeforeRole
+                            @user.BeforeAddress
 
+                        </td>
+                        <td>
+                            @user.AfterFname
+                            @user.AfterLname
+                            @user.AfteruserName
+                            @user.AfterDOB
+                            @user.AfterRole
+                            @user.AfterAddress
+                        </td>
+                        <td>
+                            @user.eventPerformedBy
+                        </td>
+                        <td>
+                            @user.eventTime
+                        </td>
+
+                    </tr>
+
+                }
+            }
+            foreach (var account in Model.EventAccount)
+            {
+                @if (time == account.eventTime)
+                {
+                    <tr>
+                        <td>
+                            Event ID
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            @account.BeforeAccountName
+                            @account.BeforeBalance
+                            @account.BeforeCategory
+
+                        </td>
+                        <td>
+                           
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+
+                    </tr>
+                }
+
+            }
         }
 
-    }
-    foreach (var account in Model.EventAccount)
-    {
-        @if (time == account.eventTime)
-        {
-            <div>
-                @account.AfterAccountName
-                @account.eventTime
-            </div>
+    </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+    <style>
+        .sidebar-container {
+            position: absolute;
+            width: 250px;
+            height: 90%;
+            left: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #36454F;
+            color: #fff;
+            top: 57px;
+            border-style: solid;
         }
 
-    }
-}
+        .content-container {
+            padding-top: 20px;
+        }
+
+        .sidebar-logo {
+            padding: 10px 15px 10px 30px;
+            font-size: 20px;
+            background-color: #2574A9;
+        }
+
+        .sidebar-navigation {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            position: relative;
+        }
+
+            .sidebar-navigation li {
+                background-color: transparent;
+                position: relative;
+                display: inline-block;
+                width: 100%;
+                line-height: 20px;
+            }
+
+                .sidebar-navigation li a {
+                    padding: 10px 15px 10px 30px;
+                    display: block;
+                    color: #fff;
+                }
+
+                .sidebar-navigation li .fa {
+                    margin-right: 10px;
+                }
+
+                .sidebar-navigation li a:active,
+                .sidebar-navigation li a:hover,
+                .sidebar-navigation li a:focus {
+                    text-decoration: none;
+                    outline: none;
+                }
+
+                .sidebar-navigation li::before {
+                    background-color: #2574A9;
+                    position: absolute;
+                    content: '';
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    -webkit-transition: width 0.2s ease-in;
+                    transition: width 0.2s ease-in;
+                    width: 3px;
+                    z-index: -1;
+                }
+
+                .sidebar-navigation li:hover::before {
+                    width: 100%;
+                }
+
+            .sidebar-navigation .header {
+                font-size: 12px;
+                text-transform: uppercase;
+                background-color: #151515;
+                padding: 10px 15px 10px 30px;
+            }
+
+                .sidebar-navigation .header::before {
+                    background-color: transparent;
+                }
+
+        .content-container {
+            padding-left: 220px;
+        }
+    </style>
