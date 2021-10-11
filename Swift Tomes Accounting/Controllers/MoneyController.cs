@@ -161,28 +161,28 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
                 var accountlist = _db.Account.ToList();
-
-               
-
-                //foreach (var item in accountlist)
-                //{
-
-                //    if (item.AccountName.Equals(obj.AccountName))
-                //    {
-                //        ModelState.AddModelError("", "Account Name already in use.");
-                //        return View(obj);
-                //    }
-
-                //    if (item.Order.Equals(obj.Order))
-                //    {
-                //        ModelState.AddModelError("", "Liquidity Order already in use.");
-                //        return View(obj);
-                //    }
-
-                //}
-
-
                 var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == obj.AccountNumber);
+
+
+                foreach (var item in accountlist)
+                {
+
+                    if ((item.AccountName.Equals(obj.AccountName)) && (!item.AccountName.Equals(objFromDb.AccountName)))
+                    {
+                        ModelState.AddModelError("", "Account Name already in use.");
+                        return View(obj);
+                    }
+
+                    if ((item.Order.Equals(obj.Order)) && (!item.Order.Equals(objFromDb.Order)))
+                    {
+                        ModelState.AddModelError("", "Liquidity Order already in use.");
+                        return View(obj);
+                    }
+
+                }
+
+
+
                 objFromDb.AccountNumber = obj.AccountNumber;
                 objFromDb.AccountName = obj.AccountName;
                 objFromDb.Description = obj.Description;
