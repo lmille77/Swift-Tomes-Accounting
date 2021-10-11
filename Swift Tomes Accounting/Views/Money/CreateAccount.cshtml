@@ -39,7 +39,7 @@
                 <select asp-for="NormSide" class="form-control">
                     <option disabled>--Select a Normal Side--</option>
                     <option>Left</option>
-                    <option>Right</option>    
+                    <option>Right</option>
                 </select>
                 <span asp-validation-for="NormSide" class="text-danger"></span>
             </div>
@@ -70,6 +70,20 @@
                     <option>Short-Term</option>
                 </select>
                 <span asp-validation-for="SubCategory" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <label>Active Account: </label>
+                @Html.CheckBoxFor(m => m.Active)
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <label>Contra Account: </label>
+                @Html.CheckBoxFor(m => m.Contra)
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <label>Chart of Accounts: </label>
+                @Html.CheckBoxFor(m => m.ChartOfAccounts)
             </div>
         </div>
         <br />

@@ -72,6 +72,14 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
+                <label>Chart of Accounts: </label>
+                @Html.CheckBoxFor(m => m.ChartOfAccounts)
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
                 <input asp-for="Order" class="form-control" placeholder="Liquidity Order" />
                 <span asp-validation-for="Order" class="text-danger"></span>
             </div>
@@ -97,7 +105,7 @@
         <div class="form-group row py-2">
             <div class="col-8 offset-4 row">
                 <div class="col">
-                    @if (Model != null )
+                    @if (Model != null)
                     {
                         //update
                         <input type="submit" class="btn btn-info w-100" value="Update" />
