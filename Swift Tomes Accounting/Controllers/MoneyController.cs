@@ -135,6 +135,30 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             return View();
         }
-        public 
+
+        [HttpPost]
+        public IActionResult EditAccount(AccountDB obj)
+        {
+            return RedirectToAction("EditAccount", "Money");
+        }
+
+        [HttpGet]
+
+        public IEnumerable<AccountDB> AccountLedger()
+        {
+            var Ledger = _db.Account.ToList();
+
+            List<AccountDB> activeList = new List<AccountDB>();
+
+            foreach (var item in Ledger)
+            {
+                if (item.Equals(item.AccountNumber))
+                {
+                    activeList.Add(item);
+                }
+            }
+                return activeList;
+   
+        }
     }
 }
