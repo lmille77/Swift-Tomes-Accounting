@@ -107,7 +107,7 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "ChartOfAccounts", new { id = item.AccountNumber }, null)
+                                        @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.AccountName)

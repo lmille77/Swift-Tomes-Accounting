@@ -1,48 +1,15 @@
-﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.AccountDB>
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
 
 @{
     ViewData["Title"] = "AccountLedger";
 }
 
-<h1>Model.AccountNumber</h1>
+<div class="container-fluid">
+    <center><h1>@Model.AccountName</h1></center>
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountNumber)
-            </th>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Debit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Credit)
-            </th>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Balance)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.CreatedOn)
@@ -53,16 +20,13 @@
                 <th>
                     @Html.DisplayNameFor(model => model.AccountNumber)
                 </th>
-            </tr>
-            <tr>
+
                 <th>
                     @Html.DisplayNameFor(model => model.Debit)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Credit)
                 </th>
-            </tr>
-            <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Balance)
                 </th>
@@ -73,9 +37,42 @@
                     @Html.DisplayNameFor(model => model.Comments)
                 </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    @Html.DisplayFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.AccountNumber)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Debit)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Credit)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Balance)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Comments)
+                </th>
+            </tr>
+
+        </tbody>
+    </table>
+    
+</div>
+<div class="col">
+    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Back</a>
+</div>
 <div class="sidebar-container border-dark">
     <div>
         <br />

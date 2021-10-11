@@ -236,5 +236,44 @@ namespace Swift_Tomes_Accounting.Controllers
             return RedirectToAction("ChartofAccounts", "Money");
         }
 
+        [HttpGet]
+
+        public IActionResult AccountLedger(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(objFromDb);
+
+        }
+
+        
+
+        [HttpPost]
+        public IActionResult AccountLedger(int id)
+        {
+            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+
+
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+
+
+            if (objFromdb.Active == true)
+            {
+                _db.SaveChanges();
+                return RedirectToAction("ChartofAccounts", "Money");
+            }
+            return View(objFromdb);
+        }
+        
     }
 }
