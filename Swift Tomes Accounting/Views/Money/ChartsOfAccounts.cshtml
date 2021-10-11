@@ -15,7 +15,7 @@
                 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
             </li>
             <li>
-                <a asp-controller="Admin" asp-action="Send" class="btn btn-info btn-outline-light">Send Message </a>
+                <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
             </li>
             <li>
                 <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
@@ -30,7 +30,7 @@
                 <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
             </li>
             <li>
-                <a asp-controller="Money" asp-action="ChartsOfAccounts" class="btn btn-dark btn-outline-info">Charts of Accounts</a>
+                <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
             </li>
         </ul>
     </div>
@@ -107,7 +107,7 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AccountNumber)
+                                        @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.AccountName)
@@ -148,7 +148,37 @@
 
                 </table>
     </div>
-   
+    <div class="sidebar-container border-dark">
+        <div>
+            <br />
+            <div class="text-center border-info">Quick Actions</div>
+            <br />
+        </div>
+
+        <ul class="sidebar-navigation">
+            <li>
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+            </li>
+            <li>
+                <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+            </li>
+            <li>
+                <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+            </li>
+            <li>
+                <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
+            </li>
+            <li>
+                <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
+            </li>
+            <li>
+                <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
+            </li>
+        </ul>
+    </div>
     <style>
         .sidebar-container {
             position: absolute;

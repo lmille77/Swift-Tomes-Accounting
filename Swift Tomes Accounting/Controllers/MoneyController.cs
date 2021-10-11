@@ -141,24 +141,21 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             return RedirectToAction("EditAccount", "Money");
         }
-
         [HttpGet]
 
-        public IEnumerable<AccountDB> AccountLedger()
+        public IEnumerable<AccountDB> AccountLedger(int? id)
         {
-            var Ledger = _db.Account.ToList();
-
-            List<AccountDB> activeList = new List<AccountDB>();
-
-            foreach (var item in Ledger)
+            if (id == null)
             {
-                if (item.Equals(item.AccountNumber))
-                {
-                    activeList.Add(item);
-                }
+                return (IEnumerable<AccountDB>)NotFound();
             }
-                return activeList;
-   
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            if (objFromDb == null)
+            {
+                return (IEnumerable<AccountDB>)NotFound();
+            }
+            return objFromDb;
+
         }
     }
 }
