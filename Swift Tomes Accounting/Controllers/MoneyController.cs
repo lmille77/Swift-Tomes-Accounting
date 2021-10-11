@@ -192,6 +192,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 objFromDb.Order = obj.Order;
                 objFromDb.Statement = obj.Statement;
                 objFromDb.Comments = obj.Comments;
+                objFromDb.Active = true;
                
                 _db.SaveChanges();
                 TempData[SD.Success] = "Account has been edited successfully.";
@@ -203,5 +204,37 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(obj);
 
         }
+
+
+
+        [HttpPost]
+        public IActionResult Activate(double id)
+        {
+            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+           
+            
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+
+
+            if(objFromdb.Active == true)
+            {
+                objFromdb.Active = false;
+                TempData[SD.Success] = "Account deactivated successfully.";
+            }
+
+            else
+            {
+                objFromdb.Active = true;
+                TempData[SD.Success] = "Account activated successfully.";
+            }
+            
+           
+            _db.SaveChanges();
+            return RedirectToAction("ChartofAccounts", "Money");
+        }
+
     }
 }
