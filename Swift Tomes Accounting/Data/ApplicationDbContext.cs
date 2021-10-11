@@ -18,15 +18,6 @@ namespace Swift_Tomes_Accounting.Data
         {
             modelBuilder.Entity<AccountDB>().HasKey(a => new { a.AccountNumber, a.AccountName });
             base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.Entity<EventAccount>(builder => {
-                builder.HasNoKey();
-                builder.ToTable("EventAccount");
-
-            });
-            
-
-
         }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<AccountDB> Account { get; set; }

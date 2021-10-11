@@ -63,6 +63,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -81,6 +82,37 @@ namespace Swift_Tomes_Accounting.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventUser",
+                columns: table => new
+                {
+                    eventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BeforeEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeuserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeisActive = table.Column<bool>(type: "bit", nullable: false),
+                    BeforeDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfteruserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterisActive = table.Column<bool>(type: "bit", nullable: false),
+                    AfterRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    eventTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    eventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    eventPerformedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventUser", x => x.eventID);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,6 +225,8 @@ namespace Swift_Tomes_Accounting.Migrations
                 name: "EventAccount",
                 columns: table => new
                 {
+                    eventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BeforeAccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeAccountNumber = table.Column<double>(type: "float", nullable: false),
                     BeforeDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -231,45 +265,9 @@ namespace Swift_Tomes_Accounting.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_EventAccount", x => x.eventID);
                     table.ForeignKey(
                         name: "FK_EventAccount_AspNetUsers_eventPerformedById",
-                        column: x => x.eventPerformedById,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EventUser",
-                columns: table => new
-                {
-                    eventID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BeforeEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeforeFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeforeLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeforeAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeforeuserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeforeisActive = table.Column<bool>(type: "bit", nullable: false),
-                    BeforeDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeforeRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfteruserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterisActive = table.Column<bool>(type: "bit", nullable: false),
-                    AfterRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    eventTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    eventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    eventPerformedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventUser", x => x.eventID);
-                    table.ForeignKey(
-                        name: "FK_EventUser_AspNetUsers_eventPerformedById",
                         column: x => x.eventPerformedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -318,11 +316,6 @@ namespace Swift_Tomes_Accounting.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_EventAccount_eventPerformedById",
                 table: "EventAccount",
-                column: "eventPerformedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EventUser_eventPerformedById",
-                table: "EventUser",
                 column: "eventPerformedById");
         }
 

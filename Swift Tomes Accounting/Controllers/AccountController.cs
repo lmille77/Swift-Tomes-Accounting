@@ -58,7 +58,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     FirstName = "Default",
                     LastName = "Admin",
                     Email = "miller4277@gmail.com",
-                    isApproved = true
+                    isApproved = true,
+                    Role = "Admin"
                 };
                 var result = await _userManager.CreateAsync(user, "Admin123!");
                 await _userManager.AddToRoleAsync(user, "Admin");
@@ -198,9 +199,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     PasswordDate = DateTime.Now,
                     ZipCode = obj.ZipCode,
                     State = obj.State,
-                    City = obj.City
+                    City = obj.City,
+                    Role = "Unapproved"
                 };
-                
+
                 EventUser user_event = new EventUser
                 {
                     BeforeFname = "none",
@@ -213,10 +215,11 @@ namespace Swift_Tomes_Accounting.Controllers
                     AfterLname = obj.LastName,
                     AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
                     AfterDOB = obj.DOB,
+                    AfterRole = "Unapproved",
                     AfterAddress = obj.Address + " " + obj.City + ", " + obj.State + " " + obj.ZipCode,
                     eventTime = DateTime.Now,
                     eventType = "Requested Access",
-                    eventPerformedBy = user,
+                    eventPerformedBy = obj.FirstName + " " + obj.LastName,
                 };
                 _db.EventUser.Add(user_event);
                 

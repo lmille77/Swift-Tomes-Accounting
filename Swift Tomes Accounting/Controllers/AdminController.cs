@@ -108,34 +108,7 @@ namespace Swift_Tomes_Accounting.Controllers
             var userevents = _db.EventUser.ToList();
             var accountevents = _db.EventAccount.ToList();
 
-            EventUser new_event = new EventUser
-            {
-                AfterFname = "Fred",
-                AfterLname = "Jones",
-                eventTime = DateTime.Now
-                
-
-            };
-            EventUser ted_event = new EventUser
-            {
-                AfterFname = "Teddy",
-                AfterLname = "Freeman",
-                eventTime = DateTime.Now.AddDays(-.5)
-
-
-            };
-            EventAccount newacc = new EventAccount
-            {
-                AfterAccountName = "TestAcc",
-                eventTime = DateTime.Now.AddDays(-2)
-
-
-            };
-
-
-            accountevents.Add(newacc);
-            userevents.Add(new_event);
-            userevents.Add(ted_event);
+            
 
             EventModel EventModel = new EventModel()
             {

@@ -32,17 +32,13 @@ namespace Swift_Tomes_Accounting.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var all_users = _db.ApplicationUser.ToList();
-            var userRole = _db.UserRoles.ToList();
-            var roles = _db.Roles.ToList();
+            var all_users = _db.ApplicationUser.ToList();            
 
             List<ApplicationUser> unapproved_users = new List<ApplicationUser>();
             foreach(var user in all_users)
             {
                 if(user.isApproved == false)
                 {
-                    var role = userRole.FirstOrDefault(u => u.UserId == user.Id);
-                    user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
                     unapproved_users.Add(user);
                 }
             }
@@ -134,6 +130,26 @@ namespace Swift_Tomes_Accounting.Controllers
                     await _userManager.RemoveFromRoleAsync(objFromDb, previousRoleName);
 
                 }
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromDb.FirstName,
+                    BeforeLname = objFromDb.LastName,
+                    BeforeuserName = objFromDb.CustomUsername,
+                    BeforeDOB = objFromDb.DOB,
+                    BeforeRole = objFromDb.Role,
+                    BeforeAddress = objFromDb.Address + " " + objFromDb.City + ", " + objFromDb.State + " " + objFromDb.ZipCode,
+                    AfterFname = user.FirstName,
+                    AfterLname = user.LastName,
+                    AfteruserName = objFromDb.CustomUsername,
+                    AfterDOB = user.DOB,
+                    AfterRole = user.RoleId,
+                    AfterAddress = user.Address + " " + user.City + ", " + user.State + " " + user.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Assigned Role",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
+
                 objFromDb.FirstName = user.FirstName;
                 objFromDb.LastName = user.LastName;
                 objFromDb.DOB = user.DOB;
@@ -141,8 +157,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 objFromDb.ZipCode = user.ZipCode;
                 objFromDb.State = user.State;
                 objFromDb.City = user.City;
+                objFromDb.Role = user.RoleId;
+
                 //add new role
                 await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
+
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));

@@ -32,7 +32,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         public DateTime eventTime { get; set; }
         public string eventType { get; set; }
-        public ApplicationUser eventPerformedBy { get; set; }
+        public string eventPerformedBy { get; set; }
         [NotMapped]
         public EventModel eventmodel { get; set; }
     }

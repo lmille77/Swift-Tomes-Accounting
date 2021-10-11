@@ -43,7 +43,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         [DataType(DataType.Date)]
         public string DOB { get; set; }
-        public ApplicationUser eventPerformedBy { get; set; }
+        public string eventPerformedBy { get; set; }
 
     }
 }

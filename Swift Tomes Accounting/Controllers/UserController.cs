@@ -108,7 +108,24 @@ namespace NewSwift.Controllers
 
                 //add new role
                 await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
-
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromDb.FirstName,
+                    BeforeLname = objFromDb.LastName,
+                    BeforeuserName = objFromDb.CustomUsername,
+                    BeforeDOB = objFromDb.DOB,
+                    BeforeRole = objFromDb.Role,
+                    BeforeAddress = objFromDb.Address + " " + objFromDb.City + ", " + objFromDb.State + " " + objFromDb.ZipCode,
+                    AfterFname = user.FirstName,
+                    AfterLname = user.LastName,
+                    AfteruserName = objFromDb.CustomUsername,
+                    AfterDOB = user.DOB,
+                    AfterRole = user.RoleId,
+                    AfterAddress = user.Address + " " + user.City + ", " + user.State + " " + user.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Edit Account",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+            };
                 objFromDb.FirstName = user.FirstName;
                 objFromDb.LastName = user.LastName;
                 objFromDb.DOB = user.DOB;
@@ -116,6 +133,9 @@ namespace NewSwift.Controllers
                 objFromDb.ZipCode = user.ZipCode;
                 objFromDb.State = user.State;
                 objFromDb.City = user.City;
+                
+                
+                _db.EventUser.Add(user_event);
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));

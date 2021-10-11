@@ -9,6 +9,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 {
     public class EventAccount
     {
+        [Key]
+        public int eventID { get; set; }
         public string BeforeAccountName { get; set; }
 
         public double BeforeAccountNumber { get; set; }
