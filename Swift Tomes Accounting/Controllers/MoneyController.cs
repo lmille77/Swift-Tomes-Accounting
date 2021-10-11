@@ -99,7 +99,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             foreach (var item in list)
             {
-                if (item.ChartOfAccounts)
+                if ((item.ChartOfAccounts) && (item.Active))
                 {
                     activeList.Add(item);
                 }
