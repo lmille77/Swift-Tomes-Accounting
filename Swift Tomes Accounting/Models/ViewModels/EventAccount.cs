@@ -11,7 +11,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
         public string BeforeAccountName { get; set; }
 
-        public int AccoutNumber { get; set; }
+        public double BeforeAccountNumber { get; set; }
         public string BeforeDescription { get; set; }
 
         public char BeforeNormSide { get; set; }
@@ -33,7 +33,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string BeforeComments { get; set; }
         public string AfterAccountName { get; set; }
 
-        public int AfterAccoutNumber { get; set; }
+        public int AfterAccountNumber { get; set; }
         public string AfterDescription { get; set; }
 
         public char AfterNormSide { get; set; }
@@ -53,6 +53,10 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public int AfterOrder { get; set; }
         public string AfterStatement { get; set; }
         public string AfterComments { get; set; }
+        public bool BeforeisActive { get; set; }
+        public bool BeforeisContra { get; set; }
+        public bool AfterisActive { get; set; }
+        public bool AfterisContra { get; set; }
 
         public DateTime eventTime { get; set; }
         public string eventType { get; set; }

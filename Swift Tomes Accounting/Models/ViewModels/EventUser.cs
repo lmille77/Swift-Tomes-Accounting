@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,8 +9,9 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 {
     public class EventUser
     {
+        [Key]
+        public int eventID { get; set; }
         public string BeforeEmail { get; set; }
-
         public string BeforeFname { get; set; }
         public string BeforeLname { get; set; }
         public string BeforeAddress { get; set; }

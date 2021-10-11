@@ -194,7 +194,7 @@ namespace Swift_Tomes_Accounting.Migrations
                 columns: table => new
                 {
                     BeforeAccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccoutNumber = table.Column<int>(type: "int", nullable: false),
+                    BeforeAccountNumber = table.Column<double>(type: "float", nullable: false),
                     BeforeDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeNormSide = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     BeforeCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -208,7 +208,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     BeforeStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeComments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfterAccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterAccoutNumber = table.Column<int>(type: "int", nullable: false),
+                    AfterAccountNumber = table.Column<int>(type: "int", nullable: false),
                     AfterDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfterNormSide = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     AfterCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -221,6 +221,10 @@ namespace Swift_Tomes_Accounting.Migrations
                     AfterOrder = table.Column<int>(type: "int", nullable: false),
                     AfterStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfterComments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeisActive = table.Column<bool>(type: "bit", nullable: false),
+                    BeforeisContra = table.Column<bool>(type: "bit", nullable: false),
+                    AfterisActive = table.Column<bool>(type: "bit", nullable: false),
+                    AfterisContra = table.Column<bool>(type: "bit", nullable: false),
                     eventTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     eventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     eventPerformedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
@@ -239,6 +243,8 @@ namespace Swift_Tomes_Accounting.Migrations
                 name: "EventUser",
                 columns: table => new
                 {
+                    eventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BeforeEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -261,6 +267,7 @@ namespace Swift_Tomes_Accounting.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_EventUser", x => x.eventID);
                     table.ForeignKey(
                         name: "FK_EventUser_AspNetUsers_eventPerformedById",
                         column: x => x.eventPerformedById,

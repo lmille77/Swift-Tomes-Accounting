@@ -29,7 +29,7 @@
             <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
         </li>
         <li>
-            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-info btn-outline-light">Expired Passwords List</a>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-info btn-outline-light">Event Log</a>
         </li>
     </ul>
 </div>
@@ -58,6 +58,9 @@
                 Event ID
             </th>
             <th>
+                Event Type
+            </th>
+            <th>
                 Field
             </th>
             <th>
@@ -84,6 +87,9 @@
                             Event ID
                         </td>
                         <td>
+                            Event Type
+                        </td>
+                        <td>
                             First Name:<br />
                             Last Name:<br />
                             Username:<br />
@@ -92,21 +98,21 @@
                             Role:<br />
                         </td>
                         <td>
-                            @user.BeforeFname
-                            @user.BeforeLname
-                            @user.BeforeuserName
-                            @user.BeforeDOB
-                            @user.BeforeRole
-                            @user.BeforeAddress
+                            @user.BeforeFname<br />
+                            @user.BeforeLname<br />
+                            @user.BeforeuserName<br />
+                            @user.BeforeDOB<br />
+                            @user.BeforeRole<br />
+                            @user.BeforeAddress<br />
 
                         </td>
                         <td>
-                            @user.AfterFname
-                            @user.AfterLname
-                            @user.AfteruserName
-                            @user.AfterDOB
-                            @user.AfterRole
-                            @user.AfterAddress
+                            @user.AfterFname<br />
+                            @user.AfterLname<br />
+                            @user.AfteruserName<br />
+                            @user.AfterDOB<br />
+                            @user.AfterRole<br />
+                            @user.AfterAddress<br />
                         </td>
                         <td>
                             @user.eventPerformedBy
@@ -128,16 +134,40 @@
                             Event ID
                         </td>
                         <td>
-                            
+                            Event Type
                         </td>
                         <td>
-                            @account.BeforeAccountName
-                            @account.BeforeBalance
-                            @account.BeforeCategory
-
+                            Account Number:<br />
+                            Account Name:<br />
+                            Description:<br />
+                            Category:<br />
+                            Subcategory:<br />
+                            Balance:<br />
+                            Comments:<br />
+                            Is Active:<br />
+                            Is Contra:<br />
                         </td>
                         <td>
-                           
+                            @account.BeforeAccountNumber<br />
+                            @account.BeforeAccountName<br />
+                            @account.BeforeDescription<br />
+                            @account.BeforeCategory<br />
+                            @account.BeforeSubCategory<br />
+                            @account.BeforeBalance<br />
+                            @account.BeforeComments<br />
+                            @account.BeforeisActive<br />
+                            @account.BeforeisContra<br />
+                        </td>
+                        <td>
+                            @account.AfterAccountNumber<br />
+                            @account.AfterAccountName<br />
+                            @account.AfterDescription<br />
+                            @account.AfterCategory<br />
+                            @account.AfterSubCategory<br />
+                            @account.AfterBalance<br />
+                            @account.AfterComments<br />
+                            @account.AfterisActive<br />
+                            @account.AfterisContra<br />
                         </td>
                         <td>
                             

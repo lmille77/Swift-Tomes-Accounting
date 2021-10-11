@@ -18,11 +18,7 @@ namespace Swift_Tomes_Accounting.Data
         {
             modelBuilder.Entity<AccountDB>().HasKey(a => new { a.AccountNumber, a.AccountName });
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<EventUser>(builder => {
-                builder.HasNoKey();
-                builder.ToTable("EventUser");
-
-            });
+            
             modelBuilder.Entity<EventAccount>(builder => {
                 builder.HasNoKey();
                 builder.ToTable("EventAccount");

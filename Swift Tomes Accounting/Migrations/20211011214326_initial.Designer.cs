@@ -10,7 +10,7 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011205450_initial")]
+    [Migration("20211011214326_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -309,13 +309,10 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>
                 {
-                    b.Property<int>("AccoutNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("AfterAccountName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AfterAccoutNumber")
+                    b.Property<int>("AfterAccountNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("AfterBalance")
@@ -355,8 +352,17 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("AfterUserID")
                         .HasColumnType("int");
 
+                    b.Property<bool>("AfterisActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AfterisContra")
+                        .HasColumnType("bit");
+
                     b.Property<string>("BeforeAccountName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("BeforeAccountNumber")
+                        .HasColumnType("float");
 
                     b.Property<int>("BeforeBalance")
                         .HasColumnType("int");
@@ -395,6 +401,12 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("BeforeUserID")
                         .HasColumnType("int");
 
+                    b.Property<bool>("BeforeisActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("BeforeisContra")
+                        .HasColumnType("bit");
+
                     b.Property<string>("eventPerformedById")
                         .HasColumnType("nvarchar(450)");
 
@@ -411,6 +423,11 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventUser", b =>
                 {
+                    b.Property<int>("eventID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("AfterAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -467,6 +484,8 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<string>("eventType")
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("eventID");
 
                     b.HasIndex("eventPerformedById");
 
