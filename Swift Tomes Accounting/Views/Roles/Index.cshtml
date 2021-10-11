@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
 <br />
-<h2 class="text-center">Roles List</h2>
-<hr />
+<h2 class="text-center" style="margin-left:50px">Roles List</h2>
+
 <br />
 <div>
-    <div class="col-6 text-lg-right">
+    <div class="text-center" style="margin-left:50px">
         <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary"> Create New Role</a>
     </div>
 </div>
@@ -44,7 +44,7 @@
 </div>
 
 
-<div class="p-4 border rounded">
+<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
     @if (Model.Any())
     {
         <table class="table table-striped border">
