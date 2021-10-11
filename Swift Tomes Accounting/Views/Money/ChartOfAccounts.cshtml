@@ -138,7 +138,8 @@
                                         @Html.DisplayFor(modelItem => item.Comments)
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })
+                                        <a asp-action="EditAccount" asp-route-id="@item.AccountNumber">Edit</a> 
+                                        @*@Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })*@
 
                                     </td>
                                 </tr>

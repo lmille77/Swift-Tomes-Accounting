@@ -9,9 +9,10 @@
     <br />
     <h4 class="text-center">Add an Account</h4>
     <br />
-    <form method="post" asp-action="EditAccount" asp-controller="Money">
-        <div asp-validation-summary="All" class="text-danger"></div>
+    <form asp-action="EditAccount">
 
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="AccountNumber" />
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-xs-2">
@@ -84,7 +85,7 @@
             </div>
         </div>
         <br />
-         
+
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
@@ -93,12 +94,30 @@
             </div>
         </div>
         <br />
-
-        <div class="form-group">
-            <div class=" col-md-10 offset-md-2">
-                <input type="submit" value="Edit Account" class=" btn btn-outline-primary" />
+        <div class="form-group row py-2">
+            <div class="col-8 offset-4 row">
+                <div class="col">
+                    @if (Model != null )
+                    {
+                        //update
+                        <input type="submit" class="btn btn-info w-100" value="Update" />
+                    }
+                    else
+                    {
+                        //create
+                        <input type="submit" class="btn btn-primary w-100" value="Create" />
+                    }
+                </div>
+                <div class="col">
+                    <a asp-action="ChartOfAccounts" class="btn btn-success w-100">Back</a>
+                </div>
             </div>
         </div>
+        @*<div class="form-group">
+            <div class=" col-md-10 offset-md-2">
+                <input type="submit" value="Save" class=" btn btn-outline-primary" />
+            </div>
+        </div>*@
 
     </form>
 </div>

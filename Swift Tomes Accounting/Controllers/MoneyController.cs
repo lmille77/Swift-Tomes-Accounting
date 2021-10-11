@@ -75,7 +75,6 @@ namespace Swift_Tomes_Accounting.Controllers
             
         }
         [HttpGet]
-
         public IActionResult ChartOfAccounts()
         {
             var sortList = _db.Account.ToList();
@@ -84,7 +83,6 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-
         public IActionResult ChartOfAccounts(string searchString)
         {
             var sortList = SearchResult(searchString);
@@ -133,46 +131,76 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
         [HttpGet]
-        public IActionResult EditAccount()
+        public IActionResult EditAccount(double? id)
         {
-            return View();
+
+             if (id == null)
+            {
+                return NotFound();
+            }
+
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+
+            if(objFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(objFromDb);
         }
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> EditAccount(AccountDB obj)
         {
-            var accountlist = _db.Account.ToList();
 
-            foreach (var item in accountlist)
+            if (ModelState.IsValid)
             {
 
-                if (item.AccountName.Equals(obj.AccountName))
-                {
-                    ModelState.AddModelError("", "Account Name already in use.");
-                    return View(obj);
-                }
 
-                if (item.Order.Equals(obj.Order))
-                {
-                    ModelState.AddModelError("", "Liquidity Order already in use.");
-                    return View(obj);
-                }
+                var accountlist = _db.Account.ToList();
+
+               
+
+                //foreach (var item in accountlist)
+                //{
+
+                //    if (item.AccountName.Equals(obj.AccountName))
+                //    {
+                //        ModelState.AddModelError("", "Account Name already in use.");
+                //        return View(obj);
+                //    }
+
+                //    if (item.Order.Equals(obj.Order))
+                //    {
+                //        ModelState.AddModelError("", "Liquidity Order already in use.");
+                //        return View(obj);
+                //    }
+
+                //}
+
+
+                var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == obj.AccountNumber);
+                objFromDb.AccountNumber = obj.AccountNumber;
+                objFromDb.AccountName = obj.AccountName;
+                objFromDb.Description = obj.Description;
+                objFromDb.NormSide = obj.NormSide; 
+                objFromDb.Category = obj.Category;
+                objFromDb.SubCategory = obj.SubCategory;
+                objFromDb.Order = obj.Order;
+                objFromDb.Statement = obj.Statement;
+                objFromDb.Comments = obj.Comments;
+               
+                _db.SaveChanges();
+                TempData[SD.Success] = "Account has been edited successfully.";
+                return RedirectToAction("ChartofAccounts", "Money");
+
 
             }
 
-            obj.AccountNumber = 101;
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == obj.AccountNumber);
-            objFromDb.AccountName = obj.AccountName;
-            objFromDb.Description = obj.Description;
-            objFromDb.NormSide = obj.NormSide;
-            objFromDb.Category = obj.Category;
-            objFromDb.SubCategory = obj.SubCategory;
-            objFromDb.Order = obj.Order;
-            objFromDb.Statement = obj.Statement;
-            objFromDb.Comments = obj.Comments;
-            
-            await _db.SaveChangesAsync();
-            return RedirectToAction("ChartofAccounts", "Money");
+            return View(obj);
 
         }
     }
