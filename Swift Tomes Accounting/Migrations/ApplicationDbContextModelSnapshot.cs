@@ -152,12 +152,12 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
-
                     b.Property<double>("AccountNumber")
                         .HasColumnType("float");
 
                     b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -209,9 +209,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-
                     b.HasKey("AccountNumber");
-
 
                     b.ToTable("Account");
                 });

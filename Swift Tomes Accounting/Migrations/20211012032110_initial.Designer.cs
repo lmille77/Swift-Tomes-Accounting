@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211012002342_dbconfig")]
-    partial class dbconfig
+    [Migration("20211012032110_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,40 +154,50 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
-                    b.Property<int>("AccountNumber")
-                        .HasColumnType("int");
+                    b.Property<double>("AccountNumber")
+                        .HasColumnType("float");
 
                     b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Balance")
-                        .HasColumnType("int");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
 
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ChartOfAccounts")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedOn")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Contra")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Credit")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Debit")
-                        .HasColumnType("int");
+                    b.Property<double>("Credit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Debit")
+                        .HasColumnType("float");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Initial")
-                        .HasColumnType("int");
+                    b.Property<double>("Initial")
+                        .HasColumnType("float");
 
                     b.Property<string>("NormSide")
                         .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -198,10 +208,10 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("SubCategory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber", "AccountName");
+                    b.HasKey("AccountNumber");
 
                     b.ToTable("Account");
                 });
