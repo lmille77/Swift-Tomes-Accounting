@@ -37,29 +37,35 @@
             </li>
         </ul>
     </div>
+    <div class="text-center" style="margin-left:50px">
+        <h1>Chart Of Accounts</h1>
 
-    <div class="container-fluid" style="margin-left:50px">
-
-        <center><h1>Chart Of Accounts</h1></center>
-
-        <p>
-            <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white">Add Account</a>
-        </p>
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="post">
-            <p>
-                <input type="text" name="SearchString" asp-items=ViewBag.result />
-                <input type="submit" value="Filter" />
-
+        
+        <div class="form-group row">            
+            <p style="margin-left:100px">
+                <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white">Add Account</a>
             </p>
-        </form>
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
-            <p>
-                <input type="submit" value="Reset">
-            </p>
-        </form>
+            
+            <form asp-controller="Money" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
+                <p>
+                    <input type="text" name="SearchString" value="@ViewBag.result" />
+                    &nbsp;
+                    <input type="submit" value="Search" />
 
+                </p>
+            </form>
+            &nbsp;&nbsp;
+            <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
+                <p>
+                    <input type="submit" value="Reset">
+                </p>
+            </form>
+        </div>
+        
+    </div>
 
-                <table class="table" style="width: 900px; margin-left:175px;">
+    <div class="container-fluid">
+        <table class="table" style="width: 900px; margin-left:75px;">
                     <thead>
                         <tr>
                             <th>
