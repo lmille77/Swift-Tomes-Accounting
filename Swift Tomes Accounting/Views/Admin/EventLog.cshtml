@@ -1,7 +1,7 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.EventModel
 
 <br />
-<h2 class="text-center" style="margin-left:50px">Event Log</h2>
+<h2 class="text-center" style="margin-left:75px">Event Log</h2>
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -50,7 +50,7 @@
     eventTime.Sort((x, y) => DateTime.Compare(y, x));
 }
 
-<div class="p-4 border rounded" style="width: 1100px; margin-left:175px;">
+<div class="p-4 border rounded" style="width: 1100px; margin-left:125px;">
     <table class="table table-striped border">
         <tr class="table-secondary">
 
@@ -83,22 +83,23 @@
                 @if (time == user.eventTime)
                 {
                     <tr>
-                        <td>
-                            UserEvent @user.eventID
+                        <td style="width:100px">
+                            User-@user.eventID.ToString("000")
                         </td>
                         <td>
                             @user.eventType
                         </td>
-                        <td>
+                        <td style="width:125px">
                             First Name:<br />
                             Last Name:<br />
                             Username:<br />
                             Date of Birth:<br />
                             Role:<br />
+                            Is Active? <br />
                             Address:<br />
 
                         </td>
-                        <td>
+                        <td >
                             @user.BeforeFname<br />
                             @user.BeforeLname<br />
                             @user.BeforeuserName<br />
