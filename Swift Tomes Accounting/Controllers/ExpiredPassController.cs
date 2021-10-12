@@ -28,11 +28,11 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var expPassList = _db.ApplicationUser.ToList();
 
-            foreach (var user in expPassList)
+            foreach (var user in expPassList) // We don't need to show the hased password, only the users who have expired passwords
             {
                 //this will find if there are any roles in the userRole table
                 var expPass1 = user.LastPass1;
-                var expPass2 = user.LastPass1;
+                var expPass2 = user.LastPass2;
                 
             }
             //_db.Users.FirstOrDefault(u => u.LastPass1 != null);

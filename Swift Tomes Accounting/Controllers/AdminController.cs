@@ -102,6 +102,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
+
         [HttpGet]
         public IActionResult EventLog()
         {
@@ -119,6 +120,7 @@ namespace Swift_Tomes_Accounting.Controllers
             
             return View(EventModel);
         }
+
 
 
     }
