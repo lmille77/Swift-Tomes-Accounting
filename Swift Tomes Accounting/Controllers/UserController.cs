@@ -108,7 +108,26 @@ namespace NewSwift.Controllers
 
                 //add new role
                 await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
-
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromDb.FirstName,
+                    BeforeisActive = true,
+                    BeforeLname = objFromDb.LastName,
+                    BeforeuserName = objFromDb.CustomUsername,
+                    BeforeDOB = objFromDb.DOB,
+                    BeforeRole = objFromDb.Role,
+                    BeforeAddress = objFromDb.Address + " " + objFromDb.City + ", " + objFromDb.State + " " + objFromDb.ZipCode,
+                    AfterFname = user.FirstName,
+                    AfterisActive = true,
+                    AfterLname = user.LastName,
+                    AfteruserName = objFromDb.CustomUsername,
+                    AfterDOB = user.DOB,
+                    AfterRole = user.RoleId,
+                    AfterAddress = user.Address + " " + user.City + ", " + user.State + " " + user.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Edited User ",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
                 objFromDb.FirstName = user.FirstName;
                 objFromDb.LastName = user.LastName;
                 objFromDb.DOB = user.DOB;
@@ -116,6 +135,9 @@ namespace NewSwift.Controllers
                 objFromDb.ZipCode = user.ZipCode;
                 objFromDb.State = user.State;
                 objFromDb.City = user.City;
+                
+                
+                _db.EventUser.Add(user_event);
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));
@@ -141,6 +163,27 @@ namespace NewSwift.Controllers
 
             if (objFromdb.LockoutEnd != null && objFromdb.LockoutEnd > DateTime.Now)
             {
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromdb.FirstName,
+                    BeforeisActive = false,
+                    BeforeLname = objFromdb.LastName,
+                    BeforeuserName = objFromdb.CustomUsername,
+                    BeforeDOB = objFromdb.DOB,
+                    BeforeRole = objFromdb.Role,
+                    BeforeAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    AfterFname = objFromdb.FirstName,
+                    AfterisActive = true,
+                    AfterLname = objFromdb.LastName,
+                    AfteruserName = objFromdb.CustomUsername,
+                    AfterDOB = objFromdb.DOB,
+                    AfterRole = objFromdb.Role,
+                    AfterAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Unlocked User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
                 //this mean user is locked and will remain lcoked until lockoutend time
                 //clickng will unlock user
                 objFromdb.LockoutEnd = DateTime.Now;
@@ -148,6 +191,27 @@ namespace NewSwift.Controllers
             }
             else
             {
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromdb.FirstName,
+                    BeforeisActive = true,
+                    BeforeLname = objFromdb.LastName,
+                    BeforeuserName = objFromdb.CustomUsername,
+                    BeforeDOB = objFromdb.DOB,
+                    BeforeRole = objFromdb.Role,
+                    BeforeAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    AfterFname = objFromdb.FirstName,
+                    AfterisActive = false,
+                    AfterLname = objFromdb.LastName,
+                    AfteruserName = objFromdb.CustomUsername,
+                    AfterDOB = objFromdb.DOB,
+                    AfterRole = objFromdb.Role,
+                    AfterAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Locked User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
                 //user is not locked and we want to lock the user
                 objFromdb.LockoutEnd = DateTime.Now.AddYears(1000);
                 TempData[SD.Success] = "User locked successfully.";

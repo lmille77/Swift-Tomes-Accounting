@@ -57,9 +57,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     UserName = "miller4277@gmail.com",
                     CustomUsername = "Admin1",
-                    FirstName = "Admin",
+                    FirstName = "Default",
+                    LastName = "Admin",
                     Email = "miller4277@gmail.com",
-                    isApproved = true
+                    isApproved = true,
+                    Role = "Admin"
                 };
                 var result = await _userManager.CreateAsync(user, "Admin123!");
                 await _userManager.AddToRoleAsync(user, "Admin");
@@ -181,6 +183,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
+            var userevents = _db.EventUser.ToList();
 
             if (ModelState.IsValid)
             {
@@ -198,8 +201,32 @@ namespace Swift_Tomes_Accounting.Controllers
                     PasswordDate = DateTime.Now,
                     ZipCode = obj.ZipCode,
                     State = obj.State,
-                    City = obj.City
+                    City = obj.City,
+                    Role = "Unapproved"
                 };
+
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = "none",
+                    BeforeisActive = false,
+                    BeforeLname = "none",
+                    BeforeuserName = "none",
+                    BeforeDOB = "none",
+                    BeforeRole = "none",
+                    BeforeAddress = "none",
+                    AfterFname = obj.FirstName,
+                    AfterisActive = false,
+                    AfterLname = obj.LastName,
+                    AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
+                    AfterDOB = obj.DOB,
+                    AfterRole = "Unapproved",
+                    AfterAddress = obj.Address + " " + obj.City + ", " + obj.State + " " + obj.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Requested Access",
+                    eventPerformedBy = obj.FirstName + " " + obj.LastName,
+                };
+                _db.EventUser.Add(user_event);
+                
 
                 //creates user
                 var result = await _userManager.CreateAsync(user, obj.Password);
@@ -228,6 +255,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     //adds user to database but without admin approval
                     await _userManager.AddToRoleAsync(user, "Unapproved");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
                 else
