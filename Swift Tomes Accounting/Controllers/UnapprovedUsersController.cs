@@ -49,12 +49,33 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult Delete(string userId)
         {
-            var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
-            if (objFromDb == null)
+            var objFromdb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            if (objFromdb == null)
             {
                 return NotFound();
             }
-            _db.ApplicationUser.Remove(objFromDb);
+            EventUser user_event = new EventUser
+            {
+                BeforeFname = objFromdb.FirstName,
+                BeforeisActive = false,
+                BeforeLname = objFromdb.LastName,
+                BeforeuserName = objFromdb.CustomUsername,
+                BeforeDOB = objFromdb.DOB,
+                BeforeRole = objFromdb.Role,
+                BeforeAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                AfterFname = "none",
+                AfterisActive = false,
+                AfterLname = "none",
+                AfteruserName = "none",
+                AfterDOB = "none",
+                AfterRole = "none",
+                AfterAddress = "none",
+                eventTime = DateTime.Now,
+                eventType = "Denied User",
+                eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+            };
+            _db.EventUser.Add(user_event);
+            _db.ApplicationUser.Remove(objFromdb);
             _db.SaveChanges();
             TempData[SD.Success] = "User rejected succesfully";
             return RedirectToAction(nameof(Index));
@@ -82,6 +103,27 @@ namespace Swift_Tomes_Accounting.Controllers
 
             if (objFromdb.isApproved == false && userRole.RoleId != unapprovedID)
             {
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromdb.FirstName,
+                    BeforeisActive = false,
+                    BeforeLname = objFromdb.LastName,
+                    BeforeuserName = objFromdb.CustomUsername,
+                    BeforeDOB = objFromdb.DOB,
+                    BeforeRole = objFromdb.Role,
+                    BeforeAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    AfterFname = objFromdb.FirstName,
+                    AfterisActive = true,
+                    AfterLname = objFromdb.LastName,
+                    AfteruserName = objFromdb.CustomUsername,
+                    AfterDOB = objFromdb.DOB,
+                    AfterRole = objFromdb.Role,
+                    AfterAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Approved User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
                 //sends an email to admin requesting approval for new user
                 var email = objFromdb.Email;
                 var subject = "Accepted";
@@ -133,12 +175,14 @@ namespace Swift_Tomes_Accounting.Controllers
                 EventUser user_event = new EventUser
                 {
                     BeforeFname = objFromDb.FirstName,
+                    BeforeisActive = false,
                     BeforeLname = objFromDb.LastName,
                     BeforeuserName = objFromDb.CustomUsername,
                     BeforeDOB = objFromDb.DOB,
                     BeforeRole = objFromDb.Role,
                     BeforeAddress = objFromDb.Address + " " + objFromDb.City + ", " + objFromDb.State + " " + objFromDb.ZipCode,
                     AfterFname = user.FirstName,
+                    AfterisActive = false,
                     AfterLname = user.LastName,
                     AfteruserName = objFromDb.CustomUsername,
                     AfterDOB = user.DOB,

@@ -442,9 +442,6 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("AfterDOB")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AfterEmail")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("AfterFname")
                         .HasColumnType("nvarchar(max)");
 
@@ -464,9 +461,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BeforeDOB")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BeforeEmail")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BeforeFname")

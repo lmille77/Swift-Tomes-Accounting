@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011232623_initial")]
-    partial class initial
+    [Migration("20211012002342_dbconfig")]
+    partial class dbconfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -444,9 +444,6 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("AfterDOB")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AfterEmail")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("AfterFname")
                         .HasColumnType("nvarchar(max)");
 
@@ -466,9 +463,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BeforeDOB")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BeforeEmail")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BeforeFname")

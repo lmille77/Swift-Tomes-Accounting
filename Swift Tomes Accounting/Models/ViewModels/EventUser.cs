@@ -11,7 +11,6 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
         [Key]
         public int eventID { get; set; }
-        public string BeforeEmail { get; set; }
         public string BeforeFname { get; set; }
         public string BeforeLname { get; set; }
         public string BeforeAddress { get; set; }
@@ -20,7 +19,6 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string BeforeDOB { get; set; }
         public string BeforeRole { get; set; }
 
-        public string AfterEmail { get; set; }
 
         public string AfterFname { get; set; }
         public string AfterLname { get; set; }
@@ -33,7 +31,6 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public DateTime eventTime { get; set; }
         public string eventType { get; set; }
         public string eventPerformedBy { get; set; }
-        [NotMapped]
-        public EventModel eventmodel { get; set; }
+        
     }
 }

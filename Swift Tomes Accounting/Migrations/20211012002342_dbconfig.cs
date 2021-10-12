@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class initial : Migration
+    public partial class dbconfig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,7 +90,6 @@ namespace Swift_Tomes_Accounting.Migrations
                 {
                     eventID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BeforeEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -98,7 +97,6 @@ namespace Swift_Tomes_Accounting.Migrations
                     BeforeisActive = table.Column<bool>(type: "bit", nullable: false),
                     BeforeDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BeforeRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AfterEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfterFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfterLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AfterDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),

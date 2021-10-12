@@ -206,12 +206,14 @@ namespace Swift_Tomes_Accounting.Controllers
                 EventUser user_event = new EventUser
                 {
                     BeforeFname = "none",
+                    BeforeisActive = false,
                     BeforeLname = "none",
                     BeforeuserName = "none",
                     BeforeDOB = "none",
                     BeforeRole = "none",
                     BeforeAddress = "none",
                     AfterFname = obj.FirstName,
+                    AfterisActive = false,
                     AfterLname = obj.LastName,
                     AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
                     AfterDOB = obj.DOB,
