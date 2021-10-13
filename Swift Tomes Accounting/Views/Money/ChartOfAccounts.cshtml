@@ -22,9 +22,15 @@
             </li>
             <li>
                 <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
-            </li>           
+            </li>
             <li>
                 <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
             </li>
             <li>
                 <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
@@ -109,7 +115,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td data-search"">
                                         @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
                                     </td>
                                     <td>

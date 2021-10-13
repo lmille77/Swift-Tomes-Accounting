@@ -439,6 +439,16 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(objFromdb);
         }
-        
+
+
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var accountlist = _db.Account.ToList();
+            return Json(new { data = accountlist });
+        }
+
+
     }
 }

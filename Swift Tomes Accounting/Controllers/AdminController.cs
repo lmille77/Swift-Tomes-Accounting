@@ -122,6 +122,18 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
 
+        public IActionResult Journalize()
+        {
 
+            return View();
+
+        }
+
+        public IActionResult Report()
+        {
+
+            return View();
+
+        }
     }
 }
