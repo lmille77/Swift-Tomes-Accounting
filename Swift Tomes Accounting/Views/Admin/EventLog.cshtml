@@ -138,13 +138,13 @@
                 @if (time == account.eventTime)
                 {
                     <tr>
-                        <td>
+                        <td style="width:100px">
                             Account-@account.eventID.ToString("000")
                         </td>
                         <td>
                             @account.eventType
                         </td>
-                        <td>
+                        <td style="width:200px">
                             Account Number:<br />
                             Account Name:<br />
                             Description:<br />
@@ -152,16 +152,31 @@
                             Subcategory:<br />
                             Balance:<br />
                             Comments:<br />
-                            Is Active:<br />
-                            Is Contra:<br />
+                            Is Active?:<br />
+                            Is Contra?:<br />
                         </td>
                         <td>
-                            @account.BeforeAccountNumber<br />
+                            @if (account.BeforeAccountNumber == -1)
+                            {
+                                <lable>none</lable><br />
+                            }
+                            else
+                            {
+                                @account.BeforeAccountNumber<br />
+                            }
+
                             @account.BeforeAccountName<br />
                             @account.BeforeDescription<br />
                             @account.BeforeCategory<br />
                             @account.BeforeSubCategory<br />
-                            @account.BeforeBalance<br />
+                            @if (account.BeforeBalance == -1)
+                            {
+                                <lable>none</lable><br />
+                            }
+                            else
+                            {
+                                @account.BeforeBalance<br />
+                            }
                             @account.BeforeComments<br />
                             @account.BeforeisActive<br />
                             @account.BeforeisContra<br />
