@@ -207,13 +207,13 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 EventUser user_event = new EventUser
                 {
-                    BeforeFname = "none",
+                    BeforeFname = "None",
                     BeforeisActive = false,
-                    BeforeLname = "none",
-                    BeforeuserName = "none",
-                    BeforeDOB = "none",
-                    BeforeRole = "none",
-                    BeforeAddress = "none",
+                    BeforeLname = "None",
+                    BeforeuserName = "None",
+                    BeforeDOB = "None",
+                    BeforeRole = "None",
+                    BeforeAddress = "None",
                     AfterFname = obj.FirstName,
                     AfterisActive = false,
                     AfterLname = obj.LastName,
