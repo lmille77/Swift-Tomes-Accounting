@@ -37,7 +37,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string RoleId { get; set; }
 
         //just used to display in the view, not stored in database
-       
+        [NotMapped]
         public string Role { get; set; }
 
         [NotMapped]

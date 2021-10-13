@@ -103,13 +103,21 @@
                             Address:<br />
 
                         </td>
-                        <td >
+                        <td>
                             @user.BeforeFname<br />
                             @user.BeforeLname<br />
                             @user.BeforeuserName<br />
                             @user.BeforeDOB<br />
                             @user.BeforeRole<br />
-                            @user.BeforeisActive<br />
+                            @if (user.BeforeisActive == false)
+                            {
+                                <div>Not Active</div>
+                            }
+                            else
+                            {
+                                <div>Active</div>
+                            }
+
                             @user.BeforeAddress<br />
 
                         </td>
@@ -119,7 +127,14 @@
                             @user.AfteruserName<br />
                             @user.AfterDOB<br />
                             @user.AfterRole<br />
-                            @user.AfterisActive<br />
+                            @if (user.AfterisActive == false)
+                            {
+                                <div>Not Active</div>
+                            }
+                            else
+                            {
+                                <div>Active</div>
+                            }
                             @user.AfterAddress<br />
                         </td>
                         <td>
@@ -138,13 +153,13 @@
                 @if (time == account.eventTime)
                 {
                     <tr>
-                        <td>
+                        <td style="width:100px">
                             Account-@account.eventID.ToString("000")
                         </td>
                         <td>
                             @account.eventType
                         </td>
-                        <td>
+                        <td style="width:200px">
                             Account Number:<br />
                             Account Name:<br />
                             Description:<br />
@@ -152,18 +167,40 @@
                             Subcategory:<br />
                             Balance:<br />
                             Comments:<br />
-                            Is Active:<br />
-                            Is Contra:<br />
+                            Is Active?<br />
+                            Is Contra?<br />
                         </td>
                         <td>
-                            @account.BeforeAccountNumber<br />
+                            @if (account.BeforeAccountNumber == -1)
+                            {
+                                <div>None</div>
+                            }
+                            else
+                            {
+                                @account.BeforeAccountNumber<br />
+                            }
+
                             @account.BeforeAccountName<br />
                             @account.BeforeDescription<br />
                             @account.BeforeCategory<br />
                             @account.BeforeSubCategory<br />
-                            @account.BeforeBalance<br />
+                            @if (account.BeforeBalance == -1)
+                            {
+                                <div>None</div>
+                            }
+                            else
+                            {
+                                @account.BeforeBalance<br />
+                            }
                             @account.BeforeComments<br />
-                            @account.BeforeisActive<br />
+                            @if (account.BeforeisActive == false)
+                            {
+                                <div>Not Active</div>
+                            }
+                            else
+                            {
+                                <div>Active</div>
+                            }
                             @account.BeforeisContra<br />
                         </td>
                         <td>
@@ -174,7 +211,14 @@
                             @account.AfterSubCategory<br />
                             @account.AfterBalance<br />
                             @account.AfterComments<br />
-                            @account.AfterisActive<br />
+                            @if (account.AfterisActive == false)
+                            {
+                                <div>Not Active</div>
+                            }
+                            else
+                            {
+                                <div>Active</div>
+                            }
                             @account.AfterisContra<br />
                         </td>
                         <td>

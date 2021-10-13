@@ -129,12 +129,11 @@
 
         <div class="form-group">
             <div class=" col-md-10 offset-md-2">
-                <input type="submit" value="Create Account" class=" btn btn-outline-primary" />
-            </div>
-            <div class="col">
-                <a asp-action="ChartOfAccounts" class="btn btn-success w-100">Back</a>
+                <input type="submit" value="Create Account" class=" btn btn-outline-primary fa-align-center" />
+                <a asp-action="ChartOfAccounts" class="btn btn-success w-25">Back</a>
             </div>
         </div>
+
         <script>
             $("#Category").on("change", function () {
                 if (($("#Category option:selected").val() == "Asset") || ($("#Category option:selected").val() == "Liability")) {
@@ -144,6 +143,7 @@
                 }
             });
         </script>
+
     </form>
 </div>
 <br />
