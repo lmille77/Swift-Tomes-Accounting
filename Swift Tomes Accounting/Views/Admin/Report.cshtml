@@ -1,24 +1,18 @@
-﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
-@{
-    ViewData["Title"] = "Admin Page";
-}
-
-<h2 class="text-center">Admin Dashboard</h2>
-<hr style="width:950px" />
+﻿<h1>Reports</h1>
 
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center">Quick Actions</div>
+        <div class="text-center border-info">Quick Actions</div>
         <br />
     </div>
 
     <ul class="sidebar-navigation">
         <li>
-            <a asp-controller="Admin" asp-action="Index" class="btn btn-info btn-outline-light" data-toggle="tooltip" data-placement="bottom" title="Admin Dashboard">Dashboard</a>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
         </li>
         <li>
-            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-info btn-outline-light">Send Message </a>
         </li>
         <li>
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
@@ -40,10 +34,3 @@
         </li>
     </ul>
 </div>
-
-
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
