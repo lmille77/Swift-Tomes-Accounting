@@ -253,7 +253,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     AfterNormSide = obj.NormSide,
                     AfterCategory = obj.Category,
                     AfterOrder = obj.Order,
-                    AfterisActive = obj.Active,
+                    AfterisActive = objFromDb.Active,
                     AfterisContra = objFromDb.Contra,
                     AfterSubCategory = obj.SubCategory,
                     AfterInitial = objFromDb.Initial,
