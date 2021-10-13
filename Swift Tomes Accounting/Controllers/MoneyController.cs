@@ -349,6 +349,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
                 };
                 _db.EventAccount.Add(new_account);
+                objFromDb.ChartOfAccounts = false;
                 objFromDb.Active = false;
                 TempData[SD.Success] = "Account deactivated successfully.";
             }
