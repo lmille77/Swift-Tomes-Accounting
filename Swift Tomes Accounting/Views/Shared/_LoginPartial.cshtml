@@ -13,6 +13,9 @@
             </li>
             <li class="text-white nav-link">Hello, @userManager.GetUserAsync(User).Result.FirstName @userManager.GetUserAsync(User).Result.LastName! </li>
             <li><a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+            <li>
+                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Help">Help</a>
+            </li>
         </ul>
     </form>
 
@@ -28,7 +31,9 @@ else
         <li class="nav-item">
             <a class="nav-link text-white" id="registerLink" asp-controller="Account" asp-action="Register">Register</a>
         </li>
-
+        <li>
+            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Help">Help</a>
+        </li>
     </ul>
 }
 
