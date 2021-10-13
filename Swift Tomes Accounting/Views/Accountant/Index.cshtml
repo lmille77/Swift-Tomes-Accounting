@@ -1,4 +1,33 @@
-﻿<div class="text-center">
-    <h1>[Under Construction]</h1>
-    <h4>Accountant Dashboard</h4>
+﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+@{
+    ViewData["Title"] = "Manager Page";
+}
+
+<h2 class="text-center">Accountant Dashboard</h2>
+<hr style="width:950px" />
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+        </li>
+
+    </ul>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
