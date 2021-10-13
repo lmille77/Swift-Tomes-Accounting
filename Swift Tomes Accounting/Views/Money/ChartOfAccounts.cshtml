@@ -109,7 +109,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td data-search"">
                                         @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
                                     </td>
                                     <td>
