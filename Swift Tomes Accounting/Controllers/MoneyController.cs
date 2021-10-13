@@ -67,6 +67,44 @@ namespace Swift_Tomes_Accounting.Controllers
                 ModelState.AddModelError("", "Initial Balance cannot be negative.");
                 return View(account);
             }
+            EventAccount new_account = new EventAccount
+            {  
+                BeforeAccountName = "none",
+                BeforeAccountNumber = -1,
+                BeforeDescription = "none",
+                BeforeNormSide = "none",
+                BeforeCategory = "none",
+                BeforeOrder = -1,
+                BeforeisActive = false,
+                BeforeisContra = false,
+                BeforeSubCategory = "none",
+                BeforeInitial = -1,
+                BeforeDebit = -1,
+                BeforeCredit = -1,
+                BeforeBalance = -1,
+                BeforeStatement = "none",
+                BeforeComments = "none",
+                AfterAccountName = account.AccountName,
+                AfterAccountNumber = account.AccountNumber,
+                AfterDescription = account.Description,
+                AfterNormSide = account.NormSide,
+                AfterCategory = account.Category,
+                AfterOrder = account.Order,
+                AfterisActive = account.Active,
+                AfterisContra = account.Contra,
+                AfterSubCategory = account.SubCategory,
+                AfterInitial = account.Initial,
+                AfterDebit = account.Debit,
+                AfterCredit = account.Credit,
+                AfterBalance = account.Balance,
+                AfterStatement = account.Statement,
+                AfterComments = account.Comments,
+                eventTime = DateTime.Now,
+                eventType = "Created Account",
+                eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+            };
+            _db.EventAccount.Add(new_account);
+
 
             account.CreatedOn = DateTime.Now;
             _db.Account.Add(account);
@@ -180,7 +218,43 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
 
                 }
-
+                EventAccount new_account = new EventAccount
+                {
+                    BeforeAccountName = objFromDb.AccountName,
+                    BeforeAccountNumber = objFromDb.AccountNumber,
+                    BeforeDescription = objFromDb.Description,
+                    BeforeNormSide = objFromDb.NormSide,
+                    BeforeCategory = objFromDb.Category,
+                    BeforeOrder = objFromDb.Order,
+                    BeforeisActive = objFromDb.Active,
+                    BeforeisContra = objFromDb.Contra,
+                    BeforeSubCategory = objFromDb.SubCategory,
+                    BeforeInitial = objFromDb.Initial,
+                    BeforeDebit = objFromDb.Debit,
+                    BeforeCredit = objFromDb.Credit,
+                    BeforeBalance = objFromDb.Balance,
+                    BeforeStatement = objFromDb.Statement,
+                    BeforeComments = objFromDb.Comments,
+                    AfterAccountName = obj.AccountName,
+                    AfterAccountNumber = obj.AccountNumber,
+                    AfterDescription = obj.Description,
+                    AfterNormSide = obj.NormSide,
+                    AfterCategory = obj.Category,
+                    AfterOrder = obj.Order,
+                    AfterisActive = obj.Active,
+                    AfterisContra = objFromDb.Contra,
+                    AfterSubCategory = obj.SubCategory,
+                    AfterInitial = objFromDb.Initial,
+                    AfterDebit = objFromDb.Debit,
+                    AfterCredit = objFromDb.Credit,
+                    AfterBalance = objFromDb.Balance,
+                    AfterStatement = obj.Statement,
+                    AfterComments = obj.Comments,
+                    eventTime = DateTime.Now,
+                    eventType = "Edited Account",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventAccount.Add(new_account);
 
 
                 objFromDb.AccountNumber = obj.AccountNumber;
@@ -210,27 +284,100 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult Activate(double id)
         {
-            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
            
             
-            if (objFromdb == null)
+            if (objFromDb == null)
             {
                 return NotFound();
             }
 
 
-            if(objFromdb.Active == true)
+            if(objFromDb.Active == true)
             {
-                objFromdb.Active = false;
+                EventAccount new_account = new EventAccount
+                {
+                    BeforeAccountName = objFromDb.AccountName,
+                    BeforeAccountNumber = objFromDb.AccountNumber,
+                    BeforeDescription = objFromDb.Description,
+                    BeforeNormSide = objFromDb.NormSide,
+                    BeforeCategory = objFromDb.Category,
+                    BeforeOrder = objFromDb.Order,
+                    BeforeisActive = objFromDb.Active,
+                    BeforeisContra = objFromDb.Contra,
+                    BeforeSubCategory = objFromDb.SubCategory,
+                    BeforeInitial = objFromDb.Initial,
+                    BeforeDebit = objFromDb.Debit,
+                    BeforeCredit = objFromDb.Credit,
+                    BeforeBalance = objFromDb.Balance,
+                    BeforeStatement = objFromDb.Statement,
+                    BeforeComments = objFromDb.Comments,
+                    AfterAccountName = objFromDb.AccountName,
+                    AfterAccountNumber = objFromDb.AccountNumber,
+                    AfterDescription = objFromDb.Description,
+                    AfterNormSide = objFromDb.NormSide,
+                    AfterCategory = objFromDb.Category,
+                    AfterOrder = objFromDb.Order,
+                    AfterisActive = false,
+                    AfterisContra = objFromDb.Contra,
+                    AfterSubCategory = objFromDb.SubCategory,
+                    AfterInitial = objFromDb.Initial,
+                    AfterDebit = objFromDb.Debit,
+                    AfterCredit = objFromDb.Credit,
+                    AfterBalance = objFromDb.Balance,
+                    AfterStatement = objFromDb.Statement,
+                    AfterComments = objFromDb.Comments,
+                    eventTime = DateTime.Now,
+                    eventType = "Deactivated Account",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventAccount.Add(new_account);
+                objFromDb.Active = false;
                 TempData[SD.Success] = "Account deactivated successfully.";
             }
 
             else
             {
-                objFromdb.Active = true;
+                EventAccount new_account = new EventAccount
+                {
+                    BeforeAccountName = objFromDb.AccountName,
+                    BeforeAccountNumber = objFromDb.AccountNumber,
+                    BeforeDescription = objFromDb.Description,
+                    BeforeNormSide = objFromDb.NormSide,
+                    BeforeCategory = objFromDb.Category,
+                    BeforeOrder = objFromDb.Order,
+                    BeforeisActive = objFromDb.Active,
+                    BeforeisContra = objFromDb.Contra,
+                    BeforeSubCategory = objFromDb.SubCategory,
+                    BeforeInitial = objFromDb.Initial,
+                    BeforeDebit = objFromDb.Debit,
+                    BeforeCredit = objFromDb.Credit,
+                    BeforeBalance = objFromDb.Balance,
+                    BeforeStatement = objFromDb.Statement,
+                    BeforeComments = objFromDb.Comments,
+                    AfterAccountName = objFromDb.AccountName,
+                    AfterAccountNumber = objFromDb.AccountNumber,
+                    AfterDescription = objFromDb.Description,
+                    AfterNormSide = objFromDb.NormSide,
+                    AfterCategory = objFromDb.Category,
+                    AfterOrder = objFromDb.Order,
+                    AfterisActive = true,
+                    AfterisContra = objFromDb.Contra,
+                    AfterSubCategory = objFromDb.SubCategory,
+                    AfterInitial = objFromDb.Initial,
+                    AfterDebit = objFromDb.Debit,
+                    AfterCredit = objFromDb.Credit,
+                    AfterBalance = objFromDb.Balance,
+                    AfterStatement = objFromDb.Statement,
+                    AfterComments = objFromDb.Comments,
+                    eventTime = DateTime.Now,
+                    eventType = "Activated Account",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventAccount.Add(new_account);
+                objFromDb.Active = true;
                 TempData[SD.Success] = "Account activated successfully.";
-            }
-            
+            }           
            
             _db.SaveChanges();
             return RedirectToAction("ChartofAccounts", "Money");

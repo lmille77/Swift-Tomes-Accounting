@@ -10,7 +10,7 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211012032110_initial")]
+    [Migration("20211013045838_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -330,11 +330,11 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("AfterAccountName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AfterAccountNumber")
-                        .HasColumnType("int");
+                    b.Property<double>("AfterAccountNumber")
+                        .HasColumnType("float");
 
-                    b.Property<int>("AfterBalance")
-                        .HasColumnType("int");
+                    b.Property<double>("AfterBalance")
+                        .HasColumnType("float");
 
                     b.Property<string>("AfterCategory")
                         .HasColumnType("nvarchar(max)");
@@ -342,21 +342,20 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("AfterComments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AfterCredit")
-                        .HasColumnType("int");
+                    b.Property<double>("AfterCredit")
+                        .HasColumnType("float");
 
-                    b.Property<int>("AfterDebit")
-                        .HasColumnType("int");
+                    b.Property<double>("AfterDebit")
+                        .HasColumnType("float");
 
                     b.Property<string>("AfterDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AfterInitial")
-                        .HasColumnType("int");
+                    b.Property<double>("AfterInitial")
+                        .HasColumnType("float");
 
                     b.Property<string>("AfterNormSide")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AfterOrder")
                         .HasColumnType("int");
@@ -382,8 +381,8 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<double>("BeforeAccountNumber")
                         .HasColumnType("float");
 
-                    b.Property<int>("BeforeBalance")
-                        .HasColumnType("int");
+                    b.Property<double>("BeforeBalance")
+                        .HasColumnType("float");
 
                     b.Property<string>("BeforeCategory")
                         .HasColumnType("nvarchar(max)");
@@ -391,21 +390,20 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("BeforeComments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BeforeCredit")
-                        .HasColumnType("int");
+                    b.Property<double>("BeforeCredit")
+                        .HasColumnType("float");
 
-                    b.Property<int>("BeforeDebit")
-                        .HasColumnType("int");
+                    b.Property<double>("BeforeDebit")
+                        .HasColumnType("float");
 
                     b.Property<string>("BeforeDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BeforeInitial")
-                        .HasColumnType("int");
+                    b.Property<double>("BeforeInitial")
+                        .HasColumnType("float");
 
                     b.Property<string>("BeforeNormSide")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BeforeOrder")
                         .HasColumnType("int");
@@ -425,8 +423,8 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<bool>("BeforeisContra")
                         .HasColumnType("bit");
 
-                    b.Property<string>("eventPerformedById")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("eventPerformedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("eventTime")
                         .HasColumnType("datetime2");
@@ -435,8 +433,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("eventID");
-
-                    b.HasIndex("eventPerformedById");
 
                     b.ToTable("EventAccount");
                 });
@@ -553,15 +549,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>
-                {
-                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser", "eventPerformedBy")
-                        .WithMany()
-                        .HasForeignKey("eventPerformedById");
-
-                    b.Navigation("eventPerformedBy");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,18 +16,18 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public double BeforeAccountNumber { get; set; }
         public string BeforeDescription { get; set; }
 
-        public char BeforeNormSide { get; set; }
+        public string BeforeNormSide { get; set; }
 
         public string BeforeCategory { get; set; }
         public string BeforeSubCategory { get; set; }
         [DataType(DataType.Currency)]
-        public int BeforeInitial { get; set; }
+        public double BeforeInitial { get; set; }
         [DataType(DataType.Currency)]
-        public int BeforeDebit { get; set; }
+        public double BeforeDebit { get; set; }
         [DataType(DataType.Currency)]
-        public int BeforeCredit { get; set; }
+        public double BeforeCredit { get; set; }
         [DataType(DataType.Currency)]
-        public int BeforeBalance { get; set; }
+        public double BeforeBalance { get; set; }
 
         public int BeforeUserID { get; set; }
         public int BeforeOrder { get; set; }
@@ -35,21 +35,21 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string BeforeComments { get; set; }
         public string AfterAccountName { get; set; }
 
-        public int AfterAccountNumber { get; set; }
+        public double AfterAccountNumber { get; set; }
         public string AfterDescription { get; set; }
 
-        public char AfterNormSide { get; set; }
+        public string AfterNormSide { get; set; }
 
         public string AfterCategory { get; set; }
         public string AfterSubCategory { get; set; }
         [DataType(DataType.Currency)]
-        public int AfterInitial { get; set; }
+        public double AfterInitial { get; set; }
         [DataType(DataType.Currency)]
-        public int AfterDebit { get; set; }
+        public double AfterDebit { get; set; }
         [DataType(DataType.Currency)]
-        public int AfterCredit { get; set; }
+        public double AfterCredit { get; set; }
         [DataType(DataType.Currency)]
-        public int AfterBalance { get; set; }
+        public double AfterBalance { get; set; }
 
         public int AfterUserID { get; set; }
         public int AfterOrder { get; set; }
@@ -62,7 +62,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         public DateTime eventTime { get; set; }
         public string eventType { get; set; }
-        public ApplicationUser eventPerformedBy { get; set; }
+        public string eventPerformedBy { get; set; }
 
     }
 }
