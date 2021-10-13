@@ -32,13 +32,17 @@ namespace Swift_Tomes_Accounting.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var all_users = _db.ApplicationUser.ToList();            
+            var all_users = _db.ApplicationUser.ToList();
+            var userRole = _db.UserRoles.ToList();
+            var roles = _db.Roles.ToList();
 
             List<ApplicationUser> unapproved_users = new List<ApplicationUser>();
             foreach(var user in all_users)
             {
                 if(user.isApproved == false)
                 {
+                    var role = userRole.FirstOrDefault(u => u.UserId == user.Id);
+                    user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;                    
                     unapproved_users.Add(user);
                 }
             }
@@ -50,6 +54,10 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult Delete(string userId)
         {
             var objFromdb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            var roles = _db.Roles.ToList();
+            var userRoles = _db.UserRoles.ToList();
+            var role = userRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
+            objFromdb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
             if (objFromdb == null)
             {
                 return NotFound();
@@ -89,6 +97,10 @@ namespace Swift_Tomes_Accounting.Controllers
             var userRole = _db.UserRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
             var roleList = _roleManager.Roles.ToList();
             var unapprovedID = "";
+            var roles = _db.Roles.ToList();
+            var userRoles = _db.UserRoles.ToList();
+            objFromdb.Role = roles.FirstOrDefault(u => u.Id == userRole.RoleId).Name;
+            
             foreach (var role in roleList)
             {
                 if (role.Name == "Unapproved")
@@ -160,6 +172,11 @@ namespace Swift_Tomes_Accounting.Controllers
             if (ModelState.IsValid)
             {
                 var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == user.Id);
+                var roles = _db.Roles.ToList();
+                var userRoles = _db.UserRoles.ToList();
+                var role = userRoles.FirstOrDefault(u => u.UserId == objFromDb.Id);
+                objFromDb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
+
                 if (objFromDb == null)
                 {
                     return NotFound();

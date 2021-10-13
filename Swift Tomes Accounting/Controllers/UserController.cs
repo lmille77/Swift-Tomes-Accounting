@@ -93,6 +93,11 @@ namespace NewSwift.Controllers
             if (ModelState.IsValid)
             {
                 var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == user.Id);
+                var roles = _db.Roles.ToList();
+                var userRoles = _db.UserRoles.ToList();
+                var role = userRoles.FirstOrDefault(u => u.UserId == objFromDb.Id);
+                objFromDb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
+
                 if (objFromDb == null)
                 {
                     return NotFound();
@@ -156,6 +161,10 @@ namespace NewSwift.Controllers
         public IActionResult LockUnlock(string userId)
         {
             var objFromdb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            var roles = _db.Roles.ToList();
+            var userRoles = _db.UserRoles.ToList();
+            var role = userRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
+            objFromdb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
             if (objFromdb == null)
             {
                 return NotFound();
