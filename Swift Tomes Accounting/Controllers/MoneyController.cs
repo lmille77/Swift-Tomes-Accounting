@@ -43,7 +43,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     return View(account);
                 }
 
-                if (item.AccountName.Equals(account.AccountName))
+                if (item.AccountName.ToLower().Equals(account.AccountName.ToLower()))
                 {
                     ModelState.AddModelError("", "Account Name already in use.");
                     return View(account);
@@ -54,6 +54,12 @@ namespace Swift_Tomes_Accounting.Controllers
                     ModelState.AddModelError("", "Liquidity Order already in use.");
                     return View(account);
                 }
+            }
+
+            if (account.ChartOfAccounts && !account.Active)
+            {
+                ModelState.AddModelError("","Cannot add an Inactive account to Chart of Accounts.");
+                return View(account);
             }
 
             if (account.Order <= 0)
@@ -218,6 +224,12 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
 
                 }
+                if (obj.ChartOfAccounts && !objFromDb.Active)
+                {
+                    ModelState.AddModelError("", "Cannot add an Inactive account to Chart of Accounts.");
+                    return View(obj);
+                }
+
                 EventAccount new_account = new EventAccount
                 {
                     BeforeAccountName = objFromDb.AccountName,
@@ -266,7 +278,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 objFromDb.Order = obj.Order;
                 objFromDb.Statement = obj.Statement;
                 objFromDb.Comments = obj.Comments;
-                objFromDb.Active = true;
+                
                
                 _db.SaveChanges();
                 TempData[SD.Success] = "Account has been edited successfully.";
@@ -292,6 +304,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 return NotFound();
             }
 
+            if (!objFromDb.Balance.Equals(0))
+            {
+                TempData[SD.Error] = "Account Balance must be $0.00 to Deactivate.";
+                return RedirectToAction("ChartofAccounts", "Money");
+            }
 
             if(objFromDb.Active == true)
             {
