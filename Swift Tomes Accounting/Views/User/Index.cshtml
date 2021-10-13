@@ -3,6 +3,27 @@
 <br />
 <h2 class="text-center" style="margin-left:50px">User List</h2>
 
+<div style="margin-left: 350px; width:460px;border: 1px solid; border-color: lightgray;">
+    <div class="form-group row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px">
+        <a class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create User
+        </a>
+        <div>&nbsp;&nbsp;</div>
+        <a asp-action="Index" asp-controller="Roles" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Role List
+        </a>
+        <div>&nbsp;&nbsp;</div>
+        <a asp-action="Index" asp-controller="ExpiredPass" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Expired Password List
+        </a>
+    </div>
+
+</div>
+<br />
+
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -22,13 +43,7 @@
         </li>
         <li>
             <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
-        </li>
-        <li>
-            <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
-        </li>
-        <li>
-            <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
-        </li>
+        </li>       
         <li>
             <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
