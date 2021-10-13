@@ -120,6 +120,13 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
+        public IActionResult Journalize()
+        {
+
+            return View();
+
+        }
+
         [HttpGet]
 
         public IActionResult AccountLedger(int? id)
