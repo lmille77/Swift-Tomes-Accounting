@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.AccountDB>
 
-
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
 <br />
 <div class="sidebar-container border-dark">
@@ -26,7 +26,7 @@
     <h1>Chart Of Accounts</h1>
 
 
-    <div class="form-group row">
+    @*<div class="form-group row">
 
         <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
             <p>
@@ -42,15 +42,15 @@
                 <input type="submit" value="Reset">
             </p>
         </form>
-    </div>
+    </div>*@
 
 </div>
 
 <div class="container-fluid">
-    <table class="table" style="width: 900px; margin-left:75px;">
+    <table id="accountDatatable" class="table" style="width: 900px; margin-left:75px;">
         <thead>
             <tr>
-                <th>
+                <th >
                     @Html.DisplayNameFor(model => model.AccountNumber)
                 </th>
                 <th>
@@ -97,7 +97,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td data-search"">
+                        <td data-search"" >
                             @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
@@ -128,7 +128,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Comments)
                         </td>
-                        
+
                     </tr>
                 }
             </tbody>
@@ -137,3 +137,9 @@
     </table>
 </div>
 
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/accountDatatable.js"></script>
+}

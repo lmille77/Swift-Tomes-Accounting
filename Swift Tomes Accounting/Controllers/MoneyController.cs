@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Controllers
 {
+   
     public class MoneyController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -449,6 +450,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return Json(new { data = accountlist });
         }
 
-
+        
     }
 }

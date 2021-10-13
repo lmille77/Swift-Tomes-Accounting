@@ -16,8 +16,10 @@ using System.Threading.Tasks;
 
 
 
+
 namespace Swift_Tomes_Accounting.Controllers
 {
+    
     public class AccountController : Controller
     {
         //variables used to host email service
@@ -401,6 +403,17 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(obj);
         }
+
+       
+
+
+        //[HttpPost]
+        //public IActionResult AjaxMethod()
+        //{
+        //    List<Account> customers = (from customer in this.Context.Customers
+        //                                select customer).ToList();
+        //    return Json(JsonConvert.SerializeObject(customers));
+        //}
 
     }
 }
