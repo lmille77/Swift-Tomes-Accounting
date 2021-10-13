@@ -50,9 +50,9 @@
             <div class="col-md-8">
                 <select asp-for="Category" class="form-control">
                     <option disabled>--Select an Account Type--</option>
-                    <option>Asset</option>
+                    <option value="Asset">Asset</option>
                     <option>Expenses</option>
-                    <option>Liability</option>
+                    <option value="Liability">Liability</option>
                     <option>Equity</option>
                     <option>Revenue</option>
                 </select>
@@ -65,9 +65,8 @@
             <div class="col-md-8">
                 <select asp-for="SubCategory" class="form-control">
                     <option disabled>--Select a Sub-Type--</option>
-                    <option>Permanent</option>
+                    <option>Current</option>
                     <option>Long-Term</option>
-                    <option>Short-Term</option>
                 </select>
                 <span asp-validation-for="SubCategory" class="text-danger"></span>
             </div>
@@ -132,8 +131,19 @@
             <div class=" col-md-10 offset-md-2">
                 <input type="submit" value="Create Account" class=" btn btn-outline-primary" />
             </div>
+            <div class="col">
+                <a asp-action="ChartOfAccounts" class="btn btn-success w-100">Back</a>
+            </div>
         </div>
-
+        <script>
+            $("#Category").on("change", function () {
+                if (($("#Category option:selected").val() == "Asset") || ($("#Category option:selected").val() == "Liability")) {
+                    $("#SubCategory").show();
+                } else {
+                    $("#SubCategory").hide();
+                }
+            });
+        </script>
     </form>
 </div>
 <br />
@@ -145,3 +155,4 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 }
+
