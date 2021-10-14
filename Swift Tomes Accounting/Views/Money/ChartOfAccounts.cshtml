@@ -54,7 +54,10 @@
 
     <div class="form-group row">
         <p style="margin-left:100px">
-            <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white">Add Account</a>
+            <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white"
+               data-toggle="tooltip" data-placement="bottom" title="Add a new account to the system">
+            Add Account
+            </a>
         </p>
 
         <form asp-controller="Money" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
@@ -220,3 +223,8 @@
     </table>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

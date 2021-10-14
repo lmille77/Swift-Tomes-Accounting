@@ -5,17 +5,17 @@
 
 <div style="margin-left: 350px; width:460px;border: 1px solid; border-color: lightgray;">
     <div class="form-group row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px">
-        <a asp-action="Create" asp-controller="User"class="btn btn-primary">
+        <a asp-action="Create" asp-controller="User"class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Create a New User">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Create User
         </a>
         <div>&nbsp;&nbsp;</div>
-        <a asp-action="Index" asp-controller="Roles" class="btn btn-primary">
+        <a asp-action="Index" asp-controller="Roles" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add, Edit,and Create Roles">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Role List
         </a>
         <div>&nbsp;&nbsp;</div>
-        <a asp-action="Index" asp-controller="ExpiredPass" class="btn btn-primary">
+        <a asp-action="Index" asp-controller="ExpiredPass" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="View all Users with Expired Passwords">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Expired Password List
         </a>
@@ -96,13 +96,13 @@
 
                                     @if (item.isApproved == true && item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
                                     {
-                                        <a asp-action="Edit" asp-route-userId="@item.Id" class="btn btn-info text-white" style="cursor:pointer">
+                                        <a asp-action="Edit" asp-route-userId="@item.Id" class="btn btn-info text-white" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Edit User Profile">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                             Edit
                                         </a>
                                         //We want to show them the option to lock
                                         <button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-success text-black"
-                                                style="cursor:pointer">
+                                                style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deactivate User">
                                             <span>
                                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                                 Lock
@@ -113,7 +113,7 @@
                                     {
                                         //We want to show them the option to unlock
                                         <button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-warning text-black"
-                                                style="cursor:pointer">
+                                                style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Activate User">
                                             <span>
                                                 <i class="fa fa-unlock" aria-hidden="true"></i>
                                                 Unlock
@@ -136,5 +136,9 @@
 
 </div>
 
-
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 

@@ -44,18 +44,18 @@
                 <div class="text-center">
                     <form asp-action="Delete" asp-route-userId="@item.Id">
 
-                        <a asp-action="AssignRole" asp-route-userId="@item.Id" class="btn btn-warning text-black" style="cursor:pointer">
+                        <a asp-action="AssignRole" asp-route-userId="@item.Id" class="btn btn-warning text-black" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Assign User Role or Edit User Profile">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                             Assign Role
                         </a>
                         <button onclick="return confirm('Are you sure you want to reject this user?')"
-                                class="btn btn-danger">
+                                class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deny Access">
                             <i class="fa fa-times" aria-hidden="true"></i>
 
                             Deny
                         </button>
                         <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success"
-                                style="cursor:pointer">
+                                style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Grant Access">
                             <span>
                                 <i class="fa fa-check" aria-hidden="true"></i>
                                 Approve
@@ -106,3 +106,8 @@
     </ul>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
