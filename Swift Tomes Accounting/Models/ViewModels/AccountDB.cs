@@ -12,10 +12,12 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
 
         [Key]
+        [Display(Name = "Number")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public double AccountNumber { get; set; }
        
         [Required]
+        [Display(Name = "Name")]
         public string AccountName { get; set; }
         public string Description { get; set; }
         [Required]

@@ -50,13 +50,13 @@
 </div>
 <div class="text-center" style="margin-left:50px">
     <h1>Chart Of Accounts</h1>
-
-
+    <br />
+    <br />
     <div class="form-group row">
         <p style="margin-left:100px">
             <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white"
                data-toggle="tooltip" data-placement="bottom" title="Add a New Account to the System">
-            Add Account
+                Add Account
             </a>
         </p>
 
@@ -72,11 +72,11 @@
                 <input type="date" name="DateSearch2" value="@ViewBag.result" />
                 &nbsp;&nbsp;
                 <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data
-                       with a Date Range or Balance Search"/>
+                       with a Date Range or Balance Search" />
             </p>
         </form>
         &nbsp;&nbsp;
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
+        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get" style="margin-left:960px">
             <p>
                 <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
             </p>
@@ -85,7 +85,7 @@
 
 </div>
 
-<div class="container-fluid" style="width: 1400px; margin-left: 75px">
+<div class="container-fluid" style="width: 1250px; margin-left: 75px">
     <table class="table" id="table"
            data-toggle="table"
            data-search="true"
