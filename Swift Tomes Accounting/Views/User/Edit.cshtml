@@ -43,8 +43,8 @@
             @if (Model.Role == "Admin")
             {
                 <div class="form-group">
-                    <label asp-for="RoleId">Role</label>
-                    <select asp-for="RoleId" class="form-control">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
                         <option disabled>--Select Role--</option>
                         <option selected>Admin</option>
                         <option>Manager</option>
@@ -55,8 +55,8 @@
             @if (Model.Role == "Manager")
             {
                 <div class="form-group">
-                    <label asp-for="RoleId">Role</label>
-                    <select asp-for="RoleId" class="form-control">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
                         <option disabled>--Select Role--</option>
                         <option>Admin</option>
                         <option selected>Manager</option>
@@ -67,8 +67,8 @@
             @if (Model.Role == "Accountant")
             {
                 <div class="form-group">
-                    <label asp-for="RoleId">Role</label>
-                    <select asp-for="RoleId" class="form-control">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
                         <option disabled>--Select Role--</option>
                         <option>Admin</option>
                         <option>Manager</option>

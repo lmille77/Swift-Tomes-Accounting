@@ -203,7 +203,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     AfterLname = user.LastName,
                     AfteruserName = objFromDb.CustomUsername,
                     AfterDOB = user.DOB,
-                    AfterRole = user.RoleId,
+                    AfterRole = user.Role,
                     AfterAddress = user.Address + " " + user.City + ", " + user.State + " " + user.ZipCode,
                     eventTime = DateTime.Now,
                     eventType = "Assigned Role",
@@ -218,10 +218,13 @@ namespace Swift_Tomes_Accounting.Controllers
                 objFromDb.ZipCode = user.ZipCode;
                 objFromDb.State = user.State;
                 objFromDb.City = user.City;
-                objFromDb.Role = user.RoleId;
-
+                objFromDb.Role = user.Role;
+                if(user.Role == null)
+                {
+                    user.Role = "Unapproved";
+                }
                 //add new role
-                await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
+                await _userManager.AddToRoleAsync(objFromDb, user.Role);
 
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
