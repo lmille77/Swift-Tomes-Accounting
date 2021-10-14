@@ -42,10 +42,16 @@
 
         <form asp-controller="Manager" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
             <p>
-                <input type="text" name="SearchString" value="@ViewBag.result" />
-                &nbsp;
-                <input type="submit" value="Search" />
-
+                <label>$</label>
+                <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
+                <label> - $</label>
+                <input type="text" name="BalanceSearch2" value="@ViewBag.result" />
+                &nbsp;&nbsp;
+                <input type="date" name="DateSearch1" value="@ViewBag.result" />
+                <label> - </label>
+                <input type="date" name="DateSearch2" value="@ViewBag.result" />
+                &nbsp;&nbsp;
+                <input type="submit" value="Filter" />
             </p>
         </form>
         &nbsp;&nbsp;
