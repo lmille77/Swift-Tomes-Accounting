@@ -89,7 +89,7 @@ namespace NewSwift.Controllers
                     BeforeRole = "None",
                     BeforeAddress = "None",
                     AfterFname = obj.FirstName,
-                    AfterisActive = false,
+                    AfterisActive = true,
                     AfterLname = obj.LastName,
                     AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
                     AfterDOB = "None",
