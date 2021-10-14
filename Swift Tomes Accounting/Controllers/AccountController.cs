@@ -119,17 +119,18 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     //find DateTime of when password was created
                     var lastpassdate = curr_user.PasswordDate;
-                    if(lastpassdate.AddDays(27) < DateTime.Now)
-                    {
-                        TempData[SD.Error] = "Your password will expire in three days.";
-                    }
-                    else if (lastpassdate.AddDays(30) < DateTime.Now)
+                    
+                    if (lastpassdate.AddDays(30) < DateTime.Now)
                     {
                         TempData[SD.Error] = "Your password has expired. You have been emailed a link to reset it.";
                         await _signInManager.SignOutAsync();
                         return View();
                     }
-                    else
+                    if (lastpassdate.AddDays(27) < DateTime.Now)
+                    {
+                        TempData[SD.Error] = "Your password will expire in three days.";
+                    }
+                    if(lastpassdate.AddDays(30) > DateTime.Now)
                     {
                         if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
                         {
