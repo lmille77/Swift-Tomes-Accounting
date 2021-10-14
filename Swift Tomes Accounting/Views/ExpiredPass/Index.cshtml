@@ -50,7 +50,10 @@
                     Name
                 </th>
                 <th>
-                    Expired Hashed Password 1
+                    Role
+                </th>
+                <th>
+                    Date Expired
                 </th>
 
 
@@ -66,9 +69,12 @@
                         @user.FirstName  @user.LastName
                     </td>
                     <td>
-                        @user.LastPass1
+                        @user.Role
                     </td>
-
+                    <td>
+                        @user.PasswordDate
+                    </td>
+                    
 
                 </tr>
             }

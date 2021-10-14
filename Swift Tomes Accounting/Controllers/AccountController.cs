@@ -63,7 +63,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     LastName = "Admin",
                     Email = "miller4277@gmail.com",
                     isApproved = true,
-                    Role = "Admin"
+                    Role = "Admin",
+                    PasswordDate = DateTime.Now
                 };
                 var result = await _userManager.CreateAsync(user, "Admin123!");
                 await _userManager.AddToRoleAsync(user, "Admin");
@@ -118,31 +119,35 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     //find DateTime of when password was created
                     var lastpassdate = curr_user.PasswordDate;
-                    if(lastpassdate.AddDays(1) < DateTime.Now)
+                    if(lastpassdate.AddDays(27) < DateTime.Now)
                     {
                         TempData[SD.Error] = "Your password will expire in three days.";
                     }
-                    
-
-
-
-                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
-                    {                        
-                        return RedirectToAction("Index", "Admin");
-                    }
-                    else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
-                    {                        
-                        return RedirectToAction("Index", "Manager");
-                    }
-                    else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
+                    else if (lastpassdate.AddDays(30) < DateTime.Now)
                     {
-                        return RedirectToAction("Index", "Accountant");
+                        TempData[SD.Error] = "Your password has expired. You have been emailed a link to reset it.";
+                        await _signInManager.SignOutAsync();
+                        return View();
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
-                    }
-
+                        if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
+                        {
+                            return RedirectToAction("Index", "Manager");
+                        }
+                        else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
+                        {
+                            return RedirectToAction("Index", "Accountant");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }  
                 }
                 else
                 {
@@ -185,7 +190,6 @@ namespace Swift_Tomes_Accounting.Controllers
 
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
-            var userevents = _db.EventUser.ToList();
 
             if (ModelState.IsValid)
             {
@@ -225,10 +229,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     eventTime = DateTime.Now,
                     eventType = "Requested Access",
                     eventPerformedBy = obj.FirstName + " " + obj.LastName,
-                };
-                _db.EventUser.Add(user_event);
+                };  
                 
-
                 //creates user
                 var result = await _userManager.CreateAsync(user, obj.Password);
 
@@ -247,6 +249,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result.Succeeded)
                 {
+                    
                     //sends an email to admin requesting approval for new user
                     var subject = "Add new user";
                     var body = "<a href='https://localhost:44316/Account/Login'>Click to Add User </a>";
@@ -256,6 +259,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     //adds user to database but without admin approval
                     await _userManager.AddToRoleAsync(user, "Unapproved");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _db.EventUser.Add(user_event);
                     _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }

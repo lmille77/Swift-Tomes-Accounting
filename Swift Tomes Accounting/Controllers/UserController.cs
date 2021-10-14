@@ -77,6 +77,7 @@ namespace NewSwift.Controllers
                     LastName = obj.LastName,
                     Email = obj.Email,
                     isApproved = true,
+                    PasswordDate = DateTime.Now
                 };
 
                 EventUser user_event = new EventUser
