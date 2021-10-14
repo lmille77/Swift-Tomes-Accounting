@@ -68,15 +68,15 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChartOfAccounts(string searchString)
+        public IActionResult ChartOfAccounts(string searchString, DateTime dateSearch1, DateTime dateSearch2)
         {
-            var sortList = SearchResult(searchString);
+            var sortList = SearchResult(searchString, dateSearch1, dateSearch2);
             ViewBag.result = searchString;
             return View(sortList);
 
         }
 
-        public IEnumerable<AccountDB> SearchResult(string search)
+        public IEnumerable<AccountDB> SearchResult(string search, DateTime date1, DateTime date2)
         {
             var list = _db.Account.ToList();
 
@@ -90,9 +90,21 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
             }
 
-            if (!String.IsNullOrEmpty(search))
+            if ((!String.IsNullOrEmpty(search)) || (!String.IsNullOrEmpty(date1.ToString())))
             {
                 List<AccountDB> resultList = new List<AccountDB>();
+
+                TimeSpan dateRange;
+
+                if (String.IsNullOrEmpty(date2.ToString()))
+                {
+                    dateRange = DateTime.Now - date1;
+                }
+                else
+                {
+                    dateRange = date2 - date1;
+                }
+
                 foreach (var item in activeList)
                 {
 
@@ -105,7 +117,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         resultList.Add(item);
                     }
-
+                    else if (dateRange.Equals(item.CreatedOn))
+                    {
+                        resultList.Add(item);
+                    }
                 }
 
                 return resultList;
