@@ -128,41 +128,20 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChartOfAccounts(string searchString, DateTime dateSearch1,
+        public IActionResult ChartOfAccounts(DateTime dateSearch1,
             DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
         {
-            var sortList = SearchResult(searchString, dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
+            var sortList = SearchResult(dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
 
             return View(sortList);
 
         }
 
-        public IEnumerable<AccountDB> SearchResult(string search, DateTime date1, DateTime date2, float balance1, float balance2)
+        public IEnumerable<AccountDB> SearchResult(DateTime date1, DateTime date2, float balance1, float balance2)
         {
             var list = _db.Account.ToList();
 
             List<AccountDB> resultList = new List<AccountDB>();
-
-            if (!String.IsNullOrEmpty(search))
-            {
-                foreach (var item in list)
-                {
-
-                    if (item.AccountName.Contains(search))
-                    {
-                        resultList.Add(item);
-                    }
-
-                    else if (item.AccountNumber.ToString().Contains(search))
-                    {
-                        resultList.Add(item);
-                    }
-                    else if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
-                    {
-                        resultList.Add(item);
-                    }
-                }
-            }
 
             if (date1.ToString() != "1/1/0001 12:00:00 AM")
             {
@@ -178,6 +157,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
+
             if ((balance1 > 0) && (balance2 == 0))
             {
                 foreach(var item in list)
