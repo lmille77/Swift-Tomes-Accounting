@@ -34,14 +34,13 @@
 </div>
 
 
-<div class="text-center" style="margin-left:50px">
-    <h1>Chart Of Accounts</h1>
+<h1 class="text-center" style="margin-left:50px">Chart Of Accounts</h1>
+<br />
+<br />
+<div class="form-group row" style="margin-left:100px">
+    <div>
 
-    <br />
-    <br />
-    <div class="form-group row">
-
-        <form asp-controller="Manager" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
+        <form asp-controller="Manager" asp-action="ChartOfAccounts" method="post">
             <p>
                 <label>$</label>
                 <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
@@ -52,14 +51,15 @@
                 <label> - </label>
                 <input type="date" name="DateSearch2" value="@ViewBag.result" />
                 &nbsp;&nbsp;
-                <input type="submit" value="Filter" data-placement="bottom" title="Filter the Chart of Accounts Data
-                       with a Date Range or Balance Search"/>
+                <input type="submit" value="Filter" />
             </p>
         </form>
-        &nbsp;&nbsp;
-        <form asp-controller="Manager" asp-action="ChartOfAccounts" method="get" style="margin-left:960px">
+    </div>
+    <div>&nbsp;&nbsp;</div>
+    <div>
+        <form asp-controller="Manager" asp-action="ChartOfAccounts" method="get">
             <p>
-                <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
+                <input type="submit" value="Reset">
             </p>
         </form>
     </div>
@@ -67,43 +67,43 @@
 </div>
 
 <div class="container-fluid" style="width: 1200px; margin-left: 75px">
-    <table class="table"  id="table"
+    <table class="table" id="table"
            data-toggle="table"
            data-search="true"
            data-filter-control="true">
         <thead>
             <tr>
-                <th data-field="accountNumber"  data-sortable="true">
+                <th data-field="accountNumber" data-sortable="true">
                     @Html.DisplayNameFor(model => model.AccountNumber)
                 </th>
-                <th data-field="accountName"  data-sortable="true">
+                <th data-field="accountName" data-sortable="true">
                     @Html.DisplayNameFor(model => model.AccountName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Description)
                 </th>
-                <th data-field="category"  data-sortable="true">
+                <th data-field="category" data-sortable="true">
                     @Html.DisplayNameFor(model => model.Category)
                 </th>
-                <th data-field="subCategory"  data-sortable="true">
+                <th data-field="subCategory" data-sortable="true">
                     @Html.DisplayNameFor(model => model.SubCategory)
                 </th>
 
 
-                <th data-field="balance"  data-sortable="true">
+                <th data-field="balance" data-sortable="true">
                     @Html.DisplayNameFor(model => model.Balance)
                 </th>
-                <th data-field="createdOn"  data-sortable="true">
+                <th data-field="createdOn" data-sortable="true">
                     @Html.DisplayNameFor(model => model.CreatedOn)
                 </th>
-                <th data-field="userName"  data-sortable="true" >
+                <th data-field="userName" data-sortable="true">
                     @Html.DisplayNameFor(model => model.UserName)
                 </th>
 
                 <th>
                     @Html.DisplayNameFor(model => model.Comments)
                 </th>
-                
+
             </tr>
         </thead>
         @if (Model.Count() == 0)

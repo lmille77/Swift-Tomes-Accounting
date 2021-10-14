@@ -48,19 +48,21 @@
         </li>
     </ul>
 </div>
-<div class="text-center" style="margin-left:50px">
-    <h1>Chart Of Accounts</h1>
-    <br />
-    <br />
-    <div class="form-group row">
-        <p style="margin-left:100px">
-            <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white"
-               data-toggle="tooltip" data-placement="bottom" title="Add a New Account to the System">
-                Add Account
-            </a>
-        </p>
+<h1 class="text-center" style="margin-left:50px">Chart Of Accounts</h1>
 
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
+<div class="form-group row">
+    <div style="margin-left:100px">
+        <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white"
+           data-toggle="tooltip" data-placement="bottom" title="Add a New Account to the System">
+            Add Account
+        </a>
+
+    </div>
+    <div>
+
+        <form asp-controller="Money" asp-action="ChartOfAccounts" method="post">
+            <div>&nbsp;&nbsp;</div>
+            <div>&nbsp;&nbsp;</div>
             <p>
                 <label>$</label>
                 <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
@@ -75,8 +77,12 @@
                        with a Date Range or Balance Search" />
             </p>
         </form>
-        &nbsp;&nbsp;
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get" style="margin-left:960px">
+    </div>
+    <div>&nbsp;&nbsp;</div>
+    <div>
+        <div>&nbsp;&nbsp;</div>
+        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
+            <div>&nbsp;&nbsp;</div>
             <p>
                 <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
             </p>
@@ -84,6 +90,10 @@
     </div>
 
 </div>
+
+    
+
+
 
 <div class="container-fluid" style="width: 1250px; margin-left: 75px">
     <table class="table" id="table"
