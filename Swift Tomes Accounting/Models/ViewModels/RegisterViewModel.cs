@@ -43,8 +43,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string ZipCode { get; set; }
 
         [DataType(DataType.Date)]
-        public string DOB { get; set; }
-        public string eventPerformedBy { get; set; }       
+        public string DOB { get; set; }   
+        public string Role { get; set; }
 
     }
 }

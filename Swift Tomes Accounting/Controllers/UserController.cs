@@ -61,7 +61,7 @@ namespace NewSwift.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(ApplicationUser obj)
+        public async Task<IActionResult> Create(RegisterViewModel obj)
         {
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
@@ -102,7 +102,7 @@ namespace NewSwift.Controllers
                 _db.EventUser.Add(user_event);
 
                 //creates user
-                var result = await _userManager.CreateAsync(user, "Default1!");
+                var result = await _userManager.CreateAsync(user, obj.Password);
                 
 
                 if (result.Succeeded)

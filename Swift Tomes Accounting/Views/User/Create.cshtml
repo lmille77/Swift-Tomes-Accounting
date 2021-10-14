@@ -1,4 +1,4 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.RegisterViewModel
 <br />
 
 <div style="border: 1px solid; border-color: lightgray; width: 495px; margin: 0 auto;">
@@ -30,6 +30,22 @@
             <div class="col-md-8">
                 <input asp-for="Email" class="form-control" placeholder="Email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-6">
+                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-6">
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
         <br />
