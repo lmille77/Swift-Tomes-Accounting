@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Controllers
 {
+   
     public class MoneyController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -75,21 +76,21 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             EventAccount new_account = new EventAccount
             {  
-                BeforeAccountName = "none",
+                BeforeAccountName = "None",
                 BeforeAccountNumber = -1,
-                BeforeDescription = "none",
-                BeforeNormSide = "none",
-                BeforeCategory = "none",
+                BeforeDescription = "None",
+                BeforeNormSide = "None",
+                BeforeCategory = "None",
                 BeforeOrder = -1,
                 BeforeisActive = false,
                 BeforeisContra = false,
-                BeforeSubCategory = "none",
+                BeforeSubCategory = "None",
                 BeforeInitial = -1,
                 BeforeDebit = -1,
                 BeforeCredit = -1,
                 BeforeBalance = -1,
-                BeforeStatement = "none",
-                BeforeComments = "none",
+                BeforeStatement = "None",
+                BeforeComments = "None",
                 AfterAccountName = account.AccountName,
                 AfterAccountNumber = account.AccountNumber,
                 AfterDescription = account.Description,
@@ -495,6 +496,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return Json(new { data = accountlist });
         }
 
-
+        
     }
 }

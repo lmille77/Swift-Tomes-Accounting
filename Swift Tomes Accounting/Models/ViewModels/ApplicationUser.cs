@@ -14,7 +14,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
         //columns added to the database
         public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string LastName { get; set; }        
         public string CustomUsername { get; set; }
         public bool isApproved { get; set; }
 
@@ -33,11 +33,10 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         //just used to display in the view, not stored in database
         [NotMapped]
-        [Required(ErrorMessage ="The role field is required.")]
         public string RoleId { get; set; }
 
         //just used to display in the view, not stored in database
-       
+        [NotMapped]
         public string Role { get; set; }
 
         [NotMapped]

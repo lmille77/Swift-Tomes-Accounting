@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Controllers
 {
+   
     public class ManagerController : Controller
     {
         private IConfiguration _configuration;
@@ -80,32 +81,11 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var list = _db.Account.ToList();
 
-            List<AccountDB> activeList = new List<AccountDB>();
 
-            foreach (var item in list)
-            {
-                if ((item.ChartOfAccounts) && (item.Active))
-                {
-                    activeList.Add(item);
-                }
-            }
-
-            if ((!String.IsNullOrEmpty(search)) || (!String.IsNullOrEmpty(date1.ToString())))
+            if (!String.IsNullOrEmpty(search))
             {
                 List<AccountDB> resultList = new List<AccountDB>();
-
-                TimeSpan dateRange;
-
-                if (String.IsNullOrEmpty(date2.ToString()))
-                {
-                    dateRange = DateTime.Now - date1;
-                }
-                else
-                {
-                    dateRange = date2 - date1;
-                }
-
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
 
                     if (item.AccountName.Contains(search))
@@ -126,8 +106,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 return resultList;
             }
 
-            return activeList;
+            return list;
         }
+
+
+
         public IActionResult Report()
         {
            

@@ -16,8 +16,10 @@ using System.Threading.Tasks;
 
 
 
+
 namespace Swift_Tomes_Accounting.Controllers
 {
+    
     public class AccountController : Controller
     {
         //variables used to host email service
@@ -202,18 +204,17 @@ namespace Swift_Tomes_Accounting.Controllers
                     ZipCode = obj.ZipCode,
                     State = obj.State,
                     City = obj.City,
-                    Role = "Unapproved"
                 };
 
                 EventUser user_event = new EventUser
                 {
-                    BeforeFname = "none",
+                    BeforeFname = "None",
                     BeforeisActive = false,
-                    BeforeLname = "none",
-                    BeforeuserName = "none",
-                    BeforeDOB = "none",
-                    BeforeRole = "none",
-                    BeforeAddress = "none",
+                    BeforeLname = "None",
+                    BeforeuserName = "None",
+                    BeforeDOB = "None",
+                    BeforeRole = "None",
+                    BeforeAddress = "None",
                     AfterFname = obj.FirstName,
                     AfterisActive = false,
                     AfterLname = obj.LastName,
@@ -401,6 +402,17 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(obj);
         }
+
+       
+
+
+        //[HttpPost]
+        //public IActionResult AjaxMethod()
+        //{
+        //    List<Account> customers = (from customer in this.Context.Customers
+        //                                select customer).ToList();
+        //    return Json(JsonConvert.SerializeObject(customers));
+        //}
 
     }
 }
