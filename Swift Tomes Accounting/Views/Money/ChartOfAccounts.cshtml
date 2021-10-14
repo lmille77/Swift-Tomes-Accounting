@@ -48,10 +48,18 @@
             
             <form asp-controller="Money" asp-action="ChartOfAccounts" method="post" style="margin-left:525px">
                 <p>
+                    <label>$</label>
+                    <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
+                    <label> - $</label>
+                    <input type="text" name="BalanceSearch2" value="@ViewBag.result" />
+                    &nbsp;&nbsp;
+                    <input type="date" name="DateSearch1" value="@ViewBag.result" />
+                    <label> - </label>
+                    <input type="date" name="DateSearch2" value="@ViewBag.result" />
+                    &nbsp;&nbsp;
                     <input type="text" name="SearchString" value="@ViewBag.result" />
                     &nbsp;
                     <input type="submit" value="Search" />
-
                 </p>
             </form>
             &nbsp;&nbsp;
@@ -83,8 +91,6 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.SubCategory)
                             </th>
-
-
                             <th>
                                 @Html.DisplayNameFor(model => model.Balance)
                             </th>
@@ -131,10 +137,8 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.SubCategory)
                                 </td>
-
-
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Balance)
+                                    @Html.DisplayFor(modelItem => item.Balance)                            
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreatedOn)

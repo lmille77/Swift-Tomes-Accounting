@@ -69,15 +69,15 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChartOfAccounts(string searchString)
+        public IActionResult ChartOfAccounts(string searchString, DateTime dateSearch1, DateTime dateSearch2)
         {
-            var sortList = SearchResult(searchString);
+            var sortList = SearchResult(searchString, dateSearch1, dateSearch2);
             ViewBag.result = searchString;
             return View(sortList);
 
         }
 
-        public IEnumerable<AccountDB> SearchResult(string search)
+        public IEnumerable<AccountDB> SearchResult(string search, DateTime date1, DateTime date2)
         {
             var list = _db.Account.ToList();
 
@@ -97,7 +97,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         resultList.Add(item);
                     }
-
+                    else if (dateRange.Equals(item.CreatedOn))
+                    {
+                        resultList.Add(item);
+                    }
                 }
 
                 return resultList;
