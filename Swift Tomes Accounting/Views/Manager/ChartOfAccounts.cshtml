@@ -52,13 +52,14 @@
                 <label> - </label>
                 <input type="date" name="DateSearch2" value="@ViewBag.result" />
                 &nbsp;&nbsp;
-                <input type="submit" value="Filter" />
+                <input type="submit" value="Filter" data-placement="bottom" title="Filter the Chart of Accounts Data
+                       with a Date Range or Balance Search"/>
             </p>
         </form>
         &nbsp;&nbsp;
         <form asp-controller="Manager" asp-action="ChartOfAccounts" method="get" style="margin-left:960px">
             <p>
-                <input type="submit" value="Reset">
+                <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
             </p>
         </form>
     </div>
