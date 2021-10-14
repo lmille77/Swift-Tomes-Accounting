@@ -115,8 +115,8 @@ namespace NewSwift.Controllers
 
 
                     var body = "Your account has been created.\n" +
-                        "You will not be able to login unless you create a password\n" +
-                        "Please create your password by clicking <a href=\"" + callbackurl + "\"> here.";
+                        "You will not be able to login unless you create a password.\n" +
+                        "Please create your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
 
                     var mailHelper = new MailHelper(_configuration);
                     mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
