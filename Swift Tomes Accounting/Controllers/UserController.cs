@@ -19,15 +19,17 @@ namespace NewSwift.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        SignInManager<ApplicationUser> _signInManager;
         private IConfiguration _configuration;
         private IWebHostEnvironment _webHostEnvironment;
 
 
-        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -51,10 +53,89 @@ namespace NewSwift.Controllers
                     user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
                 }
             }
-
             return View(userList);
-
         }
+        
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(ApplicationUser obj)
+        {
+            string _Firstname = obj.FirstName.ToLower();
+            string _Lastname = obj.LastName.ToLower();
+
+            if (ModelState.IsValid)
+            {
+                //object created by user input
+                ApplicationUser user = new ApplicationUser()
+                {
+                    UserName = obj.Email,
+                    CustomUsername = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
+                    FirstName = obj.FirstName,
+                    LastName = obj.LastName,
+                    Email = obj.Email,
+                    isApproved = true,
+                };
+
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = "None",
+                    BeforeisActive = false,
+                    BeforeLname = "None",
+                    BeforeuserName = "None",
+                    BeforeDOB = "None",
+                    BeforeRole = "None",
+                    BeforeAddress = "None",
+                    AfterFname = obj.FirstName,
+                    AfterisActive = false,
+                    AfterLname = obj.LastName,
+                    AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
+                    AfterDOB = "None",
+                    AfterRole = obj.Role,
+                    AfterAddress = "None",
+                    eventTime = DateTime.Now,
+                    eventType = "Created User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
+
+                //creates user
+                var result = await _userManager.CreateAsync(user, "Default1!");
+                
+
+                if (result.Succeeded)
+                {
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                    //sends an email to admin requesting approval for new user
+                    var subject = "Your account has been created!";
+
+
+                    var body = "Your account has been created.\n" +
+                        "You will not be able to login unless you create a password\n" +
+                        "Please create your password by clicking <a href=\"" + callbackurl + "\"> here.";
+
+                    var mailHelper = new MailHelper(_configuration);
+                    mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+
+                    
+                    await _userManager.AddToRoleAsync(user, obj.Role);
+
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "An account with the entered email already exists.");
+                }
+
+            }
+            return View();
+        }
+
 
 
         public IActionResult Edit(string userId)
@@ -82,9 +163,7 @@ namespace NewSwift.Controllers
             });
 
             return View(objFromDb);
-        }
-
-        
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -112,7 +191,7 @@ namespace NewSwift.Controllers
                 }
 
                 //add new role
-                await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
+                await _userManager.AddToRoleAsync(objFromDb, user.Role);
                 EventUser user_event = new EventUser
                 {
                     BeforeFname = objFromDb.FirstName,
@@ -127,7 +206,7 @@ namespace NewSwift.Controllers
                     AfterLname = user.LastName,
                     AfteruserName = objFromDb.CustomUsername,
                     AfterDOB = user.DOB,
-                    AfterRole = user.RoleId,
+                    AfterRole = user.Role,
                     AfterAddress = user.Address + " " + user.City + ", " + user.State + " " + user.ZipCode,
                     eventTime = DateTime.Now,
                     eventType = "Edited User ",

@@ -202,7 +202,6 @@ namespace Swift_Tomes_Accounting.Controllers
                     ZipCode = obj.ZipCode,
                     State = obj.State,
                     City = obj.City,
-                    Role = "Unapproved"
                 };
 
                 EventUser user_event = new EventUser
