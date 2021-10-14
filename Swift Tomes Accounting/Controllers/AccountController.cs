@@ -123,6 +123,21 @@ namespace Swift_Tomes_Accounting.Controllers
                     if (lastpassdate.AddDays(30) < DateTime.Now)
                     {
                         TempData[SD.Error] = "Your password has expired. You have been emailed a link to reset it.";
+
+                        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                        //sends an email to admin requesting approval for new user
+                        var subject = "Your password has expired!";
+
+
+                        var body = "Your password has expired.\n" +
+                            "You will not be able to login unless you reset your password.\n" +
+                            "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
+
+                        var mailHelper = new MailHelper(_configuration);
+                        mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+
                         await _signInManager.SignOutAsync();
                         return View();
                     }
@@ -395,6 +410,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     curr_user.LastPass2 = curr_user.LastPass1;
                     curr_user.LastPass1 = curr_user.PasswordHash;
+                    curr_user.PasswordDate = DateTime.Now;
                     await _userManager.UpdateAsync(curr_user);
 
                     await _userManager.RemovePasswordAsync(curr_user);
