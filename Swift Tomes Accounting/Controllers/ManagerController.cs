@@ -69,23 +69,32 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChartOfAccounts(string searchString, DateTime dateSearch1, DateTime dateSearch2)
+        public IActionResult ChartOfAccounts(string searchString, DateTime dateSearch1,
+             DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
         {
-            var sortList = SearchResult(searchString, dateSearch1, dateSearch2);
-            ViewBag.result = searchString;
+            var sortList = SearchResult(searchString, dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
+
             return View(sortList);
 
         }
 
-        public IEnumerable<AccountDB> SearchResult(string search, DateTime date1, DateTime date2)
+        public IEnumerable<AccountDB> SearchResult(string search, DateTime date1, DateTime date2, float balance1, float balance2)
         {
             var list = _db.Account.ToList();
 
+            List<AccountDB> activeList = new List<AccountDB>();
 
+            foreach (var item in list)
+            {
+                if ((item.ChartOfAccounts) && (item.Active))
+                {
+                    activeList.Add(item);
+                }
+            }
+            List<AccountDB> resultList = new List<AccountDB>();
             if (!String.IsNullOrEmpty(search))
             {
-                List<AccountDB> resultList = new List<AccountDB>();
-                foreach (var item in list)
+                foreach (var item in activeList)
                 {
 
                     if (item.AccountName.Contains(search))
@@ -97,16 +106,58 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         resultList.Add(item);
                     }
-                    else if (dateRange.Equals(item.CreatedOn))
+                    else if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
                     {
                         resultList.Add(item);
                     }
                 }
-
-                return resultList;
             }
 
-            return list;
+            if (date1.ToString() != "1/1/0001 12:00:00 AM")
+            {
+                if (date2.ToString() == "1/1/0001 12:00:00 AM")
+                {
+                    date2 = DateTime.Now;
+                }
+                foreach (var item in activeList)
+                {
+                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 > 0) && (balance2 == 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if (balance1 <= item.Balance)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 == 0) && (balance2 > 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if (item.Balance <= balance2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 > 0) && (balance2 > 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if ((balance1 <= item.Balance) && (item.Balance <= balance2))
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            return resultList;
         }
 
 

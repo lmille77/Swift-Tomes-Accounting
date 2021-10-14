@@ -132,7 +132,7 @@ namespace Swift_Tomes_Accounting.Controllers
             DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
         {
             var sortList = SearchResult(searchString, dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
-            ViewBag.result = searchString;
+
             return View(sortList);
 
         }
@@ -141,19 +141,11 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var list = _db.Account.ToList();
 
-            List<AccountDB> activeList = new List<AccountDB>();
-
-            foreach (var item in list)
-            {
-                if ((item.ChartOfAccounts) && (item.Active))
-                {
-                    activeList.Add(item);
-                }
-            }
             List<AccountDB> resultList = new List<AccountDB>();
+
             if (!String.IsNullOrEmpty(search))
             {
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
 
                     if (item.AccountName.Contains(search))
@@ -178,7 +170,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     date2 = DateTime.Now;
                 }
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
                     if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
                     {
@@ -188,7 +180,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             if ((balance1 > 0) && (balance2 == 0))
             {
-                foreach(var item in activeList)
+                foreach(var item in list)
                 {
                     if (balance1 <= item.Balance)
                     {
@@ -198,7 +190,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             if ((balance1 == 0) && (balance2 > 0))
             {
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
                     if (item.Balance <= balance2)
                     {
@@ -208,7 +200,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             if ((balance1 > 0) && (balance2 > 0))
             {
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
                     if ((balance1 <= item.Balance) && (item.Balance <= balance2))
                     {
