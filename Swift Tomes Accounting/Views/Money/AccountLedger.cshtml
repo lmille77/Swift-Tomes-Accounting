@@ -1,0 +1,109 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
+
+@{
+    ViewData["Title"] = "AccountLedger";
+}
+
+<div class="container-fluid" style="width: 1200px; margin-left: 75px">
+    <center><h1>@Model.AccountName</h1></center>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccountNumber)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Debit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Credit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Balance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comments)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    @Html.DisplayFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.AccountNumber)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Debit)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Credit)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Balance)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => model.Comments)
+                </th>
+            </tr>
+
+        </tbody>
+    </table>
+    
+</div>
+<div class="col">
+    <a asp-action="ChartOfAccounts" class="btn btn-success w-10" style="margin-left:100px">Go Back</a>
+</div>
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+        </li>
+        <li>
+            <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
+        </li>
+        <li>
+            <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
+        </li>
+        <li>
+            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+    </ul>
+</div>
+
+
+

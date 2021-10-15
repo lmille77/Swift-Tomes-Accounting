@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
 <br />
-<h2 class="text-center">Unapproved User List</h2>
-<hr />
-<div class="p-4 border rounded">
+<h2 style="margin-left:50px"class="text-center">Unapproved User List</h2>
+
+<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
     @if (Model.Count() > 0)
     {
         <table class="table table-striped border">
@@ -44,18 +44,18 @@
                 <div class="text-center">
                     <form asp-action="Delete" asp-route-userId="@item.Id">
 
-                        <a asp-action="AssignRole" asp-route-userId="@item.Id" class="btn btn-warning text-black" style="cursor:pointer">
+                        <a asp-action="AssignRole" asp-route-userId="@item.Id" class="btn btn-warning text-black" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Assign User Role or Edit User Profile">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                             Assign Role
                         </a>
                         <button onclick="return confirm('Are you sure you want to reject this user?')"
-                                class="btn btn-danger">
+                                class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deny Access">
                             <i class="fa fa-times" aria-hidden="true"></i>
 
                             Deny
                         </button>
                         <button asp-action="Approve" asp-route-userId="@item.Id" class="btn btn-success"
-                                style="cursor:pointer">
+                                style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Grant Access">
                             <span>
                                 <i class="fa fa-check" aria-hidden="true"></i>
                                 Approve
@@ -71,3 +71,43 @@
     }
 </div>
 <br />
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-info btn-outline-light">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+        </li>
+        <li>
+            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

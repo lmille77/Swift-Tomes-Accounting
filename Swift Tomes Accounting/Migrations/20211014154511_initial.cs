@@ -11,26 +11,28 @@ namespace Swift_Tomes_Accounting.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    AccoutNumber = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<double>(type: "float", nullable: false),
                     AccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormSide = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    NormSide = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Initial = table.Column<int>(type: "int", nullable: false),
-                    Debit = table.Column<int>(type: "int", nullable: false),
-                    Credit = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Initial = table.Column<double>(type: "float", nullable: false),
+                    Debit = table.Column<double>(type: "float", nullable: false),
+                    Credit = table.Column<double>(type: "float", nullable: false),
+                    Balance = table.Column<double>(type: "float", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Order = table.Column<int>(type: "int", nullable: false),
                     Statement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Contra = table.Column<bool>(type: "bit", nullable: false),
+                    ChartOfAccounts = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.AccoutNumber);
+                    table.PrimaryKey("PK_Account", x => x.AccountNumber);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,6 +84,82 @@ namespace Swift_Tomes_Accounting.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventAccount",
+                columns: table => new
+                {
+                    eventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BeforeAccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeAccountNumber = table.Column<double>(type: "float", nullable: false),
+                    BeforeDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeNormSide = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeSubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeInitial = table.Column<double>(type: "float", nullable: false),
+                    BeforeDebit = table.Column<double>(type: "float", nullable: false),
+                    BeforeCredit = table.Column<double>(type: "float", nullable: false),
+                    BeforeBalance = table.Column<double>(type: "float", nullable: false),
+                    BeforeUserID = table.Column<int>(type: "int", nullable: false),
+                    BeforeOrder = table.Column<int>(type: "int", nullable: false),
+                    BeforeStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeComments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterAccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterAccountNumber = table.Column<double>(type: "float", nullable: false),
+                    AfterDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterNormSide = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterSubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterInitial = table.Column<double>(type: "float", nullable: false),
+                    AfterDebit = table.Column<double>(type: "float", nullable: false),
+                    AfterCredit = table.Column<double>(type: "float", nullable: false),
+                    AfterBalance = table.Column<double>(type: "float", nullable: false),
+                    AfterUserID = table.Column<int>(type: "int", nullable: false),
+                    AfterOrder = table.Column<int>(type: "int", nullable: false),
+                    AfterStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterComments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeisActive = table.Column<bool>(type: "bit", nullable: false),
+                    BeforeisContra = table.Column<bool>(type: "bit", nullable: false),
+                    AfterisActive = table.Column<bool>(type: "bit", nullable: false),
+                    AfterisContra = table.Column<bool>(type: "bit", nullable: false),
+                    eventTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    eventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    eventPerformedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventAccount", x => x.eventID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventUser",
+                columns: table => new
+                {
+                    eventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BeforeFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeuserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeisActive = table.Column<bool>(type: "bit", nullable: false),
+                    BeforeDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeforeRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfteruserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterisActive = table.Column<bool>(type: "bit", nullable: false),
+                    AfterRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    eventTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    eventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    eventPerformedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventUser", x => x.eventID);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,6 +327,12 @@ namespace Swift_Tomes_Accounting.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "EventAccount");
+
+            migrationBuilder.DropTable(
+                name: "EventUser");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

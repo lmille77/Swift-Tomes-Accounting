@@ -14,8 +14,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
+
+
+
 namespace Swift_Tomes_Accounting.Controllers
 {
+    
     public class AccountController : Controller
     {
         //variables used to host email service
@@ -58,7 +62,9 @@ namespace Swift_Tomes_Accounting.Controllers
                     FirstName = "Default",
                     LastName = "Admin",
                     Email = "miller4277@gmail.com",
-                    isApproved = true
+                    isApproved = true,
+                    Role = "Admin",
+                    PasswordDate = DateTime.Now
                 };
                 var result = await _userManager.CreateAsync(user, "Admin123!");
                 await _userManager.AddToRoleAsync(user, "Admin");
@@ -113,31 +119,51 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     //find DateTime of when password was created
                     var lastpassdate = curr_user.PasswordDate;
-                    if(lastpassdate.AddDays(1) < DateTime.Now)
+                    
+                    if (lastpassdate.AddDays(30) < DateTime.Now)
+                    {
+                        TempData[SD.Error] = "Your password has expired. You have been emailed a link to reset it.";
+
+                        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                        //sends an email to admin requesting approval for new user
+                        var subject = "Your password has expired!";
+
+
+                        var body = "Your password has expired.\n" +
+                            "You will not be able to login unless you reset your password.\n" +
+                            "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
+
+                        var mailHelper = new MailHelper(_configuration);
+                        mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+
+                        await _signInManager.SignOutAsync();
+                        return View();
+                    }
+                    if (lastpassdate.AddDays(27) < DateTime.Now)
                     {
                         TempData[SD.Error] = "Your password will expire in three days.";
                     }
-                    
-
-
-
-                    if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
-                    {                        
-                        return RedirectToAction("Index", "Admin");
-                    }
-                    else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
-                    {                        
-                        return RedirectToAction("Index", "Manager");
-                    }
-                    else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
+                    if(lastpassdate.AddDays(30) > DateTime.Now)
                     {
-                        return RedirectToAction("Index", "Accountant");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-
+                        if (curr_user.isApproved == true && admin_role_list.Contains(curr_user))
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else if (curr_user.isApproved == true && manager_role_list.Contains(curr_user))
+                        {
+                            return RedirectToAction("Index", "Manager");
+                        }
+                        else if (curr_user.isApproved == true && accountant_role_list.Contains(curr_user))
+                        {
+                            return RedirectToAction("Index", "Accountant");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }  
                 }
                 else
                 {
@@ -197,9 +223,30 @@ namespace Swift_Tomes_Accounting.Controllers
                     PasswordDate = DateTime.Now,
                     ZipCode = obj.ZipCode,
                     State = obj.State,
-                    City = obj.City
+                    City = obj.City,
                 };
 
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = "None",
+                    BeforeisActive = false,
+                    BeforeLname = "None",
+                    BeforeuserName = "None",
+                    BeforeDOB = "None",
+                    BeforeRole = "None",
+                    BeforeAddress = "None",
+                    AfterFname = obj.FirstName,
+                    AfterisActive = false,
+                    AfterLname = obj.LastName,
+                    AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
+                    AfterDOB = obj.DOB,
+                    AfterRole = "Unapproved",
+                    AfterAddress = obj.Address + " " + obj.City + ", " + obj.State + " " + obj.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Requested Access",
+                    eventPerformedBy = obj.FirstName + " " + obj.LastName,
+                };  
+                
                 //creates user
                 var result = await _userManager.CreateAsync(user, obj.Password);
 
@@ -218,6 +265,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result.Succeeded)
                 {
+                    
                     //sends an email to admin requesting approval for new user
                     var subject = "Add new user";
                     var body = "<a href='https://localhost:44316/Account/Login'>Click to Add User </a>";
@@ -227,6 +275,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     //adds user to database but without admin approval
                     await _userManager.AddToRoleAsync(user, "Unapproved");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _db.EventUser.Add(user_event);
+                    _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -360,6 +410,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     curr_user.LastPass2 = curr_user.LastPass1;
                     curr_user.LastPass1 = curr_user.PasswordHash;
+                    curr_user.PasswordDate = DateTime.Now;
                     await _userManager.UpdateAsync(curr_user);
 
                     await _userManager.RemovePasswordAsync(curr_user);
@@ -372,5 +423,17 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(obj);
         }
+
+       
+
+
+        //[HttpPost]
+        //public IActionResult AjaxMethod()
+        //{
+        //    List<Account> customers = (from customer in this.Context.Customers
+        //                                select customer).ToList();
+        //    return Json(JsonConvert.SerializeObject(customers));
+        //}
+
     }
 }

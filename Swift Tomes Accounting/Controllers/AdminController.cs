@@ -102,18 +102,38 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
-        //public IActionResult ExpiredPass()
-        //{
 
-        //  var exp_pass = _db.Users.FirstOrDefault(u => u.LastPass1 != null);
+        [HttpGet]
+        public IActionResult EventLog()
+        {
+            var userevents = _db.EventUser.ToList();
+            var accountevents = _db.EventAccount.ToList();
+
+            
+
+            EventModel EventModel = new EventModel()
+            {
+                EventUser = userevents,
+                EventAccount = accountevents
+                
+            };
+            
+            return View(EventModel);
+        }
 
 
-        //    return View(exp_pass);
+        public IActionResult Journalize()
+        {
 
+            return View();
 
+        }
 
-        //}
+        public IActionResult Report()
+        {
 
+            return View();
 
+        }
     }
 }

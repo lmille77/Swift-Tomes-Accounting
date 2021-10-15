@@ -19,15 +19,17 @@ namespace NewSwift.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        SignInManager<ApplicationUser> _signInManager;
         private IConfiguration _configuration;
         private IWebHostEnvironment _webHostEnvironment;
 
 
-        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -51,10 +53,90 @@ namespace NewSwift.Controllers
                     user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
                 }
             }
-
             return View(userList);
-
         }
+        
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(RegisterViewModel obj)
+        {
+            string _Firstname = obj.FirstName.ToLower();
+            string _Lastname = obj.LastName.ToLower();
+
+            if (ModelState.IsValid)
+            {
+                //object created by user input
+                ApplicationUser user = new ApplicationUser()
+                {
+                    UserName = obj.Email,
+                    CustomUsername = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
+                    FirstName = obj.FirstName,
+                    LastName = obj.LastName,
+                    Email = obj.Email,
+                    isApproved = true,
+                    PasswordDate = DateTime.Now
+                };
+
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = "None",
+                    BeforeisActive = false,
+                    BeforeLname = "None",
+                    BeforeuserName = "None",
+                    BeforeDOB = "None",
+                    BeforeRole = "None",
+                    BeforeAddress = "None",
+                    AfterFname = obj.FirstName,
+                    AfterisActive = true,
+                    AfterLname = obj.LastName,
+                    AfteruserName = _Firstname[0] + _Lastname + DateTime.Now.ToString("yyMM"),
+                    AfterDOB = "None",
+                    AfterRole = obj.Role,
+                    AfterAddress = "None",
+                    eventTime = DateTime.Now,
+                    eventType = "Created User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
+
+                //creates user
+                var result = await _userManager.CreateAsync(user, obj.Password);
+                
+
+                if (result.Succeeded)
+                {
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                    //sends an email to admin requesting approval for new user
+                    var subject = "Your account has been created!";
+
+
+                    var body = "Your account has been created.\n" +
+                        "You will not be able to login unless you create a password.\n" +
+                        "Please create your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
+
+                    var mailHelper = new MailHelper(_configuration);
+                    mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+
+                    
+                    await _userManager.AddToRoleAsync(user, obj.Role);
+
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "An account with the entered email already exists.");
+                }
+
+            }
+            return View();
+        }
+
 
 
         public IActionResult Edit(string userId)
@@ -82,9 +164,7 @@ namespace NewSwift.Controllers
             });
 
             return View(objFromDb);
-        }
-
-        
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -93,6 +173,11 @@ namespace NewSwift.Controllers
             if (ModelState.IsValid)
             {
                 var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == user.Id);
+                var roles = _db.Roles.ToList();
+                var userRoles = _db.UserRoles.ToList();
+                var role = userRoles.FirstOrDefault(u => u.UserId == objFromDb.Id);
+                objFromDb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
+
                 if (objFromDb == null)
                 {
                     return NotFound();
@@ -107,8 +192,27 @@ namespace NewSwift.Controllers
                 }
 
                 //add new role
-                await _userManager.AddToRoleAsync(objFromDb, user.RoleId);
-
+                await _userManager.AddToRoleAsync(objFromDb, user.Role);
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromDb.FirstName,
+                    BeforeisActive = true,
+                    BeforeLname = objFromDb.LastName,
+                    BeforeuserName = objFromDb.CustomUsername,
+                    BeforeDOB = objFromDb.DOB,
+                    BeforeRole = objFromDb.Role,
+                    BeforeAddress = objFromDb.Address + " " + objFromDb.City + ", " + objFromDb.State + " " + objFromDb.ZipCode,
+                    AfterFname = user.FirstName,
+                    AfterisActive = true,
+                    AfterLname = user.LastName,
+                    AfteruserName = objFromDb.CustomUsername,
+                    AfterDOB = user.DOB,
+                    AfterRole = user.Role,
+                    AfterAddress = user.Address + " " + user.City + ", " + user.State + " " + user.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Edited User ",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
                 objFromDb.FirstName = user.FirstName;
                 objFromDb.LastName = user.LastName;
                 objFromDb.DOB = user.DOB;
@@ -116,6 +220,9 @@ namespace NewSwift.Controllers
                 objFromDb.ZipCode = user.ZipCode;
                 objFromDb.State = user.State;
                 objFromDb.City = user.City;
+                
+                
+                _db.EventUser.Add(user_event);
                 _db.SaveChanges();
                 TempData[SD.Success] = "User has been edited successfully.";
                 return RedirectToAction(nameof(Index));
@@ -134,6 +241,10 @@ namespace NewSwift.Controllers
         public IActionResult LockUnlock(string userId)
         {
             var objFromdb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            var roles = _db.Roles.ToList();
+            var userRoles = _db.UserRoles.ToList();
+            var role = userRoles.FirstOrDefault(u => u.UserId == objFromdb.Id);
+            objFromdb.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
             if (objFromdb == null)
             {
                 return NotFound();
@@ -141,6 +252,27 @@ namespace NewSwift.Controllers
 
             if (objFromdb.LockoutEnd != null && objFromdb.LockoutEnd > DateTime.Now)
             {
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromdb.FirstName,
+                    BeforeisActive = false,
+                    BeforeLname = objFromdb.LastName,
+                    BeforeuserName = objFromdb.CustomUsername,
+                    BeforeDOB = objFromdb.DOB,
+                    BeforeRole = objFromdb.Role,
+                    BeforeAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    AfterFname = objFromdb.FirstName,
+                    AfterisActive = true,
+                    AfterLname = objFromdb.LastName,
+                    AfteruserName = objFromdb.CustomUsername,
+                    AfterDOB = objFromdb.DOB,
+                    AfterRole = objFromdb.Role,
+                    AfterAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Unlocked User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
                 //this mean user is locked and will remain lcoked until lockoutend time
                 //clickng will unlock user
                 objFromdb.LockoutEnd = DateTime.Now;
@@ -148,6 +280,27 @@ namespace NewSwift.Controllers
             }
             else
             {
+                EventUser user_event = new EventUser
+                {
+                    BeforeFname = objFromdb.FirstName,
+                    BeforeisActive = true,
+                    BeforeLname = objFromdb.LastName,
+                    BeforeuserName = objFromdb.CustomUsername,
+                    BeforeDOB = objFromdb.DOB,
+                    BeforeRole = objFromdb.Role,
+                    BeforeAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    AfterFname = objFromdb.FirstName,
+                    AfterisActive = false,
+                    AfterLname = objFromdb.LastName,
+                    AfteruserName = objFromdb.CustomUsername,
+                    AfterDOB = objFromdb.DOB,
+                    AfterRole = objFromdb.Role,
+                    AfterAddress = objFromdb.Address + " " + objFromdb.City + ", " + objFromdb.State + " " + objFromdb.ZipCode,
+                    eventTime = DateTime.Now,
+                    eventType = "Locked User",
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventUser.Add(user_event);
                 //user is not locked and we want to lock the user
                 objFromdb.LockoutEnd = DateTime.Now.AddYears(1000);
                 TempData[SD.Success] = "User locked successfully.";

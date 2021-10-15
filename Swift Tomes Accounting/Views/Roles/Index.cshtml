@@ -1,16 +1,47 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
 <br />
-<h2 class="text-center">Roles List</h2>
-<hr />
+<h2 class="text-center" style="margin-left:50px">Roles List</h2>
+
 <br />
 <div>
-    <div class="col-6 text-lg-right">
+    <div class="text-center" style="margin-left:50px">
         <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary"> Create New Role</a>
     </div>
 </div>
 <br />
-<div class="p-4 border rounded">
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
+        </li>       
+        <li>
+            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
     @if (Model.Any())
     {
         <table class="table table-striped border">
@@ -54,15 +85,5 @@
         </table>
     }
 </div>
-<br />
-<br />
-<br />
-<form asp-action="GoBack" asp-controller="Admin">
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <button type="submit" class="btn btn-warning">Done</button>
-            </div>
-        </div>
-    </div>
-</form>
+
+

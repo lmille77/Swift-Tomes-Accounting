@@ -26,19 +26,22 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public IActionResult Index()
         {
-            var expPassList = _db.ApplicationUser.ToList();
+            var user_list = _db.ApplicationUser.ToList();
+            List<ApplicationUser> expiredpass_list = new List<ApplicationUser>();
 
-            foreach (var user in expPassList)
+            foreach(var user in user_list)
             {
-                //this will find if there are any roles in the userRole table
-                var expPass1 = user.LastPass1;
-                var expPass2 = user.LastPass1;
-                
+                if (user.PasswordDate.AddDays(30) < DateTime.Now)
+                {
+                    var roles = _db.Roles.ToList();
+                    var userRoles = _db.UserRoles.ToList();
+                    var role = userRoles.FirstOrDefault(u => u.UserId == user.Id);
+                    user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
+                    expiredpass_list.Add(user);
+                }
             }
-            //_db.Users.FirstOrDefault(u => u.LastPass1 != null);
 
-
-            return View(expPassList);
+            return View(expiredpass_list);
         }
     }
 }

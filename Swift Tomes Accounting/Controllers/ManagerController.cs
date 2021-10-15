@@ -9,8 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Swift_Tomes_Accounting.Controllers
 {
+   
     public class ManagerController : Controller
     {
         private IConfiguration _configuration;
@@ -56,5 +58,145 @@ namespace Swift_Tomes_Accounting.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
+
+        [HttpGet]
+        public IActionResult ChartOfAccounts()
+        {
+            var sortList = _db.Account.ToList();
+            return View(sortList);
+
+        }
+
+        [HttpPost]
+        public IActionResult ChartOfAccounts(DateTime dateSearch1,
+             DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
+        {
+            var sortList = SearchResult(dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
+
+            return View(sortList);
+
+        }
+
+        public IEnumerable<AccountDB> SearchResult(DateTime date1, DateTime date2, float balance1, float balance2)
+        {
+            var list = _db.Account.ToList();
+
+            List<AccountDB> activeList = new List<AccountDB>();
+            List<AccountDB> resultList = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if ((item.ChartOfAccounts) && (item.Active))
+                {
+                    activeList.Add(item);
+                }
+            }
+ 
+
+            if (date1.ToString() != "1/1/0001 12:00:00 AM")
+            {
+                if (date2.ToString() == "1/1/0001 12:00:00 AM")
+                {
+                    date2 = DateTime.Now;
+                }
+                foreach (var item in activeList)
+                {
+                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 > 0) && (balance2 == 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if (balance1 <= item.Balance)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 == 0) && (balance2 > 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if (item.Balance <= balance2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 > 0) && (balance2 > 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if ((balance1 <= item.Balance) && (item.Balance <= balance2))
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            return resultList;
+        }
+
+
+
+        public IActionResult Report()
+        {
+           
+            return View();
+
+        }
+
+        public IActionResult Journalize()
+        {
+
+            return View();
+
+        }
+
+        [HttpGet]
+
+        public IActionResult AccountLedger(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(objFromDb);
+
+        }
+
+
+
+        [HttpPost]
+        public IActionResult AccountLedger(int id)
+        {
+            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+
+
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+
+
+            if (objFromdb.Active == true)
+            {
+                _db.SaveChanges();
+                return RedirectToAction("ChartofAccounts", "Manager");
+            }
+            return View(objFromdb);
+        }
+
+
+
     }
 }

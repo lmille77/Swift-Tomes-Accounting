@@ -51,7 +51,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
         }
 
-        public IActionResult Privacy()
+        public IActionResult Help()
         {
             return View();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,37 +11,37 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     public class AccountDB
     {
 
-        [Required]
-        public string AccountName { get; set; }
         [Key]
-        public int AccoutNumber { get; set; }
+        [Display(Name = "Number")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public double AccountNumber { get; set; }
+       
+        [Required]
+        [Display(Name = "Name")]
+        public string AccountName { get; set; }
         public string Description { get; set; }
         [Required]
-        public char NormSide { get; set; }
+        public string NormSide { get; set; }
         [Required]
         public string Category { get; set; }
         public string SubCategory { get; set; }
         [DataType(DataType.Currency)]
-        public int Initial { get; set; }
+        public double Initial { get; set; }
         [DataType(DataType.Currency)]
-        public int Debit { get; set; }
+        public double Debit { get; set; }
         [DataType(DataType.Currency)]
-        public int Credit { get; set; }
+        public double Credit { get; set; }
         [DataType(DataType.Currency)]
-        public int Balance { get; set; }
+        public double Balance { get; set; }
         [DataType(DataType.DateTime)]
-        public string CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string UserName { get; set; }
         [Required]
-        public int UserID { get; set; }
         public int Order { get; set; }
         public string Statement { get; set; }
         public string Comments { get; set; }
-        
-
-
-
-
-
-
+        public bool Active { get; set; }
+        public bool Contra { get; set; }
+        public bool ChartOfAccounts { get; set; }
     }
 }
