@@ -16,27 +16,67 @@
                 <input asp-for="LastName" class="form-control" />
             </div>
             <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" readonly class="form-control" />
+                <input asp-for="Email" hidden class="form-control" />
+            </div>
+            <div class="form-group">
                 <label asp-for="DOB">DOB</label>
                 <input asp-for="DOB" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Address">Address</label>
+                <label asp-for="Address">Street Address</label>
                 <input asp-for="Address" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" readonly class="form-control" />
-                <input asp-for="Email" hidden class="form-control" />
-                @*can check if email has been used but needs to be implemented*@
-                @*<span asp-validation-for="Email" class="text-danger"></span>*@
+                <label asp-for="City">City</label>
+                <input asp-for="City" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="RoleId"></label>
-                @*Might be form select with the newer bootstrap*@
-                <select asp-for="RoleId" asp-items="@Model.RoleList" class="form-control">
-                    <option disabled selected>--Select Role--</option>
-                </select>
+                <label asp-for="ZipCode">Zip Code</label>
+                <input asp-for="ZipCode" class="form-control" />
             </div>
+            <div class="form-group">
+                <label asp-for="State">State</label>
+                <input asp-for="State" class="form-control" />
+            </div>
+            @if (Model.Role == "Admin")
+            {
+                <div class="form-group">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
+                        <option disabled>--Select Role--</option>
+                        <option selected>Admin</option>
+                        <option>Manager</option>
+                        <option>Accountant</option>
+                    </select>
+                </div>
+            }
+            @if (Model.Role == "Manager")
+            {
+                <div class="form-group">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
+                        <option disabled>--Select Role--</option>
+                        <option>Admin</option>
+                        <option selected>Manager</option>
+                        <option>Accountant</option>
+                    </select>
+                </div>
+            }
+            @if (Model.Role == "Accountant")
+            {
+                <div class="form-group">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
+                        <option disabled>--Select Role--</option>
+                        <option>Admin</option>
+                        <option>Manager</option>
+                        <option selected>Accountant</option>
+                    </select>
+                </div>
+            }
+            
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Update</button>
                 @*link to go back*@
@@ -45,3 +85,93 @@
         </form>
     </div>
 </div>
+
+
+<style>
+    .sidebar-container {
+        position: absolute;
+        width: 220px;
+        height: 90%;
+        left: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #36454F;
+        color: #fff;
+        top: 57px;
+        border-style: solid;
+    }
+
+    .content-container {
+        padding-top: 20px;
+    }
+
+    .sidebar-logo {
+        padding: 10px 15px 10px 30px;
+        font-size: 20px;
+        background-color: #2574A9;
+    }
+
+    .sidebar-navigation {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        position: relative;
+    }
+
+        .sidebar-navigation li {
+            background-color: transparent;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            line-height: 20px;
+        }
+
+            .sidebar-navigation li a {
+                padding: 10px 15px 10px 30px;
+                display: block;
+                color: #fff;
+            }
+
+            .sidebar-navigation li .fa {
+                margin-right: 10px;
+            }
+
+            .sidebar-navigation li a:active,
+            .sidebar-navigation li a:hover,
+            .sidebar-navigation li a:focus {
+                text-decoration: none;
+                outline: none;
+            }
+
+            .sidebar-navigation li::before {
+                background-color: #2574A9;
+                position: absolute;
+                content: '';
+                height: 100%;
+                left: 0;
+                top: 0;
+                -webkit-transition: width 0.2s ease-in;
+                transition: width 0.2s ease-in;
+                width: 3px;
+                z-index: -1;
+            }
+
+            .sidebar-navigation li:hover::before {
+                width: 100%;
+            }
+
+        .sidebar-navigation .header {
+            font-size: 12px;
+            text-transform: uppercase;
+            background-color: #151515;
+            padding: 10px 15px 10px 30px;
+        }
+
+            .sidebar-navigation .header::before {
+                background-color: transparent;
+            }
+
+    .content-container {
+        padding-left: 220px;
+    }
+</style>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,10 +35,16 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The passwords do not match.")]
         public string ConfirmPassword { get; set; }
-
+        
         public string Address { get; set; }
+        
+        public string State { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
 
-        public string DOB { get; set; }
+        [DataType(DataType.Date)]
+        public string DOB { get; set; }   
+        public string Role { get; set; }
 
     }
 }

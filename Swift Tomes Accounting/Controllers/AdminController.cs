@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Helpers;
@@ -38,7 +39,7 @@ namespace Swift_Tomes_Accounting.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
@@ -64,13 +65,25 @@ namespace Swift_Tomes_Accounting.Controllers
             
         }
         //Action for Sending Admin Messages
+
         [HttpGet]
         public IActionResult Send()
         {
+            var userList = _db.ApplicationUser.ToList();
+            List<SelectListItem> users = new List<SelectListItem>();
+            foreach(var user in userList)
+            {
+                SelectListItem li = new SelectListItem
+                {
+                    Value = user.Email,
+                    Text = user.LastName + ", " + user.FirstName + " <" + user.Email + ">"
 
+                };
+                users.Add(li);
+                ViewBag.Users = users;
+            }
             return View();
         }
-
         [HttpPost]
         public IActionResult Send(Message obj)
         {
@@ -89,18 +102,38 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
-        //public IActionResult ExpiredPass()
-        //{
 
-        //  var exp_pass = _db.Users.FirstOrDefault(u => u.LastPass1 != null);
+        [HttpGet]
+        public IActionResult EventLog()
+        {
+            var userevents = _db.EventUser.ToList();
+            var accountevents = _db.EventAccount.ToList();
+
+            
+
+            EventModel EventModel = new EventModel()
+            {
+                EventUser = userevents,
+                EventAccount = accountevents
+                
+            };
+            
+            return View(EventModel);
+        }
 
 
-        //    return View(exp_pass);
+        public IActionResult Journalize()
+        {
 
+            return View();
 
+        }
 
-        //}
+        public IActionResult Report()
+        {
 
+            return View();
 
+        }
     }
 }

@@ -1,0 +1,158 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
+<br />
+
+<div style="border: 1px solid; border-color: lightgray; width: 550px; margin: 0 auto;">
+    <br />
+    <div class="text-center">
+        <img src="~/frontend/STLogo.png" alt=”Image” style="width:50px; height:50px">
+    </div>
+    <br />
+    <h4 class="text-center">Add an Account</h4>
+    <br />
+    <form method="post" asp-action="CreateAccount" asp-controller="Money">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-xs-2">
+                <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-xs-2">
+                <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" />
+                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <select asp-for="NormSide" class="form-control">
+                    <option disabled>--Select a Normal Side--</option>
+                    <option>Left</option>
+                    <option>Right</option>
+                </select>
+                <span asp-validation-for="NormSide" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <select asp-for="Category" class="form-control">
+                    <option disabled>--Select an Account Type--</option>
+                    <option value="Asset">Asset</option>
+                    <option>Expenses</option>
+                    <option value="Liability">Liability</option>
+                    <option>Equity</option>
+                    <option>Revenue</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <select asp-for="SubCategory" class="form-control">
+                    <option disabled>--Select a Sub-Type--</option>
+                    <option>Current</option>
+                    <option>Long-Term</option>
+                </select>
+                <span asp-validation-for="SubCategory" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <label>Active Account: </label>
+                @Html.CheckBoxFor(m => m.Active)
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <label>Contra Account: </label>
+                @Html.CheckBoxFor(m => m.Contra)
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <label>Chart of Accounts: </label>
+                @Html.CheckBoxFor(m => m.ChartOfAccounts)
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Initial" class="form-control" placeholder="Initial Balance" />
+                <span asp-validation-for="Initial" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Balance" class="form-control" placeholder="Total Balance" />
+                <span asp-validation-for="Balance" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Order" class="form-control" placeholder="Liquidity Order" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Statement" class="form-control" placeholder="Statement" />
+                <span asp-validation-for="Statement" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <input asp-for="Comments" class="form-control" placeholder="Comments" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class=" col-md-10 offset-md-2">
+                <input type="submit" value="Create Account" class=" btn btn-outline-primary fa-align-center" />
+                <a asp-action="ChartOfAccounts" class="btn btn-success w-25">Back</a>
+            </div>
+        </div>
+
+        <script>
+            $("#Category").on("change", function () {
+                if (($("#Category option:selected").val() == "Asset") || ($("#Category option:selected").val() == "Liability")) {
+                    $("#SubCategory").show();
+                } else {
+                    $("#SubCategory").hide();
+                }
+            });
+        </script>
+
+    </form>
+</div>
+<br />
+
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
