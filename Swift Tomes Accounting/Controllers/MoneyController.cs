@@ -436,13 +436,14 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(objFromDb);
 
         }
-        public IActionResult AccountLedger(string id)
+        [HttpGet]
+        public IActionResult LinkedName(string name)
         {
-            if (id == null)
+            if (name == null)
             {
                 return NotFound();
             }
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == id);
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
             if (objFromDb == null)
             {
                 return NotFound();
@@ -450,14 +451,15 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(objFromDb);
 
         }
+        
 
-       
+
 
         [HttpPost]
         public IActionResult AccountLedger(int id)
         {
             var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-
+            
 
             if (objFromdb == null)
             {
