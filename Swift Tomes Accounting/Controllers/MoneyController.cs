@@ -436,8 +436,22 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(objFromDb);
 
         }
+        public IActionResult AccountLedger(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == id);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(objFromDb);
 
-        
+        }
+
+       
 
         [HttpPost]
         public IActionResult AccountLedger(int id)
