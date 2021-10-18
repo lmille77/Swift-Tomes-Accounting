@@ -43,5 +43,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public bool Active { get; set; }
         public bool Contra { get; set; }
         public bool ChartOfAccounts { get; set; }
+
+        [ForeignKey("AccountNumber")]
+        public ICollection<Journalize> Journalize { get; set; }
     }
 }
