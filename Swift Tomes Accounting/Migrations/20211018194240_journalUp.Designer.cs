@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Tomes_Accounting.Data;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211018194240_journalUp")]
+    partial class journalUp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -502,11 +504,11 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Account1")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Account1")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Account2")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Account2")
+                        .HasColumnType("int");
 
                     b.Property<double>("Balance")
                         .HasColumnType("float");

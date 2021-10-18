@@ -121,13 +121,43 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(EventModel);
         }
 
-
+        [HttpGet]
         public IActionResult Journalize()
         {
-
+           
             return View();
+           
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Journalize(Journalize journal)
+        {
+            if (ModelState.IsValid)
+            {
+                Journalize j = new Journalize
+                {
+                    Account1 = journal.Account1,
+                    Debit1 = journal.Debit1,
+                    Credit1 = journal.Credit1,
+                    Account2 = journal.Account2,
+                    Debit2 = journal.Debit2,
+                    Credit2 = journal.Credit2,
+                    Description = journal.Description
+                };
+                _db.Journalizes.Add(j);
+                await _db.SaveChangesAsync();
+                TempData[SD.Success] = "Journal entry submitted";
+                return RedirectToAction("Index", "Admin");
+            }
+            
+
+            return View(journal);
+
+        }
+
+      
+
 
         public IActionResult Report()
         {

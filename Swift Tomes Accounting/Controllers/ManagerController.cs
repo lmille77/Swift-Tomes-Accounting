@@ -196,7 +196,62 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(objFromdb);
         }
 
+        public async Task<IActionResult> Pending()
+        {
+            var all_entries = _db.Journalizes.ToList();
+            
+
+            List<Journalize> unapproved_entries = new List<Journalize>();
+            foreach (var entry in all_entries)
+            {
+                if (entry.isApproved == false)
+                {
+                    unapproved_entries.Add(entry);
+                }
+            }
+            return View(unapproved_entries);
+        }
 
 
+        [HttpPost]
+        public IActionResult DeleteEntry(int JournalId)
+        {
+            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
+          
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+           
+            _db.Journalizes.Remove(objFromdb);
+            _db.SaveChanges();
+            TempData[SD.Success] = "User rejected succesfully";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        public IActionResult ApproveEntry(int JournalId)
+        {
+            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
+           
+           
+
+       
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+
+            if (objFromdb.isApproved == false)
+            {
+
+                objFromdb.isApproved = true;
+                TempData[SD.Success] = "Entry approved successfully.";
+            }
+
+            _db.SaveChanges();
+            return RedirectToAction("Pending", "Manager");
+        }
     }
 }
