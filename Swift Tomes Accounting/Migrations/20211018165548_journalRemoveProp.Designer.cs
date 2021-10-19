@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Tomes_Accounting.Data;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211018165548_journalRemoveProp")]
+    partial class journalRemoveProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -502,39 +504,20 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Account1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Account2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Balance")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Credit1")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Credit2")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Debit1")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Debit2")
+                    b.Property<double>("AccountNumber")
                         .HasColumnType("float");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
 
                     b.Property<bool>("isApproved")
                         .HasColumnType("bit");
 
                     b.HasKey("JournalId");
 
-                    b.ToTable("Journalizes");
+                    b.HasIndex("AccountNumber");
+
+                    b.ToTable("Journalize");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -586,6 +569,20 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
+                {
+                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", null)
+                        .WithMany("Journalize")
+                        .HasForeignKey("AccountNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
+                {
+                    b.Navigation("Journalize");
                 });
 #pragma warning restore 612, 618
         }
