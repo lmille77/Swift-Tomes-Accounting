@@ -1,0 +1,180 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.EventModel
+@{ 
+    var acct_list = Model.EventAccount.ToList();
+    double acctid = acct_list[0].AfterAccountNumber;
+}
+
+<br />
+<div class="form-group">
+    <div style="margin-left:100px">
+        @Html.ActionLink("← Go Back", "AccountLedger", "Money", new { id = acctid }, null)
+    </div>
+    
+    <h2 class="text-center" style="margin-left:75px">Event Log</h2>
+</div>
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+        </li>
+        <li>
+            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+    </ul>
+</div>
+
+
+
+@{
+    List<DateTime> eventTime = new List<DateTime>();    
+    foreach (var item in Model.EventAccount)
+    {
+        eventTime.Add(item.eventTime);
+    }
+    //Add both list datetimes to this list then sort
+    eventTime.Sort((x, y) => DateTime.Compare(y, x));
+}
+
+<div class="p-4 border rounded" style="width: 1100px; margin-left:125px;">
+    <table class="table table-striped border">
+        <tr class="table-secondary">
+
+            <th>
+                Event ID
+            </th>
+            <th>
+                Event Type
+            </th>
+            <th>
+                Field
+            </th>
+            <th>
+                Before
+            </th>
+            <th>
+                After
+            </th>
+            <th>
+                Performed By
+            </th>
+            <th>
+                Date of Event
+            </th>
+        </tr>
+        @foreach (var time in eventTime)
+        {
+            
+            foreach (var account in Model.EventAccount)
+            {
+                @if (time == account.eventTime)
+                {
+                    <tr>
+                        <td style="width:100px">
+                            Account-@account.eventID.ToString("000")
+                        </td>
+                        <td>
+                            @account.eventType
+                        </td>
+                        <td style="width:200px">
+                            Account Number:<br />
+                            Account Name:<br />
+                            Description:<br />
+                            Category:<br />
+                            Subcategory:<br />
+                            Balance:<br />
+                            Comments:<br />
+                            Is Active?<br />
+                            Is Contra?<br />
+                        </td>
+                        <td>
+                            @if (account.BeforeAccountNumber == -1)
+                            {
+                                <div>None</div>
+                            }
+                            else
+                            {
+                                @account.BeforeAccountNumber<br />
+                            }
+
+                            @account.BeforeAccountName<br />
+                            @account.BeforeDescription<br />
+                            @account.BeforeCategory<br />
+                            @account.BeforeSubCategory<br />
+                            @if (account.BeforeBalance == -1)
+                            {
+                                <div>None</div>
+                            }
+                            else
+                            {
+                                @account.BeforeBalance<br />
+                            }
+                            @account.BeforeComments<br />
+                            @if (account.BeforeisActive == false)
+                            {
+                                <div>Not Active</div>
+                            }
+                            else
+                            {
+                                <div>Active</div>
+                            }
+                            @account.BeforeisContra<br />
+                        </td>
+                        <td>
+                            @account.AfterAccountNumber<br />
+                            @account.AfterAccountName<br />
+                            @account.AfterDescription<br />
+                            @account.AfterCategory<br />
+                            @account.AfterSubCategory<br />
+                            @account.AfterBalance<br />
+                            @account.AfterComments<br />
+                            @if (account.AfterisActive == false)
+                            {
+                                <div>Not Active</div>
+                            }
+                            else
+                            {
+                                <div>Active</div>
+                            }
+                            @account.AfterisContra<br />
+                        </td>
+                        <td>
+                            @account.eventPerformedBy
+                        </td>
+                        <td>
+                            @account.eventTime
+                        </td>
+
+                    </tr>
+                }
+
+            }
+        }
+
+    </table>
+</div>

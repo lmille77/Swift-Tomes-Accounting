@@ -68,11 +68,18 @@
 
         </tbody>
     </table>
-    
+
 </div>
-<div class="col">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10" style="margin-left:100px">Go Back</a>
+
+<div style="margin-left:550px">
+     @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Money", new { id = Model.AccountNumber }, null)
 </div>
+<br />
+<div style="margin-left:550px">
+    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
+</div>
+
+
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -94,13 +101,16 @@
             <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
         </li>
         <li>
-            <a a asp-controller="Roles" asp-action="Index" class="btn btn-dark btn-outline-info">Roles List</a>
+            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
         </li>
         <li>
-            <a asp-controller="expiredpass" asp-action="Index" class="btn btn-dark btn-outline-info">Expired Passwords List</a>
+            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
     </ul>
 </div>

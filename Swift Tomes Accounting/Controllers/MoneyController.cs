@@ -459,6 +459,26 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(objFromdb);
         }
 
+        [HttpGet]
+
+        public IActionResult AcctEventLog(int? id)
+        {
+            
+            var all_acctevents = _db.EventAccount.ToList();
+            List<EventAccount> select_account = new List<EventAccount>();
+            foreach(var acct in all_acctevents)
+            {
+                if(acct.AfterAccountNumber == id)
+                {
+                    select_account.Add(acct);
+                }
+            }
+            EventModel eventlist = new EventModel
+            {
+                EventAccount = select_account
+            };
+            return View(eventlist);
+        }
 
 
         [HttpGet]
@@ -468,6 +488,20 @@ namespace Swift_Tomes_Accounting.Controllers
             return Json(new { data = accountlist });
         }
 
-        
+        [HttpGet]
+        public IActionResult LinkedName(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View("AccountLedger",objFromDb);
+        }
+
     }
 }
