@@ -121,11 +121,11 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td data-search"">
+                        <td>
                             @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AccountName)
+                            @Html.ActionLink(@item.AccountName, "LinkedName", "Accountant", new { name = item.AccountName }, null)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
