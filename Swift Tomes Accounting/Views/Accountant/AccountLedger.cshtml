@@ -76,8 +76,12 @@
     </table>
 
 </div>
-<div class="col">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10" style="margin-left:100px">Back</a>
+<div style="margin-left:550px">
+    @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Accountant", new { id = Model.AccountNumber }, null)
+</div>
+<br />
+<div style="margin-left:550px">
+    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
 </div>
 
 
