@@ -135,5 +135,24 @@ namespace Swift_Tomes_Accounting.Controllers
             return View();
 
         }
+        public IActionResult ExpiredPass()
+        {
+            var user_list = _db.ApplicationUser.ToList();
+            List<ApplicationUser> expiredpass_list = new List<ApplicationUser>();
+
+            foreach (var user in user_list)
+            {
+                if (user.PasswordDate.AddDays(30) < DateTime.Now)
+                {
+                    var roles = _db.Roles.ToList();
+                    var userRoles = _db.UserRoles.ToList();
+                    var role = userRoles.FirstOrDefault(u => u.UserId == user.Id);
+                    user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
+                    expiredpass_list.Add(user);
+                }
+            }
+
+            return View(expiredpass_list);
+        }
     }
 }
