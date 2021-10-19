@@ -1,4 +1,7 @@
-﻿<h2 class="text-center" style="margin-left:50px">Journalize</h2>
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.Journalize
+
+
+<h2 class="text-center" style="margin-left:50px">Journalize</h2>
 
 <div class="sidebar-container border-dark">
     <div>
@@ -22,4 +25,63 @@
             <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
         </li>
     </ul>
+</div>
+
+<div>
+    <form method="post" asp-action="Journalize" asp-controller="Admin" id="form1">
+        <table>
+            <tr>
+                <th>Account</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>
+                    <select asp-for="Account1" class="form-control">
+                        <option disabled>--Select account number--</option>
+                        <option>Cash</option>
+                        <option>Land</option>
+                        <option>Notes Payable</option>
+                    </select>
+                </td>
+                <td>
+                    <input asp-for="Debit1" class="form-control" placeholder="Debit" />
+                </td>
+                <td>
+                    <input asp-for="Credit1" class="form-control" placeholder="Credit" />
+                </td>
+                <td>
+                    <input asp-for="Description" class="form-control" placeholder="Description" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select asp-for="Account2" class="form-control">
+                        <option disabled>--Select account number--</option>
+                        <option>Cash</option>
+                        <option>Land</option>
+                        <option>Notes Payable</option>
+                    </select>
+                </td>
+                <td>
+                    <input asp-for="Debit2" class="form-control" placeholder="Debit" />
+                </td>
+                <td>
+                    <input asp-for="Credit2" class="form-control" placeholder="Credit" />
+                </td>
+                <td>
+                    <input asp-for="Description" class="form-control" placeholder="Description" />
+                </td>
+            </tr>
+        </table>
+        <div class="form-group">
+            <div class=" col-md-10 offset-md-2">
+                <input type="submit" value="Create Account" class=" btn btn-success " />
+                <a asp-action="Journalize" class="btn btn-outline-primary fa-align-centerw-25">Back</a>
+            </div>
+        </div>
+    </form>
+
+
 </div>
