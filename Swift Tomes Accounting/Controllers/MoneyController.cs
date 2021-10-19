@@ -488,6 +488,20 @@ namespace Swift_Tomes_Accounting.Controllers
             return Json(new { data = accountlist });
         }
 
-        
+        [HttpGet]
+        public IActionResult LinkedName(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View("AccountLedger",objFromDb);
+        }
+
     }
 }
