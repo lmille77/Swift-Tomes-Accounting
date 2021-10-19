@@ -4,9 +4,9 @@
 @if (signInManager.IsSignedIn(User))
 {
     <form method="post" id="logoutForm" asp-action="Logoff" asp-controller="Account">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav navbar-center" style="height:40px">
             <li>
-                <a asp-controller="Admin" asp-action="Index"><img src="~/frontend/STLogo.png" alt=”Image” style="width:40px; height:40px;position:absolute; top:10px; left:10px"></a>
+                <a asp-controller="Admin" asp-action="Index"><img src="~/frontend/STLogo.png" alt=”Image” style="width:40px; height:40px;position:absolute; left:10px"></a>
             </li>
             <li>
                 <div style="position:absolute; left:60px">
@@ -144,15 +144,24 @@
 
 
                 </div>
+            </li>            
+            <li style="position:absolute;right:295px">
+                <div style="padding-top:5px">
+                    <img src="~/frontend/user_icon.png" alt=”Image” style="width:35px; height:35px">
+                </div>
+                
             </li>
-            <li>
-                <img src="~/frontend/user_icon.png" alt=”Image” style="width:35px; height:35px;">
+            <li style="position:absolute;right:125px" class="text-white nav-link">
+            Hello, @userManager.GetUserAsync(User).Result.FirstName @userManager.GetUserAsync(User).Result.LastName! 
             </li>
-            <li class="text-white nav-link">Hello, @userManager.GetUserAsync(User).Result.FirstName @userManager.GetUserAsync(User).Result.LastName! </li>
-            <li>
+            <li style="position:absolute;right:80px">
                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Help">Help</a>
             </li>
-            <li><a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+            <li style="position:absolute;right:20px">
+            <a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+            </li>
+            
+
 
         </ul>
     </form>
