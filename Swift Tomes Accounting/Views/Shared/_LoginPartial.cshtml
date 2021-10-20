@@ -154,10 +154,10 @@
             <li class="text-white nav-link">
             Hello, @userManager.GetUserAsync(User).Result.FirstName @userManager.GetUserAsync(User).Result.LastName! 
             </li>
-            <li style="position:absolute;right:85px">
+            <li>
                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Help">Help</a>
             </li>
-            <li style="position:absolute;right:20px">
+            <li>
                 <form method="post" id="logoutForm" asp-action="Logoff" asp-controller="Account">
                     <a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
                 </form>
