@@ -317,7 +317,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             var toEmail = obj.ToEmail;
             var subject = "Password Reset Confirmation";
-            var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here";
+            var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
             var mailHelper = new MailHelper(_configuration);
             mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
             
