@@ -34,10 +34,10 @@
     </ul>
 </div>
 
-<h1 class="text-center" style="margin-left:50px">Chart Of Accounts</h1>
+<h1 class="text-center">Chart Of Accounts</h1>
 <br />
 <br />
-<div class="form-group row" style="margin-left:100px">    
+<div class="form-group row">    
     <div>
 
         <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="post">
@@ -67,8 +67,8 @@
 </div>
 
 
-<div class="container-fluid" style="width: 1200px; margin-left: 75px">
-    <table class="table"  id="table"
+<div class="container-fluid">
+    <table class="table table-striped border"  id="table"
            data-toggle="table"
            data-search="true"
            data-filter-control="true" >
@@ -121,11 +121,11 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td data-search"">
+                        <td>
                             @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AccountName)
+                            @Html.ActionLink(@item.AccountName, "LinkedName", "Accountant", new { name = item.AccountName }, null)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)

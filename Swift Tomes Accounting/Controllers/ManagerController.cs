@@ -197,6 +197,99 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
 
+        [HttpGet]
 
+        public IActionResult AcctEventLog(int? id)
+        {
+
+            var all_acctevents = _db.EventAccount.ToList();
+            List<EventAccount> select_account = new List<EventAccount>();
+            foreach (var acct in all_acctevents)
+            {
+                if (acct.AfterAccountNumber == id)
+                {
+                    select_account.Add(acct);
+                }
+            }
+            EventModel eventlist = new EventModel
+            {
+                EventAccount = select_account
+            };
+            return View(eventlist);
+        }
+        [HttpGet]
+        public IActionResult LinkedName(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View("AccountLedger", objFromDb);
+        }
+
+        public async Task<IActionResult> Pending()
+        {
+            var all_entries = _db.Journalizes.ToList();
+            
+
+            List<Journalize> unapproved_entries = new List<Journalize>();
+            foreach (var entry in all_entries)
+            {
+                if (entry.isApproved == false)
+                {
+                    unapproved_entries.Add(entry);
+                }
+            }
+            return View(unapproved_entries);
+        }
+
+
+        [HttpPost]
+        public IActionResult DeleteEntry(int JournalId)
+        {
+            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
+          
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+           
+            _db.Journalizes.Remove(objFromdb);
+            _db.SaveChanges();
+            TempData[SD.Success] = "User rejected succesfully";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        public IActionResult ApproveEntry(int JournalId)
+        {
+            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
+           
+           
+
+       
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+
+            if (objFromdb.isApproved == false)
+            {
+
+                objFromdb.isApproved = true;
+                TempData[SD.Success] = "Entry approved successfully.";
+            }
+
+
+            _db.SaveChanges();
+            return RedirectToAction("Pending", "Manager");
+        }
     }
+
 }

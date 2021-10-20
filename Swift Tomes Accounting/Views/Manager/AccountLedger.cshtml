@@ -10,74 +10,81 @@
     ViewData["Title"] = "AccountLedger";
 }
 
-<div class="container-fluid" style="width: 1200px; margin-left: 75px">
-    <center><h1>@Model.AccountName</h1></center>
 
+   <h2 class="text-center">@Model.AccountName</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedOn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AccountNumber)
-                </th>
+   <div class="p-4 rounded w-100">
+       <table class="table table-striped border">
+           <thead>
+               <tr>
+                   <th>
+                       @Html.DisplayNameFor(model => model.CreatedOn)
+                   </th>
+                   <th>
+                       @Html.DisplayNameFor(model => model.Description)
+                   </th>
+                   <th>
+                       @Html.DisplayNameFor(model => model.AccountNumber)
+                   </th>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.Debit)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Credit)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Balance)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>
-                    @Html.DisplayFor(model => model.CreatedOn)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.AccountNumber)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Debit)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Credit)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Balance)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Comments)
-                </th>
-            </tr>
+                   <th>
+                       @Html.DisplayNameFor(model => model.Debit)
+                   </th>
+                   <th>
+                       @Html.DisplayNameFor(model => model.Credit)
+                   </th>
+                   <th>
+                       @Html.DisplayNameFor(model => model.Balance)
+                   </th>
+                   <th>
+                       @Html.DisplayNameFor(model => model.UserName)
+                   </th>
+                   <th>
+                       @Html.DisplayNameFor(model => model.Comments)
+                   </th>
+               </tr>
+           </thead>
+           <tbody>
+               <tr>
+                   <th>
+                       @Html.DisplayFor(model => model.CreatedOn)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.Description)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.AccountNumber)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.Debit)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.Credit)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.Balance)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.UserName)
+                   </th>
+                   <th>
+                       @Html.DisplayFor(model => model.Comments)
+                   </th>
+               </tr>
 
-        </tbody>
-    </table>
+           </tbody>
+       </table>
 
+   </div>
+
+   
+
+<div class="text-center">
+    @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Manager", new { id = Model.AccountNumber }, null)
 </div>
-<div class="col">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10" style="margin-left:100px">Go Back</a>
+<br />
+<div class="text-center">
+    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
 </div>
 
 
@@ -95,7 +102,7 @@
     <ul class="sidebar-navigation">
 
         <li>
-            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
         </li>
         <li>
             <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
@@ -103,7 +110,9 @@
         <li>
             <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
         </li>
-
+        <li>
+            <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
+        </li>
     </ul>
 </div>
 

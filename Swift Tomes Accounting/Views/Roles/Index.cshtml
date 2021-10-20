@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
 <br />
-<h2 class="text-center" style="margin-left:50px">Roles List</h2>
+<h2 class="text-center">Roles List</h2>
 
 <br />
 <div>
-    <div class="text-center" style="margin-left:50px">
+    <div class="text-center">
         <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary"> Create New Role</a>
     </div>
 </div>
@@ -30,9 +30,15 @@
         </li>
         <li>
             <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
-        </li>       
+        </li>
         <li>
             <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
         </li>
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
@@ -41,7 +47,7 @@
 </div>
 
 
-<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
+<div class="p-4 border rounded">
     @if (Model.Any())
     {
         <table class="table table-striped border">

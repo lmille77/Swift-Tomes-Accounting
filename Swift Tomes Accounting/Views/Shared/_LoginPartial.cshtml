@@ -3,22 +3,167 @@
 
 @if (signInManager.IsSignedIn(User))
 {
-    <form method="post" id="logoutForm" asp-action="Logoff" asp-controller="Account">
-        <ul class="nav navbar-nav">
+    
+        <ul class="nav navbar-nav navbar-center" style="height:40px">
             <li>
-                <a asp-controller="Admin" asp-action="Index"><img src="~/frontend/STLogo.png" alt=”Image” style="width:40px; height:40px;position:absolute; top:10px; left:10px"></a>
+                <a asp-controller="Admin" asp-action="Index"><img src="~/frontend/STLogo.png" alt=”Image” style="width:40px; height:40px;position:absolute; left:10px"></a>
             </li>
             <li>
-                <img src="~/frontend/user_icon.png" alt=”Image” style="width:35px; height:35px;">
+                <div style="position:absolute; left:60px">
+                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#myModal" onclick='dispCal()'>
+                        <i class="fa fa-calendar" aria-hidden="true" style="font-size:25px"></i>
+                    </button>
+
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <script type='text/javascript'>
+                                        var getDatee = new Date();
+                                        var monthe = getDatee.getMonth();
+                                        var yeare = getDatee.getFullYear();
+                                        var day = getDatee.getDate();
+                                        function isEmpty(val) {
+                                            return (val === undefined || val == null || val.length <= 0) ? true : false;
+                                        }
+
+                                        function prev() {
+                                            monthe = monthe - 1;
+                                            if (monthe < 0) {
+                                                yeare = yeare - 1;
+                                                monthe = 11;
+                                            }
+                                            dispCal(monthe, yeare);
+                                            return false;
+                                        }
+
+                                        function next() {
+                                            monthe = monthe + 1;
+                                            if (monthe > 11) {
+                                                yeare = yeare + 1;
+                                                monthe = 0;
+                                            }
+                                            dispCal(monthe, yeare);
+                                            return false;
+                                        }
+
+                                        function daysInMonth(monthe, yeare) {
+                                            return 32 - new Date(yeare, monthe, 32).getDate();
+                                        }
+
+                                        function getElementPosition(arrName, arrItem) {
+                                            for (var pos = 0; pos < arrName.length; pos++) {
+                                                if (arrName[pos] == arrItem) {
+                                                    return pos;
+                                                }
+                                            }
+                                        }
+
+                                        function setVal(getDat) {
+                                            $('#sel').val(getDat);
+                                            $('#calendar').hide();
+                                        }
+
+                                        function dispCal(mon, yea) {
+                                            var ar = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+                                            var chkEmpty = isEmpty(mon);
+                                            var n, days, calendar, startDate, newYea, setvale, i;
+                                            if (chkEmpty != true) {
+                                                mon = mon + 1;
+                                                n = ar[mon - 1];
+                                                n += " " + yea;
+                                                newYea = yea;
+                                                days = daysInMonth((mon - 1), yea);
+                                                startDate = new Date(ar[mon - 1] + " 1" + "," + parseInt(yea));
+                                            } else {
+                                                mon = getElementPosition(ar, ar[getDatee.getMonth()]);
+                                                n = ar[getDatee.getMonth()];
+                                                n += " " + yeare;
+                                                newYea = yeare;
+                                                days = daysInMonth(mon, yeare);
+                                                startDate = new Date(ar[mon] + " 1" + "," + parseInt(yeare));
+                                            }
+
+                                            var startDay = startDate.getDay();
+                                            var startDay1 = startDay;
+                                            while (startDay > 0) {
+                                                calendar += "<td></td>";
+                                                startDay--;
+                                            }
+                                            i = 1;
+                                            while (i <= days) {
+                                                if (startDay1 > 6) {
+                                                    startDay1 = 0;
+                                                    calendar += "</tr><tr>";
+                                                }
+                                                mon = monthe + 1;
+                                                setvale = i + "," + n;
+                                                if (i == day && newYea == yeare && mon == monthe) {
+                                                    calendar += "<td class='thisday'>" + i + "</td>";
+                                                } else {
+                                                    calendar += "<td class='thismon'>" + i + "</td>";
+                                                }
+                                                startDay1++;
+                                                i++;
+                                            }
+                                            calendar += "<td><a style='font-size: 9px; color: #efefef; font-family: arial; text-decoration: none;></a></td>";
+
+                                            $('#calendar').css('display', 'block');
+                                            $('#month').html(n);
+                                            var test = "<tr class='weekdays'><td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td></tr>";
+                                            test += calendar;
+                                            $('#dispDays').html(test);
+                                        }
+                                    </script>
+                                    <div align='center'>
+                                        <button onclick='dispCal()' style='cursor: pointer; vertical-align: middle;'>Calendar</button>
+                                        <table class='calendar' id='calendar' border=0 cellpadding=0 cellspacing=0>
+                                            <tr class='monthdisp'>
+                                                <td class='navigate' align='left'><button onclick='return prev()'>Prev</button></td>
+                                                <td align='center' id='month'></td>
+                                                <td class='navigate' align='right'><button onclick='return next()'>Next</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan=3>
+                                                    <table id='dispDays' border=0 cellpadding=4 cellspacing=4>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </li>            
+            <li class="justify-content-end">
+                <div style="padding-top:5px">
+                    <img src="~/frontend/user_icon.png" alt=”Image” style="width:35px; height:35px">
+                </div>
+                
             </li>
-            <li class="text-white nav-link">Hello, @userManager.GetUserAsync(User).Result.FirstName @userManager.GetUserAsync(User).Result.LastName! </li>
+            <li class="text-white nav-link">
+            Hello, @userManager.GetUserAsync(User).Result.FirstName @userManager.GetUserAsync(User).Result.LastName! 
+            </li>
             <li>
                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Help">Help</a>
             </li>
-            <li><a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
-            
+            <li>
+                <form method="post" id="logoutForm" asp-action="Logoff" asp-controller="Account">
+                    <a class="text-white nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                </form>
+            </li>
         </ul>
-    </form>
+    
 
 }
 

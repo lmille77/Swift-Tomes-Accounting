@@ -1,6 +1,6 @@
 ﻿.sidebar-container {
     position: absolute;
-    width: 250px;
+    width: 185px;
     height: 100%;
     left: 0;
     overflow-x: hidden;
@@ -51,6 +51,7 @@
         .sidebar-navigation li a:focus {
             text-decoration: none;
             outline: none;
+            color:#fff;
             background: #17a2b8;
         }
 
@@ -85,3 +86,30 @@
 .content-container {
     padding-left: 220px;
 }
+
+#centerform {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    border: 1px solid;
+    border-color: black;
+}
+
+
+#padding20 {
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+
+#AcNum {
+    position:absolute;
+    left: 40px;
+    padding-top: 7px;
+}
+

@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211014154511_initial")]
-    partial class initial
+    [Migration("20211019192155_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -495,6 +495,48 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.HasKey("eventID");
 
                     b.ToTable("EventUser");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
+                {
+                    b.Property<int>("JournalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Account1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Account2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Credit1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Credit2")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Debit1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Debit2")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("isApproved")
+                        .HasColumnType("bit");
+
+                    b.HasKey("JournalId");
+
+                    b.ToTable("Journalizes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

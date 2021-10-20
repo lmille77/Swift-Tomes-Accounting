@@ -112,6 +112,26 @@ namespace Swift_Tomes_Accounting.Controllers
             };
             _db.EventAccount.Add(new_account);
 
+            if (account.Category == "Asset")
+            {
+                account.AccountNumber = 100 + account.AccountNumber;
+            }
+            else if (account.Category == "Expenses")
+            {
+                account.AccountNumber = 200 + account.AccountNumber;
+            }
+            else if (account.Category == "Liability")
+            {
+                account.AccountNumber = 300 + account.AccountNumber;
+            }
+            else if (account.Category == "Equity")
+            {
+                account.AccountNumber = 400 + account.AccountNumber;
+            }
+            else if (account.Category == "Revenue")
+            {
+                account.AccountNumber = 500 + account.AccountNumber;
+            }
 
             account.CreatedOn = DateTime.Now;
             _db.Account.Add(account);
@@ -459,6 +479,26 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(objFromdb);
         }
 
+        [HttpGet]
+
+        public IActionResult AcctEventLog(int? id)
+        {
+            
+            var all_acctevents = _db.EventAccount.ToList();
+            List<EventAccount> select_account = new List<EventAccount>();
+            foreach(var acct in all_acctevents)
+            {
+                if(acct.AfterAccountNumber == id)
+                {
+                    select_account.Add(acct);
+                }
+            }
+            EventModel eventlist = new EventModel
+            {
+                EventAccount = select_account
+            };
+            return View(eventlist);
+        }
 
 
         [HttpGet]
@@ -468,6 +508,20 @@ namespace Swift_Tomes_Accounting.Controllers
             return Json(new { data = accountlist });
         }
 
-        
+        [HttpGet]
+        public IActionResult LinkedName(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View("AccountLedger",objFromDb);
+        }
+
     }
 }

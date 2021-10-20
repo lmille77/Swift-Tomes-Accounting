@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journalize>
+<br />
+<h2 style="margin-left:50px" class="text-center">Unapproved Entries</h2>
+
+<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
+    @if (Model.Count() > 0)
+    {
+        <table class="table ">
+            <tr class="table-secondary">
+
+
+                <th>
+                    Journal Entry
+                </th>
+                <th>
+                    Account
+                </th>
+                <th>
+                    Debit
+                </th>
+                <th>
+                    credit
+                </th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                @if (item.isApproved == false)
+                {
+
+
+                    <tr>
+                        <td>
+                            @item.JournalId
+                        </td>
+                        <td>
+                            @item.Account1
+                            <br />
+                            @item.Account2
+                        </td>
+
+                        <td>
+                            @item.Debit1
+                            <br />
+                            @item.Debit2
+                        </td>
+                        <td>
+                            @item.Credit1
+                            <br />
+                            @item.Credit2
+
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <form asp-action="Pending" asp-route-userId="@item.JournalId">
+
+                                    <button onclick="return confirm('Are you sure you want to reject this entry?')"
+                                            class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+
+                                        Deny
+                                    </button>
+                                    <button asp-action="ApproveEntry" asp-route-JournalId="@item.JournalId" class="btn btn-success"
+                                            style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
+                                        <span>
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            Approve
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            }
+        </table>
+    }
+</div>
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Pending" class="btn btn-info btn-outline-light">Pending Entries</a>
+        </li>
+
+    </ul>
+</div>
