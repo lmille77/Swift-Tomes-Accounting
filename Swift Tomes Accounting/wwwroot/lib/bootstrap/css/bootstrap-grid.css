@@ -97,6 +97,11 @@
     max-width: 1320px;
   }
 }
+@media (min-width: 1400px) {
+    .headercontainer {
+        max-width: 1600px;
+    }
+}
 .row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
