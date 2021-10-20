@@ -6,11 +6,9 @@
 
 <br />
 <div class="form-group">
-    <div style="margin-left:100px">
-        @Html.ActionLink("← Go Back", "AccountLedger", "Accountant", new { id = acctid }, null)
-    </div>
-
-    <h2 class="text-center" style="margin-left:75px">Event Log</h2>
+    
+   @Html.ActionLink("← Go Back", "AccountLedger", "Accountant", new { id = acctid }, null)  
+    <h2 class="text-center">Event Log</h2>
 </div>
 
 
@@ -48,7 +46,7 @@
     eventTime.Sort((x, y) => DateTime.Compare(y, x));
 }
 
-<div class="p-4 border rounded" style="width: 1100px; margin-left:125px;">
+<div class="p-4 border rounded">
     <table class="table table-striped border">
         <tr class="table-secondary">
 
