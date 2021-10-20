@@ -101,14 +101,14 @@
                                                 mon = monthe + 1;
                                                 setvale = i + "," + n;
                                                 if (i == day && newYea == yeare && mon == monthe) {
-                                                    calendar += "<td class='thisday' onclick='setVal(\"" + i + "-" + mon + "-" + newYea + "\")'>" + i + "</td>";
+                                                    calendar += "<td class='thisday'>" + i + "</td>";
                                                 } else {
-                                                    calendar += "<td class='thismon' onclick='setVal(\"" + i + "-" + mon + "-" + newYea + "\")'>" + i + "</td>";
+                                                    calendar += "<td class='thismon'>" + i + "</td>";
                                                 }
                                                 startDay1++;
                                                 i++;
                                             }
-                                            calendar += "<td><a style='font-size: 9px; color: #efefef; font-family: arial; text-decoration: none;' href='http://www.hscripts.com'>&copy;h</a></td>";
+                                            calendar += "<td><a style='font-size: 9px; color: #efefef; font-family: arial; text-decoration: none;></a></td>";
 
                                             $('#calendar').css('display', 'block');
                                             $('#month').html(n);
