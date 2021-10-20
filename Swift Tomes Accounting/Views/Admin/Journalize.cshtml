@@ -1,6 +1,6 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.Journalize
 
-<h2 class="text-center" style="margin-left:50px">Journalize</h2>
+<h2 class="text-center">Journalize</h2>
 
 <div class="sidebar-container border-dark">
     <div>
@@ -40,9 +40,9 @@
 <br />
 <br />
 
-<div style="margin-left:175px">
+<div >
     <form method="post" asp-action="Journalize" asp-controller="Admin" id="form1">
-        <table>
+        <table class="w-100 justify-content-end">
             <tr>
                 <th>Account</th>
                 <th>Debit</th>
@@ -89,11 +89,9 @@
             </tr>
         </table>
         <br />
-        <div class="form-group" style="margin-left:175px">
-            <div class=" col-md-10 offset-md-2">
+        <div class="form-group text-center">            
                 <input type="submit" value="Create Account" class=" btn btn-success " />
-                <a asp-action="Journalize" class="btn btn-outline-primary fa-align-centerw-25">Back</a>
-            </div>
+                <a asp-action="Journalize" class="btn btn-outline-primary">Back</a>            
         </div>
     </form>
     

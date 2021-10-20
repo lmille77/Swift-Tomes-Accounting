@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
-
+<h1 class="text-center">Chart Of Accounts</h1>
 
 
 <br />
@@ -48,191 +48,168 @@
         </li>
     </ul>
 </div>
-<h1 class="text-center" style="margin-left:50px">Chart Of Accounts</h1>
 
-<div style="margin-left:100px">
-<a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white"
-   data-toggle="tooltip" data-placement="bottom" title="Add a New Account to the System">
-    Add Account
-</a>
+
+<div class="justify-content-start">
+    <a asp-controller="Money" asp-action="CreateAccount" class="btn btn-dark btn-outline-info text-white"
+       data-toggle="tooltip" data-placement="bottom" title="Add a New Account to the System">
+        Add Account
+    </a>
 </div>
 
-<div class="form-group row" style="margin-left:100px">
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="post">
-            <div>&nbsp;&nbsp;</div>
-            <div>&nbsp;&nbsp;</div>
-            <p>
-                <label>$</label>
-                <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
-                <label> - $</label>
-                <input type="text" name="BalanceSearch2" value="@ViewBag.result" />
-                &nbsp;&nbsp;
-                <input type="date" name="DateSearch1" value="@ViewBag.result" />
-                <label> - </label>
-                <input type="date" name="DateSearch2" value="@ViewBag.result" />
-                &nbsp;&nbsp;
-                <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data
-                       with a Date Range or Balance Search" />
-            </p>
-        </form>
-    <div>&nbsp;&nbsp;</div>
-    <div>
-        <div>&nbsp;&nbsp;</div>
-        <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
-            <div>&nbsp;&nbsp;</div>
-            <p>
-                <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
-            </p>
-        </form>
-    </div>
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:200px;padding-left:20px">
 
+    <form asp-controller="Money" asp-action="ChartOfAccounts" method="post">
+        <input style="width:150px" name="BalanceSearch1" value="@ViewBag.result" placeholder="$0.00" />
+        <label> - </label>
+        <input style="width:150px" name="BalanceSearch2" value="@ViewBag.result" placeholder="$0.00" />
+        <label> or </label>
+        <input style="width:150px" name="DateSearch1" value="@ViewBag.result" placeholder="Begin Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <label> - </label>
+        <input style="width:150px" name="DateSearch2" value="@ViewBag.result" placeholder="End Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data with a Date Range or Balance Search" />
+
+    </form>
+    <div>&nbsp;</div>
+    <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
+        
+    </form>
+            
 </div>
+  
 
 
 
 
+    <div class="w-100">
 
-<div class="container-fluid" style="width: 1250px; margin-left: 75px">
-    <table class="table" id="table"
-           data-toggle="table"
-           data-search="true"
-           data-filter-control="true">
-        <thead>
-            <tr>
-                <th data-field="accountNumber" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.AccountNumber)
-                </th>
-                <th data-field="accountName" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.AccountName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th data-field="category" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th data-field="subCategory" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.SubCategory)
-                </th>
+        <table class="table table-striped border" id="table"
+               data-toggle="table"
+               data-search="true"
+               data-filter-control="true">
 
-
-                <th data-field="balance" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.Balance)
-                </th>
-                <th data-field="createdOn" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.CreatedOn)
-                </th>
-                <th data-field="userName" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.UserName)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
-                </th>
-                <th>
-                    Edit
-                </th>
-                <th>
-                    Activate
-                </th>
-
-            </tr>
-        </thead>
-        @if (Model.Count() == 0)
-        {
-            <tr>
-                <td colspan="4">
-                    No Records match search criteria
-                </td>
-            </tr>
-        }
-        else
-        {
-            <tbody>
-                @foreach (var item in Model)
-                {
-
+            <thead>
                 <tr>
-                    <td>
-                        @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
-                    </td>
-                    <td>
-                        @Html.ActionLink(@item.AccountName, "LinkedName", "Money", new { name = item.AccountName }, null)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubCategory)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Balance)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedOn)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Comments)
-                    </td>
-
-                    <td>
-                     <a asp-action="EditAccount" asp-route-id="@item.AccountNumber">Edit</a>
-                    @*@Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })*@
-                    </td>
-                    <td>
-                        <div class="text-center">
-                            <form asp-action="Activate" asp-route-id="@item.AccountNumber">
-
-                                @if (item.Active == true)
-                                {
-                                    @*<a asp-action="Edit" asp-route-id="@item.AccountNumber" class="btn btn-info text-white" style="cursor:pointer">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                            Edit
-                        </a>*@
-                                    //We want to show them the option to deactivate
-                                    <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-success text-black"
-                                            style="cursor:pointer">
-                                        <span>
-                                            <i class="fa fa-lock" aria-hidden="true"></i>
-                                            Deactivate
-                                        </span>
-                                    </button>
-                                }
-                                else if (item.Active == false)
-                                {
-                                    //We want to show them the option to activate
-                                    <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-warning text-black"
-                                            style="cursor:pointer">
-                                        <span>
-                                            <i class="fa fa-unlock" aria-hidden="true"></i>
-                                            Activate
-                                        </span>
-                                    </button>
-                                }
+                    <th data-field="accountNumber" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.AccountNumber)
+                    </th>
+                    <th data-field="accountName" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.AccountName)
+                    </th>
+                    <th data-field="category" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th data-field="subCategory" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.SubCategory)
+                    </th>
 
 
-                            </form>
-                        </div>
+                    <th data-field="balance" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.Balance)
+                    </th>
+                    <th data-field="createdOn" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.CreatedOn)
+                    </th>
+                    <th data-field="userName" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        Edit
+                    </th>
+                    <th>
+                        Activate
+                    </th>
+
+                </tr>
+            </thead>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4">
+                        No Records match search criteria
                     </td>
                 </tr>
+            }
+            else
+            {
+                <tbody>
+                    @foreach (var item in Model)
+                    {
 
-                }
-            </tbody>
-        }
+                        <tr>
+                            <td>
+                                @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.AccountName, "LinkedName", "Money", new { name = item.AccountName }, null)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubCategory)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Balance)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
 
-    </table>
-</div>
+                            <td>
+                                <a asp-action="EditAccount" asp-route-id="@item.AccountNumber">Edit</a>
+                                @*@Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })*@
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <form asp-action="Activate" asp-route-id="@item.AccountNumber">
 
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
+                                        @if (item.Active == true)
+                                        {
+                                            @*<a asp-action="Edit" asp-route-id="@item.AccountNumber" class="btn btn-info text-white" style="cursor:pointer">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    Edit
+                                                </a>*@
+                                            //We want to show them the option to deactivate
+                                            <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-success text-black"
+                                                    style="width:120px; cursor:pointer">
+                                                <span>
+                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                    Deactivate
+                                                </span>
+                                            </button>
+                                        }
+                                        else if (item.Active == false)
+                                        {
+                                            //We want to show them the option to activate
+                                            <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-warning text-black"
+                                                    style="cursor:pointer">
+                                                <span>
+                                                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                                                    Activate
+                                                </span>
+                                            </button>
+                                        }
+
+
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            }
+
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
