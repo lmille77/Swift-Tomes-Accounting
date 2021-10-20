@@ -4,11 +4,10 @@
     ViewData["Title"] = "AccountLedger";
 }
 
-<div class="container-fluid" style="width: 1200px; margin-left: 75px">
-    <center><h1>@Model.AccountName</h1></center>
+<h2 class="text-center">@Model.AccountName</h2>
 
-
-    <table class="table">
+<div class="p-4 rounded w-100">
+    <table class="table table-striped border">
         <thead>
             <tr>
                 <th>
@@ -71,11 +70,12 @@
 
 </div>
 
-<div style="margin-left:550px">
-     @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Money", new { id = Model.AccountNumber }, null)
+
+<div class="text-center">
+    @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Money", new { id = Model.AccountNumber }, null)
 </div>
 <br />
-<div style="margin-left:550px">
+<div class="text-center">
     <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
 </div>
 
