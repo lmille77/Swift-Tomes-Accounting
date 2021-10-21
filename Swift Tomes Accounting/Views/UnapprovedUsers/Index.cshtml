@@ -5,19 +5,22 @@
 <div class="p-4 border rounded w-100">
    
         <table class="table table-striped border">
-            <tr class="table-secondary">
+            <thead class="thead-dark">
+                <tr>
 
-                <th>
-                    Email
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Role
-                </th>
-                <th></th>
-            </tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            
             @foreach (var item in Model)
             {
                 @if (item.isApproved == false)
