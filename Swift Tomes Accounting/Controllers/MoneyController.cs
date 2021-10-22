@@ -112,6 +112,26 @@ namespace Swift_Tomes_Accounting.Controllers
             };
             _db.EventAccount.Add(new_account);
 
+            if (account.Category == "Asset")
+            {
+                account.AccountNumber = 100 + account.AccountNumber;
+            }
+            else if (account.Category == "Expenses")
+            {
+                account.AccountNumber = 200 + account.AccountNumber;
+            }
+            else if (account.Category == "Liability")
+            {
+                account.AccountNumber = 300 + account.AccountNumber;
+            }
+            else if (account.Category == "Equity")
+            {
+                account.AccountNumber = 400 + account.AccountNumber;
+            }
+            else if (account.Category == "Revenue")
+            {
+                account.AccountNumber = 500 + account.AccountNumber;
+            }
 
             account.CreatedOn = DateTime.Now;
             _db.Account.Add(account);

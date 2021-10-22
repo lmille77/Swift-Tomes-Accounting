@@ -37,10 +37,10 @@
 </div>
 
 
-<h1 class="text-center" style="margin-left:50px">Chart Of Accounts</h1>
+<h1 class="text-center">Chart Of Accounts</h1>
 <br />
 <br />
-<div class="form-group row" style="margin-left:100px">
+<div class="form-group row">
     <div>
 
         <form asp-controller="Manager" asp-action="ChartOfAccounts" method="post">
@@ -70,11 +70,11 @@
 </div>
 
 <div>
-    <table class="table" id="table"
+    <table class="table table-striped border" id="table"
            data-toggle="table"
            data-search="true"
            data-filter-control="true">
-        <thead>
+        <thead class="thead-dark">
             <tr>
                 <th data-field="accountNumber" data-sortable="true">
                     @Html.DisplayNameFor(model => model.AccountNumber)

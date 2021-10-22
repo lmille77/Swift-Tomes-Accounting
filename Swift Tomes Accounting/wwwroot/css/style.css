@@ -106,3 +106,10 @@
     padding-bottom: 20px;
     padding-left: 20px;
 }
+
+#AcNum {
+    position:absolute;
+    left: 40px;
+    padding-top: 7px;
+}
+

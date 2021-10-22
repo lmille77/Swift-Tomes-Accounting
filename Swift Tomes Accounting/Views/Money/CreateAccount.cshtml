@@ -13,15 +13,24 @@
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="form-group row">
+            <div class="input-group">
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <span typeof="input-group-text" class="input-group-prepend" id="AcNum">
+                    
+                </span>
+                <div class="col-xs-2">
+
+                    <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />
+                    <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-xs-2">
                 <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
                 <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-            <div>&nbsp;</div>
-            <div class="col-xs-2">
-                <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" />
-                <span asp-validation-for="AccountNumber" class="text-danger"></span>
             </div>
         </div>
         <br />
@@ -49,12 +58,12 @@
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
                 <select asp-for="Category" class="form-control">
-                    <option disabled>--Select an Account Type--</option>
+                    <option disabled selected>--Select an Account Type--</option>
                     <option value="Asset">Asset</option>
-                    <option>Expenses</option>
+                    <option value="Expenses">Expenses</option>
                     <option value="Liability">Liability</option>
-                    <option>Equity</option>
-                    <option>Revenue</option>
+                    <option value="Equity">Equity</option>
+                    <option value="Revenue">Revenue</option>
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
@@ -141,6 +150,24 @@
                 } else {
                     $("#SubCategory").hide();
                 }
+
+                if ($("#Category option:selected").val() == "Asset") {
+                    document.getElementById('AcNum').textContent = 1;
+                }
+                else if ($("#Category option:selected").val() == "Expenses") {
+                    document.getElementById('AcNum').textContent = 2;
+                }
+                else if ($("#Category option:selected").val() == "Liability") {
+                    document.getElementById('AcNum').textContent = 3;
+                }
+                else if ($("#Category option:selected").val() == "Equity") {
+                    document.getElementById('AcNum').textContent = 4;
+                }
+                else if ($("#Category option:selected").val() == "Revenue") {
+                    document.getElementById('AcNum').textContent = 5;
+                }
+
+                document.getElementById('AccountNumber').placeholder = "";
             });
         </script>
 

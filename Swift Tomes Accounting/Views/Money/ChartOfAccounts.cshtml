@@ -83,131 +83,131 @@
 
 
 
-<div>
 
-    <table class="table table-striped border" id="mytable"
-           data-toggle="table"
-           data-search="true"
-           data-filter-control="true">
+        <table class="table table-striped border" id="table"
+               data-toggle="table"
+               data-search="true"
+               data-filter-control="true">
 
-        <thead>
-            <tr>
-                <th data-field="accountNumber" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.AccountNumber)
-                </th>
-                <th data-field="accountName" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.AccountName)
-                </th>
-                <th data-field="category" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th data-field="subCategory" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.SubCategory)
-                </th>
-
-
-                <th data-field="balance" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.Balance)
-                </th>
-                <th data-field="createdOn" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.CreatedOn)
-                </th>
-                <th data-field="userName" data-sortable="true">
-                    @Html.DisplayNameFor(model => model.UserName)
-                </th>
-                <th>
-                    Edit
-                </th>
-                <th>
-                    Activate
-                </th>
-
-            </tr>
-        </thead>
-        @if (Model.Count() == 0)
-        {
-            <tr>
-                <td colspan="4">
-                    No Records match search criteria
-                </td>
-            </tr>
-        }
-        else
-        {
-            <tbody>
-                @foreach (var item in Model)
-                {
-
-                    <tr>
-                        <td>
-                            @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
-                        </td>
-                        <td>
-                            @Html.ActionLink(@item.AccountName, "LinkedName", "Money", new { name = item.AccountName }, null)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SubCategory)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Balance)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreatedOn)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-
-                        <td>
-                            <a asp-action="EditAccount" asp-route-id="@item.AccountNumber">Edit</a>
-                            @*@Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })*@
-                        </td>
-                        <td>
-                            <div class="text-center">
-                                <form asp-action="Activate" asp-route-id="@item.AccountNumber">
-
-                                    @if (item.Active == true)
-                                    {
-                                        @*<a asp-action="Edit" asp-route-id="@item.AccountNumber" class="btn btn-info text-white" style="cursor:pointer">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                Edit
-                                            </a>*@
-                                        //We want to show them the option to deactivate
-                                        <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-success text-black"
-                                                style="width:120px; cursor:pointer">
-                                            <span>
-                                                <i class="fa fa-lock" aria-hidden="true"></i>
-                                                Deactivate
-                                            </span>
-                                        </button>
-                                    }
-                                    else if (item.Active == false)
-                                    {
-                                        //We want to show them the option to activate
-                                        <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-warning text-black"
-                                                style="cursor:pointer">
-                                            <span>
-                                                <i class="fa fa-unlock" aria-hidden="true"></i>
-                                                Activate
-                                            </span>
-                                        </button>
-                                    }
+            <thead class="thead-dark">
+                <tr>
+                    <th data-field="accountNumber" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.AccountNumber)
+                    </th>
+                    <th data-field="accountName" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.AccountName)
+                    </th>
+                    <th data-field="category" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th data-field="subCategory" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.SubCategory)
+                    </th>
 
 
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                    <th data-field="balance" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.Balance)
+                    </th>
+                    <th data-field="createdOn" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.CreatedOn)
+                    </th>
+                    <th data-field="userName" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        Edit
+                    </th>
+                    <th>
+                        Activate
+                    </th>
 
-                }
-            </tbody>
-        }
+                </tr>
+            </thead>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4">
+                        No Records match search criteria
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tbody>
+                    @foreach (var item in Model)
+                    {
 
-    </table>
-</div>
+                        <tr>
+                            <td>
+                                @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Money", new { id = item.AccountNumber }, null)
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.AccountName, "LinkedName", "Money", new { name = item.AccountName }, null)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubCategory)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Balance)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+
+                            <td>
+                                <a asp-action="EditAccount" asp-route-id="@item.AccountNumber">Edit</a>
+                                @*@Html.ActionLink("Edit", "EditAccount", new { /* id=item.PrimaryKey */ })*@
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <form asp-action="Activate" asp-route-id="@item.AccountNumber">
+
+                                        @if (item.Active == true)
+                                        {
+                                            @*<a asp-action="Edit" asp-route-id="@item.AccountNumber" class="btn btn-info text-white" style="cursor:pointer">
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    Edit
+                                                </a>*@
+                                            //We want to show them the option to deactivate
+                                            <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-success text-black"
+                                                    style="width:120px; cursor:pointer">
+                                                <span>
+                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                    Deactivate
+                                                </span>
+                                            </button>
+                                        }
+                                        else if (item.Active == false)
+                                        {
+                                            //We want to show them the option to activate
+                                            <button asp-action="Activate" asp-route-id="@item.AccountNumber" class="btn btn-warning text-black"
+                                                    style="cursor:pointer">
+                                                <span>
+                                                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                                                    Activate
+                                                </span>
+                                            </button>
+                                        }
+
+
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            }
+
+        </table>
+    </div>
+
 
 <script>
     $(document).ready(function () {
