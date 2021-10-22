@@ -40,61 +40,125 @@
 <br />
 <br />
 
-<div >
+
+
+
+<div>
     <form method="post" asp-action="Journalize" asp-controller="Admin" id="form1">
-        <table class="w-100 justify-content-end">
-            <tr>
-                <th>Account</th>
-                <th>Debit</th>
-                <th>Credit</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td>
-                    <select asp-for="Account1" class="form-control">
-                        <option disabled>--Select account number--</option>
-                        <option>Cash</option>
-                        <option>Land</option>
-                        <option>Notes Payable</option>
-                    </select>
-                </td>
-                <td>
-                    <input asp-for="Debit1" class="form-control" placeholder="Debit" />
-                </td>
-                <td>
-                    <input asp-for="Credit1" class="form-control" placeholder="Credit" />
-                </td>
-                <td>
-                    <input asp-for="Description" class="form-control" placeholder="Description" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <select asp-for="Account2" class="form-control">
-                        <option disabled>--Select account number--</option>
-                        <option>Cash</option>
-                        <option>Land</option>
-                        <option>Notes Payable</option>
-                    </select>
-                </td>
-                <td>
-                    <input asp-for="Debit2" class="form-control" placeholder="Debit" />
-                </td>
-                <td>
-                    <input asp-for="Credit2" class="form-control" placeholder="Credit" />
-                </td>
-                <td>
-                    <input asp-for="Description" class="form-control" placeholder="Description" />
-                </td>
-            </tr>
+
+
+        <table class="table" id="jTable">
+            <thead>
+                <tr>
+                    <th>
+                        Account Name
+                    </th>
+                    <th>
+                        Debit
+                    </th>
+                    <th>
+                        Credit
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @*<select asp-for="Journal_Accounts" asp-items="@Model.AccountList" class="form-control">
+                                <option disabled selected>--Select Account--</option>
+                            </select>*@
+                            @Html.EditorFor(x => x.Journal_Accounts[i].AccountName, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(x => x.Journal_Accounts[i].Debit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            <button id="btnadd-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem(this)" style="left:90%; position:absolute">Add</button>
+                            <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)" style="left:90%; position:absolute">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
+
+
         <br />
-        <div class="form-group text-center">            
-                <input type="submit" value="Create Account" class=" btn btn-success " />
-                <a asp-action="Journalize" class="btn btn-outline-primary">Back</a>            
+        <div class="form-group text-center">
+            <input type="submit" value="Create Account" class=" btn btn-success " />
+            <a asp-action="Journalize" class="btn btn-outline-primary">Back</a>
         </div>
     </form>
-    
+
 
 </div>
+
+<input type="hidden" id="hdnLastIndex" value="0" />
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+		$(".custom-file-input").on("change", function () {
+			var fileName = $(this).val().split("\\").pop();
+			$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+		});
+
+
+
+		function DeleteItem(btn) {
+			$(btn).closest('tr').remove();
+		}
+
+
+
+		function AddItem(btn) {
+
+			var table = document.getElementById('jTable');
+			var rows = table.getElementsByTagName('tr');
+
+			var rowOuterHtml = rows[rows.length - 1].outerHTML;
+
+			var lastrowIdx = document.getElementById('hdnLastIndex').value;
+
+			var nextrowIdx = eval(lastrowIdx) + 1;
+
+			document.getElementById('hdnLastIndex').value = nextrowIdx;
+
+			rowOuterHtml = rowOuterHtml.replaceAll('_' + lastrowIdx + '_', '_' + nextrowIdx + '_');
+			rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
+			rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
+
+
+			var newRow = table.insertRow();
+			newRow.innerHTML = rowOuterHtml;
+
+
+
+			var btnAddID = btn.id;
+			var btnDeleteid = btnAddID.replaceAll('btnadd', 'btnremove');
+
+			var delbtn = document.getElementById(btnDeleteid);
+			delbtn.classList.add("visible");
+			delbtn.classList.remove("invisible");
+
+
+			var addbtn = document.getElementById(btnAddID);
+			addbtn.classList.remove("visible");
+			addbtn.classList.add("invisible");
+
+		}
+
+    </script>
+}
 

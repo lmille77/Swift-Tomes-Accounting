@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Tomes_Accounting.Data;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211022152434_JA")]
+    partial class JA
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -495,32 +497,6 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.ToTable("EventUser");
                 });
 
-            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", b =>
-                {
-                    b.Property<int>("JAId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Credit")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Debit")
-                        .HasColumnType("float");
-
-                    b.Property<int>("JournalId")
-                        .HasColumnType("int");
-
-                    b.HasKey("JAId");
-
-                    b.HasIndex("JournalId");
-
-                    b.ToTable("Journal_Accounts");
-                });
-
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
                 {
                     b.Property<int>("JournalId")
@@ -585,22 +561,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", b =>
-                {
-                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.Journalize", "Journalize")
-                        .WithMany("Journal_Accounts")
-                        .HasForeignKey("JournalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Journalize");
-                });
-
-            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
-                {
-                    b.Navigation("Journal_Accounts");
                 });
 #pragma warning restore 612, 618
         }

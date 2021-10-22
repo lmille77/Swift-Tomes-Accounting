@@ -7,6 +7,7 @@ using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Helpers;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -124,29 +125,24 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult Journalize()
         {
-           
-            return View();
+
+            Journalize journalize = new Journalize();
+            journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
+           // journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 2 });
+            //journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 3 });
+            return View(journalize);
            
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Journalize(Journalize journal)
+        public IActionResult Journalize(Journalize journal)
         {
             if (ModelState.IsValid)
             {
-                Journalize j = new Journalize
-                {
-                    Account1 = journal.Account1,
-                    Debit1 = journal.Debit1,
-                    Credit1 = journal.Credit1,
-                    Account2 = journal.Account2,
-                    Debit2 = journal.Debit2,
-                    Credit2 = journal.Credit2,
-                    Description = journal.Description
-                };
-                _db.Journalizes.Add(j);
-                await _db.SaveChangesAsync();
+                
+                _db.Journalizes.Add(journal);
+                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
                 return RedirectToAction("Index", "Admin");
             }
