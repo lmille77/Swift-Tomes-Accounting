@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Tomes_Accounting.Data;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211022154818_list2")]
+    partial class list2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -502,8 +504,8 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("AccountNumber")
+                        .HasColumnType("float");
 
                     b.Property<double>("Credit")
                         .HasColumnType("float");
@@ -515,6 +517,8 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("JAId");
+
+                    b.HasIndex("AccountNumber");
 
                     b.HasIndex("JournalId");
 
@@ -528,10 +532,15 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Journal_AccountsJAId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("isApproved")
                         .HasColumnType("bit");
 
                     b.HasKey("JournalId");
+
+                    b.HasIndex("Journal_AccountsJAId");
 
                     b.ToTable("Journalizes");
                 });
@@ -589,18 +598,33 @@ namespace Swift_Tomes_Accounting.Migrations
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", b =>
                 {
+                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", "AccountDB")
+                        .WithMany()
+                        .HasForeignKey("AccountNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.Journalize", "Journalize")
-                        .WithMany("Journal_Accounts")
+                        .WithMany()
                         .HasForeignKey("JournalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AccountDB");
 
                     b.Navigation("Journalize");
                 });
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
                 {
-                    b.Navigation("Journal_Accounts");
+                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", null)
+                        .WithMany("Journalizes")
+                        .HasForeignKey("Journal_AccountsJAId");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", b =>
+                {
+                    b.Navigation("Journalizes");
                 });
 #pragma warning restore 612, 618
         }

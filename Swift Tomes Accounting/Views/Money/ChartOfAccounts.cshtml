@@ -10,6 +10,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
+
 <h1 class="text-center">Chart Of Accounts</h1>
 
 
@@ -73,16 +74,15 @@
     <div>&nbsp;</div>
     <form asp-controller="Money" asp-action="ChartOfAccounts" method="get">
         <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
-        
+
     </form>
-            
+
 </div>
-  
 
 
 
 
-    <div>
+
 
         <table class="table table-striped border" id="table"
                data-toggle="table"
@@ -208,8 +208,9 @@
         </table>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
