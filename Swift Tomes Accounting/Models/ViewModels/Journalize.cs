@@ -13,31 +13,20 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [Key]
         public int JournalId { get; set; }
 
-        //public double AccountNumber { get; set; }
-
-        public string Account1 { get; set; }
-        public string Account2 { get; set; }
-
-        public int MyProperty { get; set; }
-
-        [DataType(DataType.Currency)]
-        public double Debit1 { get; set; }
-
-        [DataType(DataType.Currency)]
-        public double Credit1 { get; set; }
-        [DataType(DataType.Currency)]
-        public double Debit2 { get; set; }
-
-        [DataType(DataType.Currency)]
-        public double Credit2 { get; set; }
-        [DataType(DataType.Currency)]
-        public double Balance { get; set; }
-
-        public string Description { get; set; }
-
         public bool isApproved { get; set; }
 
+        [NotMapped]
+        public double AccountNumber { get; set; }
 
-     
+        //just used to display in the view, not stored in database
+        //[NotMapped]
+        //public string AccountName { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> AccountList { get; set; }
+
+        public virtual List<Journal_Accounts> Journal_Accounts { get; set; } = new List<Journal_Accounts>();
+
+
     }
 }
