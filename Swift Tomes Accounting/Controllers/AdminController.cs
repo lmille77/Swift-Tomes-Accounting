@@ -124,15 +124,16 @@ namespace Swift_Tomes_Accounting.Controllers
 
         [HttpGet]
         public IActionResult Journalize()
-        {
-
+        {            
             Journalize journalize = new Journalize();
-            journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
-           // journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 2 });
-            //journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 3 });
-            return View(journalize);
-           
+            journalize.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = u.AccountName,
+                Text = u.AccountName
+            });
 
+            journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
+            return View(journalize);
         }
 
         [HttpPost]
