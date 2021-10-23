@@ -67,17 +67,17 @@
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td>
+                        <td style="width:200px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
-                        <td>
+                        <td style="width:200px">
                             @Html.EditorFor(x => x.Journal_Accounts[i].Debit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
                         </td>
 
-                        <td>
+                        <td style="width:200px">
                             <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:90%; position:absolute">Add</button>
                             <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)" style="left:90%; position:absolute">Delete</button>
                         </td>
@@ -89,18 +89,18 @@
         
         <table class="table" id="jTable2">
 
-            <tbody>
+            <tbody >
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td>
+                        <td style="width:200px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
-
-                        <td>
+                        
+                        <td style="padding-left:200px">
                             @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
                         </td>
                         <td>
