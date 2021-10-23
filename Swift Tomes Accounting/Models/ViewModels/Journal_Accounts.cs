@@ -30,7 +30,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public double Credit { get; set; }
 
 
-        public string AccountName { get; set; }
+        public string AccountName1 { get; set; }
+        public string AccountName2 { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem> AccountList { get; set; }

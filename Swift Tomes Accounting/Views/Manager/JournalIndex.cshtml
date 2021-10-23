@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
+
+<br />
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center border-info">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="justify-content-start">
+    <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
+       data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+        Add Entry
+    </a>
+</div>
+
+
+<div class="container-fluid">
+    <table class="table table-striped border">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Account
+                </th>
+                <th>
+                    Ref
+                </th>
+                <th>
+                    Debit
+                </th>
+                <th>
+                    Credit
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountName1)
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp; @Html.DisplayFor(modelItem => item.AccountName2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JournalId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Debit)
+                    </td>
+                    <td>
+                        <br />
+                        @Html.DisplayFor(modelItem => item.Credit)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

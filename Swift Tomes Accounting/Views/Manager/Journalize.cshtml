@@ -19,7 +19,7 @@
             <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
         </li>
         <li>
-            <a asp-controller="Manager" asp-action="Journalize" class="btn btn-info btn-outline-light">Journalize</a>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
         </li>
         <li>
             <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
@@ -55,7 +55,7 @@
                 {
                     <tr>
                         <td style="width:200px">
-                            @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName,
+                            @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName1,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
@@ -81,7 +81,7 @@
                 {
                     <tr>
                         <td style="width:200px">
-                            @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName,
+                            @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName2,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
@@ -103,7 +103,7 @@
 
         <div class="form-group text-center">
             <input type="submit" value="Create Account" class=" btn btn-success " />
-            <a asp-action="Journalize" class="btn btn-outline-primary">Go Back</a>
+            <a asp-action="Journalindex" class="btn btn-outline-primary">Go Back</a>
 
         </div>
     </form>

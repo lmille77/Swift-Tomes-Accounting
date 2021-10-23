@@ -175,6 +175,9 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
 
+
+
+
         [HttpGet]
 
         public IActionResult AccountLedger(int? id)
@@ -250,5 +253,12 @@ namespace Swift_Tomes_Accounting.Controllers
             return View("AccountLedger", objFromDb);
         }
 
+
+        public IActionResult JournalIndex()
+        {
+            var sortList = _db.Journal_Accounts.ToList();
+            return View(sortList);
+
+        }
     }
 }

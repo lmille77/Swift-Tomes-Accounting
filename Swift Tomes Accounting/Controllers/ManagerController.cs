@@ -314,6 +314,15 @@ namespace Swift_Tomes_Accounting.Controllers
             _db.SaveChanges();
             return RedirectToAction("Pending", "Manager");
         }
+
+        public IActionResult JournalIndex()
+        {
+            var sortList = _db.Journal_Accounts.ToList();
+            return View(sortList);
+
+        }
+
     }
+
 
 }
