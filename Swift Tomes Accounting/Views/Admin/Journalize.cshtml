@@ -86,10 +86,10 @@
             </tbody>
         </table>
 
-        
+
         <table class="table" id="jTable2">
 
-            <tbody >
+            <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
@@ -99,7 +99,7 @@
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
-                        
+
                         <td style="padding-left:200px">
                             @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
                         </td>
@@ -111,7 +111,7 @@
                 }
             </tbody>
         </table>
-        
+
         <br />
 
         <div class="form-group text-center">
