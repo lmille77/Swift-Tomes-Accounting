@@ -159,7 +159,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 Value = u.AccountName,
                 Text = u.AccountName
             });
-            journalize.CreatedOn = DateTime.Now;
+            //journalize.CreatedOn = DateTime.Now;
             journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
             return View(journalize);
         }

@@ -39,7 +39,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public IEnumerable<SelectListItem> AccountList { get; set; }
 
         [NotMapped]
-        public string IsApproved { get; set; }
+        public bool IsApproved { get; set; }
     }
 
 }
