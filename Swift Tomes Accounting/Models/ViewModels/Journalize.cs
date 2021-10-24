@@ -21,6 +21,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         //just used to display in the view, not stored in database
         //[NotMapped]
         //public string AccountName { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedOn { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem> AccountList { get; set; }

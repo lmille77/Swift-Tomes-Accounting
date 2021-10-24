@@ -39,6 +39,9 @@
         <thead class="thead-dark">
             <tr>
                 <th>
+                    Date Created
+                </th>
+                <th>
                     Account
                 </th>
                 <th>
@@ -56,6 +59,9 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.AccountName1)
                         <br />

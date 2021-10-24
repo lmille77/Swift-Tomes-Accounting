@@ -159,7 +159,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 Value = u.AccountName,
                 Text = u.AccountName
             });
-
+            journalize.CreatedOn = DateTime.Now;
             journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
             return View(journalize);
         }
@@ -169,7 +169,7 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             if (ModelState.IsValid)
             {
-
+               // journal.CreatedOn = DateTime.Now;
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
@@ -180,6 +180,15 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(journal);
 
         }
+
+        public IActionResult JournalIndex()
+        {
+            var sortList = _db.Journal_Accounts.ToList();
+            return View(sortList);
+
+        }
+
+
 
         [HttpGet]
 
@@ -315,13 +324,8 @@ namespace Swift_Tomes_Accounting.Controllers
             return RedirectToAction("Pending", "Manager");
         }
 
-        public IActionResult JournalIndex()
-        {
-            var sortList = _db.Journal_Accounts.ToList();
-            return View(sortList);
 
-        }
-
+      
     }
 
 
