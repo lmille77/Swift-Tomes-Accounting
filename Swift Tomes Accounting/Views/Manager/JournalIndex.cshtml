@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
 @{ 
     var arraylist = Model.ToArray();
+    int counter = 0;
 }
 <br />
 <div class="sidebar-container border-dark">
@@ -69,26 +70,64 @@
                     </td>
                     <td>
                         @arraylist[i].AccountName1
+                        @{
+                            for (int index = i; index < arraylist.Length - 1; index++)
+                            {
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit == 0)
+                                {
+                                    <br />
+                                    counter++;
+                                    @arraylist[index + 1].AccountName1
+                                }
+                            }
+                        }
                         <br />
                         &nbsp;&nbsp;&nbsp;&nbsp; @arraylist[i].AccountName2
+                        @{
+                            for (int index = i; index < arraylist.Length - 1; index++)
+                            {
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit == 0)
+                                {
+                                    <br />
+                                   @arraylist[index + 1].AccountName2
+                                }
+                            }
+                        }
                     </td>
                     <td>
                         @arraylist[i].JournalId
                     </td>
                     <td>
                         @arraylist[i].Debit
+                        @{ 
+                            for(int index = i; index < arraylist.Length-1; index++)
+                            {
+                                if(arraylist[index+1].JournalId == arraylist[i].JournalId && arraylist[index+1].Credit == 0)
+                                {
+                                    <br />
+                                    @arraylist[index+1].Debit
+                                    
+                                }
+                            }
+                            
+                        }
                     </td>
                     <td>
+                       @for(int j = 0; j < counter-1; j++)
+                        {
+                           <br />
+                        }
                         <br />
                         @arraylist[i].Credit
                     </td>
-                    @if (arraylist[i].IsApproved == false)
+                   
+                    @*if (arraylist[i].IsApproved == false)
                     {
                         <td>
                             Pending
                         </td>
 
-                    }
+                    }*@
                     else
                     {
                         <td>
