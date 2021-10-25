@@ -104,6 +104,7 @@
                         @arraylist[i].JournalId
                     </td>
                     <td>
+                        
                         @arraylist[i].Debit
                         @{ 
                             for(int index = i; index < arraylist.Length-1; index++)
@@ -126,21 +127,41 @@
                             {
                                 <br />
                             }
-                            <br />
-                            @arraylist[i].Credit
+
                         }
-                        else
+                        @if (multipleDebit == true && multipleCredit == false)
                         {
                             <br />
                             @arraylist[i].Credit
                         }
-                        @if (multipleCredit)
+                        @if (multipleDebit == false && multipleCredit == false)
                         {
+                            <br />
+                            @arraylist[i].Credit
+                        }
+                        @if (multipleCredit == true && multipleDebit == false)
+                        {
+                            <br />
+                            @arraylist[i].Credit
                             @for (int index = i; index < arraylist.Length - 1; index++)
                             {
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
                                 {
                                     counter++;
+                                    <br />
+                                    @arraylist[index + 1].Credit
+
+                                }
+                            }
+                        }
+                        @if (multipleCredit == true && multipleDebit == true)
+                        {
+                            <br />
+                            @arraylist[i].Credit
+                            @for (int index = i; index < arraylist.Length - 1; index++)
+                            {
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
+                                {
                                     <br />
                                     @arraylist[index + 1].Credit
 
