@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
-
+@{ 
+    var arraylist = Model.ToArray();
+}
 <br />
 <div class="sidebar-container border-dark">
     <div>
@@ -59,41 +61,41 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @for (int i = 0; i < arraylist.Length; i++)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedOn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountName1)
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp; @Html.DisplayFor(modelItem => item.AccountName2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JournalId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Debit)
-                </td>
-                <td>
-                    <br />
-                    @Html.DisplayFor(modelItem => item.Credit)
-                </td>
-                @if (item.IsApproved == false)
-                {
+                <tr>
                     <td>
-                        Pending
+                        @arraylist[i].CreatedOn
                     </td>
+                    <td>
+                        @arraylist[i].AccountName1
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp; @arraylist[i].AccountName2
+                    </td>
+                    <td>
+                        @arraylist[i].JournalId
+                    </td>
+                    <td>
+                        @arraylist[i].Debit
+                    </td>
+                    <td>
+                        <br />
+                        @arraylist[i].Credit
+                    </td>
+                    @if (arraylist[i].IsApproved == false)
+                    {
+                        <td>
+                            Pending
+                        </td>
 
-                }
-                else
-                {
-                    <td>
-                        Approved
-                    </td>
-                }
-            </tr>
+                    }
+                    else
+                    {
+                        <td>
+                            Approved
+                        </td>
+                    }
+                </tr>
             }
         </tbody>
     </table>
