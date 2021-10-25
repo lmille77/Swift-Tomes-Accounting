@@ -78,8 +78,7 @@
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
                                 {
                                     multipleDebit = true;
-                                    <br />
-                                    counter++;
+                                    <br />                                    
                                     @arraylist[index + 1].AccountName1
                                 }
                             }
@@ -111,6 +110,7 @@
                             {
                                 if(arraylist[index+1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                                 {
+                                    counter++;
                                     <br />
                                     @arraylist[index+1].Debit
                                     
@@ -129,13 +129,16 @@
                             <br />
                             @arraylist[i].Credit
                         }
-                        @if (multipleCredit && multipleDebit)
+                        else
                         {
                             <br />
-                            @arraylist[i + 1].Credit
+                            @arraylist[i].Credit
+                        }
+                        @if (multipleCredit)
+                        {
                             @for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
                                 {
                                     counter++;
                                     <br />
@@ -144,11 +147,7 @@
                                 }
                             }
                         }
-                        else
-                        {
-                            <br />
-                            @arraylist[i].Credit
-                        }
+
 
 
                     </td>
