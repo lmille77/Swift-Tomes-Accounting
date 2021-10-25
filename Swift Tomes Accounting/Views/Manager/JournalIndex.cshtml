@@ -65,6 +65,7 @@
             {
                 var counter = 0;
                 var multipleDebit = false;
+                var multipleCredit = false;
                 <tr>
                     <td>
                         @arraylist[i].CreatedOn
@@ -74,7 +75,7 @@
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit == 0)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId)
                                 {
                                     multipleDebit = true;
                                     <br />
@@ -90,8 +91,9 @@
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit == 0)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId)
                                 {
+                                    multipleCredit = true;
                                     
                                     @arraylist[index + 1].AccountName2
                                     <br />
@@ -107,7 +109,7 @@
                         @{ 
                             for(int index = i; index < arraylist.Length-1; index++)
                             {
-                                if(arraylist[index+1].JournalId == arraylist[i].JournalId && arraylist[index+1].Credit == 0)
+                                if(arraylist[index+1].JournalId == arraylist[i].JournalId)
                                 {
                                     <br />
                                     @arraylist[index+1].Debit
@@ -127,10 +129,10 @@
                             <br />
                             @arraylist[i].Credit
                         }
-                        else
+                       @if(multipleCredit && multipleDebit)
                         {
                             <br />
-                            @arraylist[i].Credit
+                            @arraylist[i+1].Credit
                             @for (int index = i; index < arraylist.Length - 1; index++)
                             {
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit == 0)
