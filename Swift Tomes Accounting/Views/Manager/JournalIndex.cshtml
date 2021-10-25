@@ -75,7 +75,7 @@
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
                                 {
                                     multipleDebit = true;
                                     <br />
@@ -91,7 +91,7 @@
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
                                 {
                                     multipleCredit = true;
                                     
@@ -109,7 +109,7 @@
                         @{ 
                             for(int index = i; index < arraylist.Length-1; index++)
                             {
-                                if(arraylist[index+1].JournalId == arraylist[i].JournalId)
+                                if(arraylist[index+1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                                 {
                                     <br />
                                     @arraylist[index+1].Debit
@@ -129,13 +129,13 @@
                             <br />
                             @arraylist[i].Credit
                         }
-                       @if(multipleCredit && multipleDebit)
+                        @if (multipleCredit && multipleDebit)
                         {
                             <br />
-                            @arraylist[i+1].Credit
+                            @arraylist[i + 1].Credit
                             @for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit == 0)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0)
                                 {
                                     counter++;
                                     <br />
@@ -143,6 +143,11 @@
 
                                 }
                             }
+                        }
+                        else
+                        {
+                            <br />
+                            @arraylist[i].Credit
                         }
 
 
