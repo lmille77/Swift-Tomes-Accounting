@@ -86,13 +86,16 @@
                         }
                         <br />
                         &nbsp;&nbsp;&nbsp;&nbsp; @arraylist[i].AccountName2
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit == 0)
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit == 0)
                                 {
+                                    
+                                    @arraylist[index + 1].AccountName2
                                     <br />
-                                   @arraylist[index + 1].AccountName2
                                 }
                             }
                         }
