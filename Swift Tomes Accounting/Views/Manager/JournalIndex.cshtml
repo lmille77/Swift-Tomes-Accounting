@@ -134,17 +134,12 @@
                             }
 
                         }
-                        @if (multipleDebit == true && multipleCredit == false)
+                        @if (multipleCredit == false)
                         {
                             <br />
                             @arraylist[i].Credit
                         }
-                        @if (multipleDebit == false && multipleCredit == false)
-                        {
-                            <br />
-                            @arraylist[i].Credit
-                        }
-                        @if (multipleCredit == true)
+                        @if (multipleCredit)
                         {
                             <br />
                             @arraylist[i].Credit
