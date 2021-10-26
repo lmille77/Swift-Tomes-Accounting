@@ -6,6 +6,7 @@ using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -169,7 +170,10 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             if (ModelState.IsValid)
             {
-               // journal.CreatedOn = DateTime.Now;
+                string uniqueFileName = GetUploadedFileName(journal);
+                journal.docUrl = uniqueFileName;
+
+                // journal.CreatedOn = DateTime.Now;
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
@@ -188,6 +192,24 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
+
+
+        private string GetUploadedFileName(Journalize journalize)
+        {
+            string uniqueFileName = null;
+
+            if (journalize.Document != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + journalize.Document.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    journalize.Document.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
 
 
         [HttpGet]

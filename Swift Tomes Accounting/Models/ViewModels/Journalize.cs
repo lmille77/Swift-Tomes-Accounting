@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 
 namespace Swift_Tomes_Accounting.Models.ViewModels
 {
@@ -28,6 +29,12 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public IEnumerable<SelectListItem> AccountList { get; set; }
 
         public virtual List<Journal_Accounts> Journal_Accounts { get; set; } = new List<Journal_Accounts>();
+
+        public string docUrl { get; set; }
+
+        
+        [NotMapped]
+        public IFormFile Document { get; set; }
 
 
     }

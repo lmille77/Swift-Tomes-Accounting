@@ -10,7 +10,7 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211023214401_init")]
+    [Migration("20211026162651_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -504,8 +504,14 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccountName")
+                    b.Property<string>("AccountName1")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountName2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Credit")
                         .HasColumnType("float");
@@ -529,6 +535,12 @@ namespace Swift_Tomes_Accounting.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("docUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isApproved")
                         .HasColumnType("bit");
