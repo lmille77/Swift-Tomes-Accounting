@@ -32,7 +32,25 @@
 <div>
     <form method="post" asp-action="Journalize" asp-controller="Manager" id="form1">
      
+        <table class="table w-100">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="width:250px">
+                        Account Name
+                    </th>
+                    <th style="width:250px">
+                        Debit
+                    </th>
+                    <th style="width:250px">
+                        Credit
+                    </th>
+                    <th style="width:250px">
 
+                    </th>
+
+                </tr>
+            </thead>
+        </table>
         <table class="table w-100" id="jTable1">
             
             <tbody>
@@ -48,13 +66,16 @@
                         <td>
                             @Html.EditorFor(x => x.Journal_Accounts[i].Debit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
                         </td>
+                        <td>
+
+                        </td>
 
                         <td style="width:200px">
                             <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m m my</button>
-                            <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:90%; position:absolute">
+                            <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:80%; position:absolute">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
-                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable1')" style="left:94%; position:absolute">
+                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable1')" style="left:85%; position:absolute">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                             </button>
 
@@ -85,10 +106,10 @@
                         </td>
                         <td style="width:250px">
                             <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m m my</button>
-                            <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:90%; position:absolute">
+                            <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:80%; position:absolute">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
-                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable2')" style="left:94%; position:absolute">
+                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable2')" style="left:85%; position:absolute">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                             </button>
                         </td>
