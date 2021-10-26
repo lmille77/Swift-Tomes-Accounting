@@ -30,7 +30,7 @@
 
 
 <div>
-    <form method="post" asp-action="Journalize" asp-controller="Admin" id="form1">
+    <form method="post" asp-action="Journalize" asp-controller="Manager" id="form1">
      
 
         <table class="table" id="jTable1">
@@ -39,7 +39,7 @@
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td class="col-lg-2">
+                        <td style="width:150px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName1,
                             Model.AccountList,
                             "Select Account",
@@ -51,8 +51,12 @@
 
                         <td style="width:200px">
                             <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m     m my</button>
-                            <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:94%; position:absolute">Add</button>
-                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable1')" style="left:90%; position:absolute">Delete</button>
+                            <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:90%; position:absolute">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable1')" style="left:94%; position:absolute">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
 
                         </td>
                     </tr>
@@ -79,8 +83,12 @@
                         </td>
                         <td>
                             <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m     m my</button>
-                            <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:94%; position:absolute">Add</button>
-                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable2')" style="left:90%; position:absolute">Delete</button>
+                            <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:90%; position:absolute">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable2')" style="left:94%; position:absolute">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
                         </td>
                     </tr>
 
