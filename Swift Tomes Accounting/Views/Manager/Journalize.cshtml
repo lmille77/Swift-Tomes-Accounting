@@ -34,27 +34,12 @@
      
 
         <table class="table" id="jTable1">
-            <thead>
-                <tr>
-                    <th>
-                        Account Name
-                    </th>
-                    <th>
-                        Debit
-                    </th>
-                    <th>
-                        Credit
-                    </th>
-                    <th>
-
-                    </th>
-                </tr>
-            </thead>
+            
             <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td style="width:200px">
+                        <td class="col-lg-2">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName1,
                             Model.AccountList,
                             "Select Account",
@@ -67,7 +52,7 @@
                         <td style="width:200px">
                             <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m     m my</button>
                             <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:94%; position:absolute">Add</button>
-                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)" style="left:90%; position:absolute">Delete</button>
+                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable1')" style="left:90%; position:absolute">Delete</button>
 
                         </td>
                     </tr>
@@ -95,7 +80,7 @@
                         <td>
                             <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m     m my</button>
                             <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:94%; position:absolute">Add</button>
-                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)" style="left:90%; position:absolute">Delete</button>
+                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable2')" style="left:90%; position:absolute">Delete</button>
                         </td>
                     </tr>
 
@@ -136,7 +121,12 @@
             $(btn).closest('tr').remove();
         }
 
+        function DeleteRow(tableID) {
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
 
+            table.deleteRow(rowCount - 1);
+        }
 
         function AddItem1(btn) {
 
@@ -145,7 +135,7 @@
 
             var rowOuterHtml = rows[rows.length - 1].outerHTML;
 
-            var lastrowIdx = document.getElementById('hdnLastIndex1').value;
+            var lastrowIdx = table.rows.length-1;
 
             var nextrowIdx = eval(lastrowIdx) + 1;
 
@@ -155,25 +145,13 @@
             rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
             rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
 
-
-            var newRow = table.insertRow();
+            var rowCount = table.rows.length;
+            var newRow = table.insertRow(rowCount);
             newRow.innerHTML = rowOuterHtml;
 
 
-
-            var btnAddID = btn.id;
-            var btnDeleteid = btnAddID.replaceAll('btnadd1', 'btnremove1');
-
-            var delbtn = document.getElementById(btnDeleteid);
-            delbtn.classList.add("visible");
-            delbtn.classList.remove("invisible");
-
-
-            var addbtn = document.getElementById(btnAddID);
-            addbtn.classList.remove("visible");
-            addbtn.classList.add("invisible");
-
         }
+        
         function AddItem2(btn) {
 
             var table = document.getElementById('jTable2');
@@ -181,7 +159,7 @@
 
             var rowOuterHtml = rows[rows.length - 1].outerHTML;
 
-            var lastrowIdx = document.getElementById('hdnLastIndex2').value;
+            var lastrowIdx = table.rows.length-1;
 
             var nextrowIdx = eval(lastrowIdx) + 1;
 
@@ -191,23 +169,10 @@
             rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
             rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
 
-
-            var newRow = table.insertRow();
+            var rowCount = table.rows.length;
+            var newRow = table.insertRow(rowCount);
             newRow.innerHTML = rowOuterHtml;
 
-
-
-            var btnAddID = btn.id;
-            var btnDeleteid = btnAddID.replaceAll('btnadd2', 'btnremove2');
-
-            var delbtn = document.getElementById(btnDeleteid);
-            delbtn.classList.add("visible");
-            delbtn.classList.remove("invisible");
-
-
-            var addbtn = document.getElementById(btnAddID);
-            addbtn.classList.remove("visible");
-            addbtn.classList.add("invisible");
 
         }
 
