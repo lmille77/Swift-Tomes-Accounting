@@ -33,24 +33,24 @@
     <form method="post" asp-action="Journalize" asp-controller="Manager" id="form1">
      
 
-        <table class="table" id="jTable1">
+        <table class="table w-100" id="jTable1">
             
             <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td style="width:150px">
+                        <td style="width:250px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName1,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
-                        <td style="width:200px">
+                        <td>
                             @Html.EditorFor(x => x.Journal_Accounts[i].Debit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
                         </td>
 
                         <td style="width:200px">
-                            <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m     m my</button>
+                            <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m m my</button>
                             <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:90%; position:absolute">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
@@ -65,24 +65,26 @@
         </table>
 
 
-        <table class="table" id="jTable2">
+        <table class="table w-100" id="jTable2">
 
             <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td style="width:200px">
+                        <td style="width:250px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName2,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
+                        <td style="width:250px">
 
-                        <td style="padding-left:200px">
-                            @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
                         </td>
                         <td>
-                            <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m     m my</button>
+                            @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        </td>
+                        <td style="width:250px">
+                            <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m m my</button>
                             <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:90%; position:absolute">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
