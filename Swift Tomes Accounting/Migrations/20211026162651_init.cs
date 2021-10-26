@@ -168,7 +168,9 @@ namespace Swift_Tomes_Accounting.Migrations
                 {
                     JournalId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    isApproved = table.Column<bool>(type: "bit", nullable: false)
+                    isApproved = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    docUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -290,7 +292,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     JournalId = table.Column<int>(type: "int", nullable: false),
                     Debit = table.Column<double>(type: "float", nullable: false),
                     Credit = table.Column<double>(type: "float", nullable: false),
-                    AccountName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccountName1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccountName2 = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

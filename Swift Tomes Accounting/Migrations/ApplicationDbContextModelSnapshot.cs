@@ -537,6 +537,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("docUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("isApproved")
                         .HasColumnType("bit");
 

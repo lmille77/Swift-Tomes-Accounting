@@ -30,8 +30,18 @@
 
 
 <div>
-    <form method="post" asp-action="Journalize" asp-controller="Manager" id="form1">
+    <form method="post" enctype="multipart/form-data" asp-action="Journalize" asp-controller="Manager" id="form1">
      
+        <div class=" form-group">
+            <label asp-for="Document" class="control-label">
+                <div class="custom-file">
+                    <input asp-for="Document" class="custom-file-input" id="document" />
+                    <label class="custom-file-label" for="document">Choose file</label>
+                </div>
+
+            </label>
+        </div>
+
         <table class="table w-100">
             <thead class="thead-dark">
                 <tr>
