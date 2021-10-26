@@ -108,8 +108,9 @@
 }
 
 #AcNum {
-    position:absolute;
+    position: absolute;
     left: 40px;
-    padding-top: 7px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 

@@ -524,7 +524,7 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
 
-        
+
         public IActionResult JournalIndex()
         {
             var sortList = _db.Journal_Accounts.ToList();
