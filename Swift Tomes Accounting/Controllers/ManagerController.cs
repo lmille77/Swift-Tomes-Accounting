@@ -188,6 +188,20 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult JournalIndex()
         {
             var sortList = _db.Journal_Accounts.ToList();
+            var jList = _db.Journalizes.ToList();
+
+            foreach(var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if(s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
+
             return View(sortList);
 
         }
@@ -253,7 +267,6 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
         [HttpGet]
-
         public IActionResult AcctEventLog(int? id)
         {
 
@@ -272,6 +285,9 @@ namespace Swift_Tomes_Accounting.Controllers
             };
             return View(eventlist);
         }
+
+
+
         [HttpGet]
         public IActionResult LinkedName(string name)
         {
@@ -286,6 +302,8 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View("AccountLedger", objFromDb);
         }
+
+
 
         public async Task<IActionResult> Pending()
         {
@@ -341,13 +359,80 @@ namespace Swift_Tomes_Accounting.Controllers
                 TempData[SD.Success] = "Entry approved successfully.";
             }
 
-
             _db.SaveChanges();
-            return RedirectToAction("Pending", "Manager");
+
+
+            var obj = _db.Journal_Accounts.ToList();
+
+            foreach(var r in obj)
+            {
+              if(r.JournalId == JournalId)
+                {
+                    r.IsApproved = true;
+                }
+            }
+            _db.SaveChanges();
+
+            return RedirectToAction("JournalIndex", "Manager");
         }
 
 
-      
+
+
+        [HttpGet]
+
+        public IActionResult Approval(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var objFromDb = _db.Journal_Accounts.FirstOrDefault(u => u.JournalId == id);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(objFromDb);
+
+        }
+
+
+
+        [HttpPost]
+        public IActionResult Approval(Journal_Accounts JA)
+        {
+            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JA.JournalId);
+
+
+            if (objFromdb == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                
+                
+
+                
+                _db.SaveChanges();
+
+
+               
+                TempData[SD.Success] = "Journal entry submitted";
+                return RedirectToAction("Index", "Admin");
+            }
+
+
+
+            return View(objFromdb);
+        }
+
+
+
+
+
+
     }
 
 
