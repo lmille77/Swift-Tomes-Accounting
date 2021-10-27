@@ -379,54 +379,54 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
 
-        [HttpGet]
+        //[HttpGet]
 
-        public IActionResult Approval(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var objFromDb = _db.Journal_Accounts.FirstOrDefault(u => u.JournalId == id);
-            if (objFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(objFromDb);
+        //public IActionResult Approval(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var objFromDb = _db.Journal_Accounts.FirstOrDefault(u => u.JournalId == id);
+        //    if (objFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(objFromDb);
 
-        }
-
-
-
-        [HttpPost]
-        public IActionResult Approval(Journal_Accounts JA)
-        {
-            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JA.JournalId);
+        //}
 
 
-            if (objFromdb == null)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
+        //[HttpPost]
+        //public IActionResult Approval(Journal_Accounts JA)
+        //{
+        //    var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JA.JournalId);
+
+
+        //    if (objFromdb == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
                 
                 
 
                 
-                _db.SaveChanges();
+        //        _db.SaveChanges();
 
 
                
-                TempData[SD.Success] = "Journal entry submitted";
-                return RedirectToAction("Index", "Admin");
-            }
+        //        TempData[SD.Success] = "Journal entry submitted";
+        //        return RedirectToAction("Index", "Admin");
+        //    }
 
 
 
-            return View(objFromdb);
-        }
+        //    return View(objFromdb);
+        //}
 
 
 
