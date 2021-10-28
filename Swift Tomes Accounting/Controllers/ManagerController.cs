@@ -160,7 +160,6 @@ namespace Swift_Tomes_Accounting.Controllers
                 Value = u.AccountName,
                 Text = u.AccountName
             });
-            //journalize.CreatedOn = DateTime.Now;
             journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
             return View(journalize);
         }
@@ -170,10 +169,18 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+
+
+
                 string uniqueFileName = GetUploadedFileName(journal);
                 journal.docUrl = uniqueFileName;
-
-                // journal.CreatedOn = DateTime.Now;
+                journal.CreatedOn = DateTime.Now;
+                for(int i = 0; i < journal.Journal_Accounts.Count ;i++)
+                {
+                    journal.Journal_Accounts[i].CreatedOn = DateTime.Now;
+                }
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";

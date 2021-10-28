@@ -47,7 +47,7 @@
 <div class="container-fluid" >
     <table class="table table-striped border" id="table" data-toggle="table"
            data-search="true"
-           data-filter-control="true" >
+           data-filter-control="true">
         <thead class="thead-dark">
             <tr>
                 <th data-field="createdOn" data-sortable="true">
@@ -118,17 +118,17 @@
                     <td>
                         @arraylist[i].JournalId
                     </td>
-                    <td>
-
+                    <td style="vertical-align: top">
                         @arraylist[i].Debit
+                        <br />
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                                 {
                                     counter++;
-                                    <br />
                                     @arraylist[index + 1].Debit
+                                    <br />
 
                                 }
                             }
