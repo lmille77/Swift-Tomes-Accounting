@@ -169,26 +169,59 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
-
-
+                double totalcredit = 0;
+                double totaldebit = 0;
+                List<string> accountnames = new List<string>();
+                bool accountnameError = false;
+                journal.CreatedOn = DateTime.Now;
 
                 string uniqueFileName = GetUploadedFileName(journal);
                 journal.docUrl = uniqueFileName;
-                journal.CreatedOn = DateTime.Now;
-                for(int i = 0; i < journal.Journal_Accounts.Count ;i++)
+                
+                foreach (var item in journal.Journal_Accounts)
                 {
-                    journal.Journal_Accounts[i].CreatedOn = DateTime.Now;
+                    accountnames.Add(item.AccountName1);
+                    accountnames.Add(item.AccountName2);
+                    totalcredit += item.Credit;
+                    totaldebit += item.Debit;
+                    item.CreatedOn = DateTime.Now;
                 }
+                foreach(var item in accountnames)
+                {
+                    int count = accountnames.Count(c => c == item && c != null);
+                    if(count > 1)
+                    {
+                        accountnameError = true;
+                    }
+                }
+                if (totalcredit != totaldebit)
+                {
+                    ModelState.AddModelError("", "The debits and credits are not balanced.");
+                    journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                    {
+                        Value = u.AccountName,
+                        Text = u.AccountName
+                    });
+                    return View(journal);
+                }
+                if(accountnameError)
+                {
+                    ModelState.AddModelError("", "The same account can only be used once.");
+                    journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                    {
+                        Value = u.AccountName,
+                        Text = u.AccountName
+                    });
+                    return View(journal);
+                }
+                
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
                 return RedirectToAction("Index", "Admin");
+
             }
-
-
-            return View(journal);
+            return View();
 
         }
 
