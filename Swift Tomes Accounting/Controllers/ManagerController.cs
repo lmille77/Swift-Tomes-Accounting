@@ -184,7 +184,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("JournalIndex", "Manager");
             }
 
 
@@ -384,6 +384,61 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult DenyEntry(int? JournalId)
+        {
+         
+            var objFromdb = _db.Journalizes.FirstOrDefault(u=>u.JournalId==JournalId);
+           
+
+
+            return View(objFromdb);
+        }
+
+        [HttpPost]
+        public IActionResult DenyEntry(Journalize Journal)
+        {
+
+            if (ModelState.IsValid)
+            {
+              
+                
+                var objFromDb = _db.Journalizes.FirstOrDefault(u => u.JournalId == Journal.JournalId);
+                
+                if(objFromDb.IsRejected == false)
+                {
+                    objFromDb.Reason = Journal.Reason;
+                    objFromDb.IsRejected = true;
+                    _db.SaveChanges();
+                    TempData[SD.Success] = "Entry has been denied.";
+  
+                }
+               
+
+                var JA = _db.Journal_Accounts.ToList();
+
+                foreach (var r in JA)
+                {
+                    if (r.JournalId == Journal.JournalId)
+                    {
+                        r.IsRejected = true;
+                    }
+                }
+                _db.SaveChanges();
+
+                return RedirectToAction("JournalIndex", "Manager");
+
+
+
+
+            }
+
+            
+            
+
+
+            return View(Journal);
+        }
 
 
         //[HttpGet]
@@ -418,14 +473,14 @@ namespace Swift_Tomes_Accounting.Controllers
 
         //    if (ModelState.IsValid)
         //    {
-                
-                
 
-                
+
+
+
         //        _db.SaveChanges();
 
 
-               
+
         //        TempData[SD.Success] = "Journal entry submitted";
         //        return RedirectToAction("Index", "Admin");
         //    }

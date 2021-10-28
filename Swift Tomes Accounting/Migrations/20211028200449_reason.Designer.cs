@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Tomes_Accounting.Data;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211028200449_reason")]
+    partial class reason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -517,9 +519,6 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<double>("Debit")
                         .HasColumnType("float");
 
-                    b.Property<bool>("IsRejected")
-                        .HasColumnType("bit");
-
                     b.Property<int>("JournalId")
                         .HasColumnType("int");
 
@@ -539,9 +538,6 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRejected")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");

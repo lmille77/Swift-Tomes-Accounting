@@ -37,5 +37,10 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public IFormFile Document { get; set; }
 
 
+        public string Reason { get; set; }
+
+
+        public bool IsRejected { get; set; }
+
     }
 }
