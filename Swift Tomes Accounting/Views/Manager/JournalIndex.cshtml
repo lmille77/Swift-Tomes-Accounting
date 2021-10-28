@@ -118,7 +118,7 @@
                     <td>
                         @arraylist[i].JournalId
                     </td>
-                    <td style="vertical-align: top">
+                    <td style="vertical-align: top; text-align:right">
                         @arraylist[i].Debit.ToString("C")
                         <br />
                         @{
@@ -130,12 +130,12 @@
                                     @arraylist[index + 1].Debit.ToString("C")
                                     <br />
 
+                                }
                             }
-                        }
 
-                    }
-                </td>
-                <td>
+                        }
+                    </td>
+                <td style="text-align:right">
                     @if (multipleDebit)
                     {
                         @for (int j = 0; j < counter; j++)

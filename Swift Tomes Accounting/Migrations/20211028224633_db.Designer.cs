@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211028210929_rejected")]
-    partial class rejected
+    [Migration("20211028224633_db")]
+    partial class db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -518,6 +518,9 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<double>("Debit")
                         .HasColumnType("float");
+
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
 
                     b.Property<int>("JournalId")
                         .HasColumnType("int");
