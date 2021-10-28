@@ -102,33 +102,33 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
                     <br />
 
-                    @{
-                        for (int index = i; index < arraylist.Length - 1; index++)
-                        {
-                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
+                        @{
+                            for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                multipleCredit = true;
-                                @arraylist[index + 1].AccountName2
-                                <br />
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
+                                {
+                                    <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                                    multipleCredit = true;
+                                    @arraylist[index + 1].AccountName2
+                                    <br />
+                                }
                             }
                         }
-                    }
-                </td>
-                <td>
-                    @arraylist[i].JournalId
-                </td>
-                <td style="vertical-align: top">
-                    @arraylist[i].Debit
-                    <br />
-                    @{
-                        for (int index = i; index < arraylist.Length - 1; index++)
-                        {
-                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
+                    </td>
+                    <td>
+                        @arraylist[i].JournalId
+                    </td>
+                    <td style="vertical-align: top">
+                        @arraylist[i].Debit.ToString("C")
+                        <br />
+                        @{
+                            for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                counter++;
-                                @arraylist[index + 1].Debit
-                                <br />
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
+                                {
+                                    counter++;
+                                    @arraylist[index + 1].Debit.ToString("C")
+                                    <br />
 
                             }
                         }
@@ -143,22 +143,22 @@
                             <br />
                         }
 
-                    }
-                    @if (multipleCredit == false)
-                    {
-                        <br />
-                        @arraylist[i].Credit
-                    }
-                    @if (multipleCredit)
-                    {
-                        <br />
-                        @arraylist[i].Credit
-                        @for (int index = i; index < arraylist.Length - 1; index++)
+                        }
+                        @if (multipleCredit == false)
                         {
-                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
+                            <br />
+                            @arraylist[i].Credit.ToString("C")
+                        }
+                        @if (multipleCredit)
+                        {
+                            <br />
+                            @arraylist[i].Credit.ToString("C")
+                            @for (int index = i; index < arraylist.Length - 1; index++)
                             {
-                                <br />
-                                @arraylist[index + 1].Credit
+                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
+                                {
+                                    <br />
+                                    @arraylist[index + 1].Credit.ToString("C")
 
                             }
                         }
