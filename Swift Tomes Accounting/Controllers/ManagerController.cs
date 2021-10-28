@@ -167,6 +167,13 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult Journalize(Journalize journal)
         {
+            journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = u.AccountName,
+                Text = u.AccountName
+            });
+
+
             if (ModelState.IsValid)
             {
                 double totalcredit = 0;
@@ -174,7 +181,6 @@ namespace Swift_Tomes_Accounting.Controllers
                 List<string> accountnames = new List<string>();
                 bool accountnameError = false;
                 journal.CreatedOn = DateTime.Now;
-
                 string uniqueFileName = GetUploadedFileName(journal);
                 journal.docUrl = uniqueFileName;
                 
@@ -192,36 +198,40 @@ namespace Swift_Tomes_Accounting.Controllers
                     if(count > 1)
                     {
                         accountnameError = true;
+                        break;
+                    }
+                }
+                for(int i = 0; i < journal.Journal_Accounts.Count(); i++)
+                {
+                    if(journal.Journal_Accounts[i].Credit <= 0 && journal.Journal_Accounts[i].Debit <= 0)
+                    {
+                        ModelState.AddModelError("", "Entered value for a debit or credit must be greater than 0.");
+                        return View(journal);
                     }
                 }
                 if (totalcredit != totaldebit)
                 {
-                    ModelState.AddModelError("", "The debits and credits are not balanced.");
-                    journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                    {
-                        Value = u.AccountName,
-                        Text = u.AccountName
-                    });
+                    ModelState.AddModelError("", "The debits and credits are not balanced.");                    
                     return View(journal);
                 }
-                if(accountnameError)
+                else if(accountnameError)
                 {
-                    ModelState.AddModelError("", "The same account can only be used once.");
-                    journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                    {
-                        Value = u.AccountName,
-                        Text = u.AccountName
-                    });
+                    ModelState.AddModelError("", "The same account can only be used once.");                    
                     return View(journal);
                 }
-                
-                _db.Journalizes.Add(journal);
-                _db.SaveChanges();
-                TempData[SD.Success] = "Journal entry submitted";
-                return RedirectToAction("Index", "Admin");
-
+                else
+                {
+                    _db.Journalizes.Add(journal);
+                    _db.SaveChanges();
+                    TempData[SD.Success] = "Journal entry submitted";
+                    return RedirectToAction("Index", "Admin");
+                }
             }
-            return View();
+            else
+            {
+                return View(journal);
+            }
+            
 
         }
 

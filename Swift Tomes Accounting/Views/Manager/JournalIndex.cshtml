@@ -119,7 +119,7 @@
                         @arraylist[i].JournalId
                     </td>
                     <td style="vertical-align: top">
-                        @arraylist[i].Debit
+                        @arraylist[i].Debit.ToString("C")
                         <br />
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
@@ -127,7 +127,7 @@
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                                 {
                                     counter++;
-                                    @arraylist[index + 1].Debit
+                                    @arraylist[index + 1].Debit.ToString("C")
                                     <br />
 
                                 }
@@ -147,18 +147,18 @@
                         @if (multipleCredit == false)
                         {
                             <br />
-                            @arraylist[i].Credit
+                            @arraylist[i].Credit.ToString("C")
                         }
                         @if (multipleCredit)
                         {
                             <br />
-                            @arraylist[i].Credit
+                            @arraylist[i].Credit.ToString("C")
                             @for (int index = i; index < arraylist.Length - 1; index++)
                             {
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
                                 {
                                     <br />
-                                    @arraylist[index + 1].Credit
+                                    @arraylist[index + 1].Credit.ToString("C")
 
                                 }
                             }
