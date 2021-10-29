@@ -222,7 +222,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("JournalIndex", "Manager");
             }
 
 
