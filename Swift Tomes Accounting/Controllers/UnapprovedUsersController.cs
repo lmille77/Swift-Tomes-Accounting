@@ -100,7 +100,8 @@ namespace Swift_Tomes_Accounting.Controllers
             var roles = _db.Roles.ToList();
             var userRoles = _db.UserRoles.ToList();
             objFromdb.Role = roles.FirstOrDefault(u => u.Id == userRole.RoleId).Name;
-            
+            var errorList = _db.ErrorTable.ToList();
+
             foreach (var role in roleList)
             {
                 if (role.Name == "Unapproved")
@@ -147,7 +148,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             else
             {
-                TempData[SD.Error] = "Assign a role before approving a user.";
+                TempData[SD.Error] = errorList[17].Message;
             }
 
 

@@ -36,44 +36,84 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             account.UserName = _userManager.GetUserAsync(User).Result.CustomUsername;
             var accountlist = _db.Account.ToList();
+            var errorList = _db.ErrorTable.ToList();
             foreach (var item in accountlist)
             {
                 if (item.AccountNumber.Equals(account.AccountNumber))
                 {
-                    ModelState.AddModelError("", "Account Number already in use.");
+                    ModelState.AddModelError("", errorList[9].Message);
                     return View(account);
                 }
 
                 if (item.AccountName.ToLower().Equals(account.AccountName.ToLower()))
                 {
-                    ModelState.AddModelError("", "Account Name already in use.");
+                    ModelState.AddModelError("", errorList[1].Message);
                     return View(account);
                 }
 
                 if (item.Order.Equals(account.Order))
                 {
-                    ModelState.AddModelError("", "Liquidity Order already in use.");
+                    ModelState.AddModelError("", errorList[10].Message);
                     return View(account);
                 }
             }
 
             if (account.ChartOfAccounts && !account.Active)
             {
-                ModelState.AddModelError("","Cannot add an Inactive account to Chart of Accounts.");
+                ModelState.AddModelError("",errorList[11].Message);
                 return View(account);
             }
 
             if (account.Order <= 0)
             {
-                ModelState.AddModelError("", "Liquidity must be a positive number.");
+                ModelState.AddModelError("", errorList[12].Message);
                 return View(account);
             }
 
             if (account.Initial < 0)
             {
-                ModelState.AddModelError("", "Initial Balance cannot be negative.");
+                ModelState.AddModelError("", errorList[13].Message);
                 return View(account);
             }
+            
+            var temp = account.AccountNumber.ToString();
+
+            string zero = null;
+
+            if (account.AccountNumber <= 9)
+            {
+                zero = "0";
+            }
+
+
+            if (account.Category == "Asset")
+            {
+                temp = "1" + zero + temp;
+                account.AccountNumber = double.Parse(temp);
+            }
+            else if (account.Category == "Expenses")
+            {
+                temp = "2" + zero + temp;
+                account.AccountNumber = double.Parse(temp);
+            }
+            else if (account.Category == "Liability")
+            {
+                temp = "3" + zero + temp;
+                account.AccountNumber = double.Parse(temp);
+            }
+            else if (account.Category == "Equity")
+            {
+                temp = "4" + zero + temp;
+                account.AccountNumber = double.Parse(temp);
+            }
+            else if (account.Category == "Revenue")
+            {
+                temp = "5" + zero + temp;
+                account.AccountNumber = double.Parse(temp);
+            }
+
+            account.CreatedOn = DateTime.Now;
+
             EventAccount new_account = new EventAccount
             {  
                 BeforeAccountName = "None",
@@ -112,28 +152,8 @@ namespace Swift_Tomes_Accounting.Controllers
             };
             _db.EventAccount.Add(new_account);
 
-            if (account.Category == "Asset")
-            {
-                account.AccountNumber = 100 + account.AccountNumber;
-            }
-            else if (account.Category == "Expenses")
-            {
-                account.AccountNumber = 200 + account.AccountNumber;
-            }
-            else if (account.Category == "Liability")
-            {
-                account.AccountNumber = 300 + account.AccountNumber;
-            }
-            else if (account.Category == "Equity")
-            {
-                account.AccountNumber = 400 + account.AccountNumber;
-            }
-            else if (account.Category == "Revenue")
-            {
-                account.AccountNumber = 500 + account.AccountNumber;
-            }
+          
 
-            account.CreatedOn = DateTime.Now;
             _db.Account.Add(account);
             await _db.SaveChangesAsync();
             return RedirectToAction("ChartofAccounts", "Money");
@@ -244,27 +264,27 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 var accountlist = _db.Account.ToList();
                 var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == obj.AccountNumber);
-
+                var errorList = _db.ErrorTable.ToList();
 
                 foreach (var item in accountlist)
                 {
 
                     if ((item.AccountName.Equals(obj.AccountName)) && (!item.AccountName.Equals(objFromDb.AccountName)))
                     {
-                        ModelState.AddModelError("", "Account Name already in use.");
+                        ModelState.AddModelError("", errorList[1].Message);
                         return View(obj);
                     }
 
                     if ((item.Order.Equals(obj.Order)) && (!item.Order.Equals(objFromDb.Order)))
                     {
-                        ModelState.AddModelError("", "Liquidity Order already in use.");
+                        ModelState.AddModelError("", errorList[10].Message);
                         return View(obj);
                     }
 
                 }
                 if (obj.ChartOfAccounts && !objFromDb.Active)
                 {
-                    ModelState.AddModelError("", "Cannot add an Inactive account to Chart of Accounts.");
+                    ModelState.AddModelError("", errorList[11].Message);
                     return View(obj);
                 }
 
@@ -336,7 +356,7 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult Activate(double id)
         {
             var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-           
+            var errorList = _db.ErrorTable.ToList();
             
             if (objFromDb == null)
             {
@@ -345,7 +365,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             if (!objFromDb.Balance.Equals(0))
             {
-                TempData[SD.Error] = "Account Balance must be $0.00 to Deactivate.";
+                TempData[SD.Error] = errorList[14].Message;
                 return RedirectToAction("ChartofAccounts", "Money");
             }
 

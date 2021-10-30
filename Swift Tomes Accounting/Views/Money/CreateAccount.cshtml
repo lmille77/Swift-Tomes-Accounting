@@ -11,49 +11,6 @@
     <br />
     <form method="post" asp-action="CreateAccount" asp-controller="Money">
         <div asp-validation-summary="All" class="text-danger"></div>
-
-        <div class="form-group row">
-            <div class="input-group">
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <span typeof="input-group-text" class="input-group-prepend" id="AcNum">
-                    
-                </span>
-                <div class="col-xs-2">
-
-                    <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />
-                    <span asp-validation-for="AccountNumber" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs-2">
-                <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
-                <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Description" class="form-control" placeholder="Description" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <select asp-for="NormSide" class="form-control">
-                    <option disabled>--Select a Normal Side--</option>
-                    <option>Left</option>
-                    <option>Right</option>
-                </select>
-                <span asp-validation-for="NormSide" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
@@ -69,7 +26,7 @@
             </div>
         </div>
         <br />
-        <div class="form-group row">
+        <div class="form-group row" id="SubCategoryDropDown">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
                 <select asp-for="SubCategory" class="form-control">
@@ -78,6 +35,43 @@
                     <option>Long-Term</option>
                 </select>
                 <span asp-validation-for="SubCategory" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div class="input-group">
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <label typeof="input-group-text" class="input-group-prepend" id="AcNum">
+                </label>
+                <div class="col-xs-4">
+                    <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />              
+                </div>
+                &nbsp;
+                <div class="col-xs-4">
+                    <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div style="width: 150px">
+                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div style="width: 150px">
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
+                <select asp-for="NormSide" class="form-control">
+                    <option disabled>--Select a Normal Side--</option>
+                    <option>Left</option>
+                    <option>Right</option>
+                </select>
+                <span asp-validation-for="NormSide" class="text-danger"></span>
             </div>
         </div>
         <br />
@@ -122,6 +116,14 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
                 <input asp-for="Statement" class="form-control" placeholder="Statement" />
                 <span asp-validation-for="Statement" class="text-danger"></span>
             </div>
@@ -146,9 +148,9 @@
         <script>
             $("#Category").on("change", function () {
                 if (($("#Category option:selected").val() == "Asset") || ($("#Category option:selected").val() == "Liability")) {
-                    $("#SubCategory").show();
+                    document.getElementById('SubCategoryDropDown').style.visibility = "visible";
                 } else {
-                    $("#SubCategory").hide();
+                    document.getElementById('SubCategoryDropDown').style.visibility = "hidden";
                 }
 
                 if ($("#Category option:selected").val() == "Asset") {
