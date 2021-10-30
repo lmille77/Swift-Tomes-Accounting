@@ -65,6 +65,7 @@ namespace NewSwift.Controllers
         {
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
+            var errorList = _db.ErrorTable.ToList();
 
             if (ModelState.IsValid)
             {
@@ -130,7 +131,7 @@ namespace NewSwift.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "An account with the entered email already exists.");
+                    ModelState.AddModelError("", errorList[4].Message);
                 }
 
             }

@@ -183,6 +183,8 @@ namespace Swift_Tomes_Accounting.Controllers
                 journal.CreatedOn = DateTime.Now;
                 string uniqueFileName = GetUploadedFileName(journal);
                 journal.docUrl = uniqueFileName;
+
+                var errorList = _db.ErrorTable.ToList();
                 
                 foreach (var item in journal.Journal_Accounts)
                 {
@@ -205,18 +207,18 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if(journal.Journal_Accounts[i].Credit <= 0 && journal.Journal_Accounts[i].Debit <= 0)
                     {
-                        ModelState.AddModelError("", "Entered value for a debit or credit must be greater than 0.");
+                        ModelState.AddModelError("", errorList[6].Message);
                         return View(journal);
                     }
                 }
                 if (totalcredit != totaldebit)
                 {
-                    ModelState.AddModelError("", "The debits and credits are not balanced.");                    
+                    ModelState.AddModelError("", errorList[7].Message);                    
                     return View(journal);
                 }
                 else if(accountnameError)
                 {
-                    ModelState.AddModelError("", "The same account can only be used once.");                    
+                    ModelState.AddModelError("", errorList[8].Message);                    
                     return View(journal);
                 }
                 else
@@ -252,11 +254,35 @@ namespace Swift_Tomes_Accounting.Controllers
             }
 
 
+
             return View(sortList);
 
         }
 
+        public IActionResult DateSearch(DateTime date1, DateTime date2)
+        {
+            var sortList = _db.Journal_Accounts.ToList();
+            var jList = _db.Journalizes.ToList();
+            List<Journal_Accounts> dateList = new List<Journal_Accounts>();
 
+            foreach (var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
+            foreach (var s in sortList)
+            {
+
+            }
+
+            return View(sortList);
+        }
 
         private string GetUploadedFileName(Journalize journalize)
         {
@@ -355,7 +381,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
 
-        public async Task<IActionResult> Pending()
+        public IActionResult Pending()
         {
             var all_entries = _db.Journalizes.ToList();
             

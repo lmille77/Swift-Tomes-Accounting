@@ -46,9 +46,12 @@ namespace Swift_Tomes_Accounting.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        
+
         [HttpGet]
         public async Task<IActionResult> Login()
-        {
+        {         
+
             if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
             {
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
@@ -97,13 +100,16 @@ namespace Swift_Tomes_Accounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel obj)
         {
+            
+
             if (ModelState.IsValid)
             {
                 //checks database to see if user and password are correct
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
                 var user = await _userManager.FindByNameAsync(obj.Email);
                 var num = 3 - user.AccessFailedCount;
-
+                //error list
+                var errorList = _db.ErrorTable.ToList();
 
                 if (result.IsLockedOut)
                 {
@@ -120,9 +126,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     //find DateTime of when password was created
                     var lastpassdate = curr_user.PasswordDate;
                     
+                    
                     if (lastpassdate.AddDays(30) < DateTime.Now)
                     {
-                        TempData[SD.Error] = "Your password has expired. You have been emailed a link to reset it.";
+                        TempData[SD.Error] = errorList[0].Message;
 
                         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                         var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
@@ -143,7 +150,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                     if (lastpassdate.AddDays(27) < DateTime.Now)
                     {
-                        TempData[SD.Error] = "Your password will expire in three days.";
+                        TempData[SD.Error] = errorList[2].Message;
                     }
                     if(lastpassdate.AddDays(30) > DateTime.Now)
                     {
@@ -167,7 +174,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid Email or Password.");
+                    ModelState.AddModelError("", errorList[3].Message);
                     TempData[SD.Error] = "Attempts remaining: " + num;
                 }
             }
@@ -206,6 +213,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
+            var errorList = _db.ErrorTable.ToList();
 
             if (ModelState.IsValid)
             {
@@ -281,7 +289,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "An account with the entered email already exists.");
+                    ModelState.AddModelError("", errorList[4].Message);
                 }
             }
             return View(obj);
@@ -368,9 +376,8 @@ namespace Swift_Tomes_Accounting.Controllers
                 var curr_user = await _userManager.FindByNameAsync(obj.Email);
                 
                 bool passcheck = false;
-                
 
-
+                var errorList = _db.ErrorTable.ToList();
 
                 var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
 
@@ -389,17 +396,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result == true)
                 {
-                    ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
+                    ViewBag.ErrorMessage = errorList[5].Message;
                 }
 
                 else if (passMatch == PasswordVerificationResult.Success)
                  {
-                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
+                        ViewBag.ErrorMessage = errorList[5].Message;
                  }
                 
                 else if (passMatch2 == PasswordVerificationResult.Success)
                     {
-                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
+                        ViewBag.ErrorMessage = errorList[5].Message;
                     }
                 
                 else

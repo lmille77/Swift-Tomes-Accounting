@@ -153,6 +153,7 @@ namespace Swift_Tomes_Accounting.Migrations
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
                     b.Property<double>("AccountNumber")
+                        .HasMaxLength(2)
                         .HasColumnType("float");
 
                     b.Property<string>("AccountName")
@@ -313,6 +314,21 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.ErrorTable", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ErrorTable");
                 });
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>

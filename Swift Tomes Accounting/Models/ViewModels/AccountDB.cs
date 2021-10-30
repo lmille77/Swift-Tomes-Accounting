@@ -13,12 +13,13 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
 
         [Key]
-        [Display(Name = "Number")]
+        [Display(Name = "Account Number")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [MaxLength(2)]
         public double AccountNumber { get; set; }
        
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Account Name")]
         public string AccountName { get; set; }
         public string Description { get; set; }
         [Required]

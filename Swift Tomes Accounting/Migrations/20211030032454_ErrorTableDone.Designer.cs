@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211028154156_db")]
-    partial class db
+    [Migration("20211030032454_ErrorTableDone")]
+    partial class ErrorTableDone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -155,6 +155,7 @@ namespace Swift_Tomes_Accounting.Migrations
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
                     b.Property<double>("AccountNumber")
+                        .HasMaxLength(2)
                         .HasColumnType("float");
 
                     b.Property<string>("AccountName")
@@ -315,6 +316,21 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.ErrorTable", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ErrorTable");
                 });
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>
