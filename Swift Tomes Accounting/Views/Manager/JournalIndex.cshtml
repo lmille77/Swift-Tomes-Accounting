@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
+@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
 @{
     var arraylist = Model.ToArray();
 }
@@ -44,6 +44,7 @@
 </div>
 <br />
 
+
 <div class="form-group row">
     <div>
 
@@ -69,6 +70,7 @@
 </div>
 
 <div class="container-fluid" >
+
     <table class="table table-striped border" id="table" data-toggle="table"
            data-search="true"
            data-filter-control="true">
@@ -77,7 +79,7 @@
                 <th data-field="createdOn" data-sortable="true">
                     Date Created
                 </th>
-                <th >
+                <th>
                     Account
                 </th>
                 <th data-field="journalId" data-sortable="true">
@@ -104,27 +106,27 @@
                 {
                     continue;
                 }
-                <tr>
-                    <td>
-                        @arraylist[i].CreatedOn
-                    </td>
-                    <td>
+            <tr>
+                <td>
+                    @arraylist[i].CreatedOn
+                </td>
+                <td>
 
-                        @arraylist[i].AccountName1
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
+                    @arraylist[i].AccountName1
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
-                                {
-                                    multipleDebit = true;
-                                    <br />
-                                    @arraylist[index + 1].AccountName1
-                                }
+                                multipleDebit = true;
+                                <br />
+                                @arraylist[index + 1].AccountName1
                             }
                         }
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
-                        <br />
+                    }
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
+                    <br />
 
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
@@ -142,7 +144,7 @@
                     <td>
                         @arraylist[i].JournalId
                     </td>
-                    <td style="vertical-align: top">
+                    <td style="vertical-align: top; text-align:right">
                         @arraylist[i].Debit.ToString("C")
                         <br />
                         @{
@@ -159,13 +161,13 @@
 
                         }
                     </td>
-                    <td>
-                        @if (multipleDebit)
+                <td style="text-align:right">
+                    @if (multipleDebit)
+                    {
+                        @for (int j = 0; j < counter; j++)
                         {
-                            @for (int j = 0; j < counter; j++)
-                            {
-                                <br />
-                            }
+                            <br />
+                        }
 
                         }
                         @if (multipleCredit == false)
@@ -184,47 +186,57 @@
                                     <br />
                                     @arraylist[index + 1].Credit.ToString("C")
 
-                                }
                             }
                         }
+                    }
 
 
 
+                </td>
+
+                @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
+                {
+                    <td>
+                        <div class="text-center">
+                            <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
+
+                            <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Deny
+                            </a>
+
+                            <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
+                                    style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
+                                <span>
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                    Approve
+                                </span>
+                            </button>
+                            </form>
+                        </div>
                     </td>
 
-                    @if (i < arraylist.Length && arraylist[i].IsApproved == false)
-                    {
-                        <td>
-                            <div class="text-center">
-                                <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
-
-                                    <button onclick="return confirm('Are you sure you want to reject this entry?')"
-                                            class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-
-                                        Deny
-                                    </button>
-                                    <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
-                                            style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
-                                        <span>
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                            Approve
-                                        </span>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-
-                    }
-                    else
-                    {
+                }
+                else if(arraylist[i].IsRejected == true)
+                {
+                    <td>
+                        Rejected
+                    </td>
+                }
+                else
+                {
+                 
                         <td>
                             Approved
                         </td>
-                    }
-                </tr>
+                    
+
+                }
+            </tr>
                 i += counter;
             }
         </tbody>
     </table>
 </div>
+
+

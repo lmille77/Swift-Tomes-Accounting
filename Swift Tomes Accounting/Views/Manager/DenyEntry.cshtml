@@ -1,7 +1,5 @@
-﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
-@{
-    var arraylist = Model.ToArray();
-}
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.Journalize
+
 
 <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -9,54 +7,54 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
+
+<br />
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center">Quick Actions</div>
+        <div class="text-center border-info">Quick Actions</div>
         <br />
     </div>
 
     <ul class="sidebar-navigation">
+
         <li>
-            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
-            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+            <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
         </li>
         <li>
-            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
-        </li>
-        <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Money" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+            <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
         </li>
     </ul>
 </div>
 
-<div class="container-fluid">
+
+@*<div class="justify-content-start">
+    <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
+       data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+        Add Entry
+    </a>
+</div>
+<br />*@
+
+@*<div class="container-fluid">
     <table class="table table-striped border" id="table" data-toggle="table"
-           data-search="true"
+           
            data-filter-control="true">
         <thead class="thead-dark">
             <tr>
-                <th data-field="createdOn" data-sortable="true">
+                <th >
                     Date Created
                 </th>
                 <th>
                     Account
                 </th>
-                <th data-field="journalId" data-sortable="true">
+                <th >
                     Ref
                 </th>
                 <th>
@@ -65,9 +63,7 @@
                 <th>
                     Credit
                 </th>
-                <th data-field="isApproved" data-sortable="true">
-                    Approval
-                </th>
+
             </tr>
         </thead>
         <tbody>
@@ -118,8 +114,8 @@
                     <td>
                         @arraylist[i].JournalId
                     </td>
-                    <td style="vertical-align: top; text-align:right">
-                        @arraylist[i].Debit.ToString("C")
+                    <td style="vertical-align: top">
+                        @arraylist[i].Debit
                         <br />
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
@@ -127,7 +123,7 @@
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                                 {
                                     counter++;
-                                    @arraylist[index + 1].Debit.ToString("C")
+                                    @arraylist[index + 1].Debit
                                     <br />
 
                                 }
@@ -135,7 +131,7 @@
 
                         }
                     </td>
-                    <td style="text-align:right">
+                    <td>
                         @if (multipleDebit)
                         {
                             @for (int j = 0; j < counter; j++)
@@ -147,18 +143,18 @@
                         @if (multipleCredit == false)
                         {
                             <br />
-                            @arraylist[i].Credit.ToString("C")
+                            @arraylist[i].Credit
                         }
                         @if (multipleCredit)
                         {
                             <br />
-                            @arraylist[i].Credit.ToString("C")
+                            @arraylist[i].Credit
                             @for (int index = i; index < arraylist.Length - 1; index++)
                             {
                                 if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
                                 {
                                     <br />
-                                    @arraylist[index + 1].Credit.ToString("C")
+                                    @arraylist[index + 1].Credit
 
                                 }
                             }
@@ -168,49 +164,29 @@
 
                     </td>
 
-                    @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
-                    {
-                        <td>
-                            <div class="text-center">
-                                <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
 
-                                    <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                        Deny
-                                    </a>
-
-                                    <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
-                                            style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
-                                        <span>
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                            Approve
-                                        </span>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-
-                    }
-                    else if (arraylist[i].IsRejected == true)
-                    {
-                        <td>
-                            Rejected
-                        </td>
-                    }
-                    else
-                    {
-
-                        <td>
-                            Approved
-                        </td>
-
-
-                    }
                 </tr>
                 i += counter;
+
+
             }
         </tbody>
     </table>
-</div>
+</div>*@
+<br />
 
+<form asp-action="DenyEntry" asp-controller="Manager">
+    <input asp-for="@Model.JournalId" hidden />
+    <div class="form-group">
+        <label>Reason:</label>
+        <textarea asp-for="Reason" class="form-control" rows="5" id="reason"></textarea>
+        @*<input  class="form-control" placeholder="Reason" />*@
+    </div>
 
+    <div class="form-group">
+        <div class=" col-md-10 offset-md-2">
+            <input type="submit" value="Deny Entry" class=" btn btn-danger fa-align-center" />
+            <a asp-action="JournalIndex" class="btn btn-success w-25">Back</a>
+        </div>
+    </div>
+</form>
