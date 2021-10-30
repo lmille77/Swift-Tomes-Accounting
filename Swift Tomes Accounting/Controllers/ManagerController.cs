@@ -210,6 +210,11 @@ namespace Swift_Tomes_Accounting.Controllers
                         ModelState.AddModelError("", errorList[6].Message);
                         return View(journal);
                     }
+                    if (journal.Journal_Accounts[i].AccountName1 == null && journal.Journal_Accounts[i].AccountName2 == null)
+                    {
+                        ModelState.AddModelError("", errorList[18].Message);
+                        return View(journal);
+                    }
                 }
                 if (totalcredit != totaldebit)
                 {
