@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211030032454_ErrorTableDone")]
-    partial class ErrorTableDone
+    [Migration("20211030150851_errortable")]
+    partial class errortable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -155,7 +155,6 @@ namespace Swift_Tomes_Accounting.Migrations
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
                     b.Property<double>("AccountNumber")
-                        .HasMaxLength(2)
                         .HasColumnType("float");
 
                     b.Property<string>("AccountName")

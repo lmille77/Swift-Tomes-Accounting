@@ -153,7 +153,6 @@ namespace Swift_Tomes_Accounting.Migrations
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.AccountDB", b =>
                 {
                     b.Property<double>("AccountNumber")
-                        .HasMaxLength(2)
                         .HasColumnType("float");
 
                     b.Property<string>("AccountName")

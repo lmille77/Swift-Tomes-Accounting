@@ -26,7 +26,7 @@
             </div>
         </div>
         <br />
-        <div class="form-group row">
+        <div class="form-group row" id="SubCategoryDropDown">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
                 <select asp-for="SubCategory" class="form-control">
@@ -148,9 +148,9 @@
         <script>
             $("#Category").on("change", function () {
                 if (($("#Category option:selected").val() == "Asset") || ($("#Category option:selected").val() == "Liability")) {
-                    $("#SubCategory").show();
+                    document.getElementById('SubCategoryDropDown').style.visibility = "visible";
                 } else {
-                    $("#SubCategory").hide();
+                    document.getElementById('SubCategoryDropDown').style.visibility = "hidden";
                 }
 
                 if ($("#Category option:selected").val() == "Asset") {
