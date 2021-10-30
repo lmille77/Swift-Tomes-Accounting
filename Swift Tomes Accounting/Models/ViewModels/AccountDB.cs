@@ -15,7 +15,6 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [Key]
         [Display(Name = "Account Number")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [MaxLength(2)]
         public double AccountNumber { get; set; }
        
         [Required]

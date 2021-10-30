@@ -75,9 +75,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 ModelState.AddModelError("", errorList[13].Message);
                 return View(account);
             }
+            
             var temp = account.AccountNumber.ToString();
 
             string zero = null;
+
             if (account.AccountNumber <= 9)
             {
                 zero = "0";
