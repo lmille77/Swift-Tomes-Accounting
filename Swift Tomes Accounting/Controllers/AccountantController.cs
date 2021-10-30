@@ -143,12 +143,40 @@ namespace Swift_Tomes_Accounting.Controllers
             return View();
 
         }
+        [HttpGet]
         public IActionResult Journalize()
         {
+            Journalize journalize = new Journalize();
+            journalize.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = u.AccountName,
+                Text = u.AccountName
+            });
 
-            return View();
+            journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
+            return View(journalize);
+        }
+
+        [HttpPost]
+        public IActionResult Journalize(Journalize journal)
+        {
+            if (ModelState.IsValid)
+            {
+
+                _db.Journalizes.Add(journal);
+                _db.SaveChanges();
+                TempData[SD.Success] = "Journal entry submitted";
+                return RedirectToAction("Index", "Admin");
+            }
+
+
+            return View(journal);
 
         }
+
+
+
+
 
         [HttpGet]
 
@@ -225,5 +253,12 @@ namespace Swift_Tomes_Accounting.Controllers
             return View("AccountLedger", objFromDb);
         }
 
+
+        public IActionResult JournalIndex()
+        {
+            var sortList = _db.Journal_Accounts.ToList();
+            return View(sortList);
+
+        }
     }
 }

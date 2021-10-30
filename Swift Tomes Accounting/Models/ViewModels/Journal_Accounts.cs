@@ -29,11 +29,23 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [DataType(DataType.Currency)]
         public double Credit { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedOn { get; set; }
 
-        public string AccountName { get; set; }
+        public string AccountName1 { get; set; }
+        public string AccountName2 { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem> AccountList { get; set; }
+
+        [NotMapped]
+        public bool IsApproved { get; set; }
+
+        [NotMapped]
+        public string Reason { get; set; }
+
+ 
+        public bool IsRejected { get; set; }
     }
 
 }
