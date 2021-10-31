@@ -94,6 +94,9 @@
                 <th data-field="isApproved" data-sortable="true">
                     Approval
                 </th>
+                <th >
+                    Reason
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -197,7 +200,9 @@
                 @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
                 {
                     <td>
+  
                         <div class="text-center">
+
                             <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
 
                             <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
@@ -219,19 +224,40 @@
                 }
                 else if(arraylist[i].IsRejected == true)
                 {
-                    <td>
+                    <td class="text-center">
                         Rejected
                     </td>
                 }
                 else
                 {
                  
-                        <td>
+                        <td class="text-center">
                             Approved
                         </td>
                     
 
                 }
+                
+                    @if(arraylist[i].IsRejected != true && arraylist[i].IsApproved != true)
+                {
+                        <td>
+                            Pending
+                        </td>
+                }
+                    
+                else if(arraylist[i].IsRejected == true)
+                {
+            <td>
+                @arraylist[i].Reason
+            </td>
+                }
+                else
+                {
+                    <td>
+
+                    </td>
+                }
+                
             </tr>
                 i += counter;
             }

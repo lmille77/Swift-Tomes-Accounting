@@ -41,7 +41,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [NotMapped]
         public bool IsApproved { get; set; }
 
-        [NotMapped]
+        
         public string Reason { get; set; }
 
  

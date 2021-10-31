@@ -250,6 +250,11 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         s.IsApproved = true;
                     }
+                    if (s.JournalId == j.JournalId && j.IsRejected == true)
+                    {
+                        s.Reason = j.Reason;
+                    }
+
                 }
             }
 
@@ -419,14 +424,55 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult ApproveEntry(int JournalId)
         {
             var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
-           
-           
+            var JournalAccounts = _db.Journal_Accounts.ToList();
+            var coa = _db.Account.ToList();
 
-       
+            List<Journal_Accounts> Ja = new List<Journal_Accounts>();
+
             if (objFromdb == null)
             {
                 return NotFound();
             }
+
+            foreach (var item in JournalAccounts)
+            {
+                if(item.JournalId == JournalId)
+                {
+                    Ja.Add(item);
+                }
+            }
+
+            foreach(var item in coa)
+            {
+                foreach(var j in Ja)
+                {
+                    if (item.AccountName == j.AccountName1)
+                    {
+                        if(item.NormSide == "Left")
+                        {
+                            item.Balance += j.Debit;
+                        }
+                        if (item.NormSide == "Right")
+                        {
+                            item.Balance -= j.Debit;
+                        }
+                    }
+                    if (item.AccountName == j.AccountName2)
+                    {
+                        if (item.NormSide == "Left")
+                        {
+                            item.Balance -= j.Credit;
+                        }
+                        if (item.NormSide == "Right")
+                        {
+                            item.Balance += j.Credit;
+                        }
+                    }
+
+                }
+                
+            }
+            _db.SaveChanges();
 
             if (objFromdb.isApproved == false)
             {
@@ -434,6 +480,9 @@ namespace Swift_Tomes_Accounting.Controllers
                 objFromdb.isApproved = true;
                 TempData[SD.Success] = "Entry approved successfully.";
             }
+
+            
+
 
             _db.SaveChanges();
 
