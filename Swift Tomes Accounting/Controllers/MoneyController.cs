@@ -156,19 +156,45 @@ namespace Swift_Tomes_Accounting.Controllers
 
             _db.Account.Add(account);
             await _db.SaveChangesAsync();
-            return RedirectToAction("ChartofAccounts", "Money");
+            return RedirectToAction("Accounts", "Money");
             
         }
         [HttpGet]
-        public IActionResult ChartOfAccounts()
+        public IActionResult Accounts()
         {
             var sortList = _db.Account.ToList();
             return View(sortList);
 
         }
+        public IActionResult PostRef(int? id)
+        {
+            var all_accounts = _db.Journal_Accounts.ToList();
+            List<Journal_Accounts> selected_accounts = new List<Journal_Accounts>();
+            var jList = _db.Journalizes.ToList();
 
+            foreach (var s in all_accounts)
+            {
+                if (s.JournalId == id)
+                {
+                    selected_accounts.Add(s);
+                }
+            }
+
+            foreach (var s in selected_accounts)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
+            return View(selected_accounts);
+        }
         [HttpPost]
-        public IActionResult ChartOfAccounts(DateTime dateSearch1,
+        public IActionResult Accounts(DateTime dateSearch1,
             DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
         {
             var sortList = SearchResult(dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
@@ -341,7 +367,7 @@ namespace Swift_Tomes_Accounting.Controllers
                
                 _db.SaveChanges();
                 TempData[SD.Success] = "Account has been edited successfully.";
-                return RedirectToAction("ChartofAccounts", "Money");
+                return RedirectToAction("Accounts", "Money");
 
 
             }
@@ -468,16 +494,18 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 return NotFound();
             }
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-            if (objFromDb == null)
+            var accountmatch = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            var ja = _db.Journal_Accounts.ToList();
+            AccountLedger account_ledger = new AccountLedger
             {
-                return NotFound();
-            }
-            return View(objFromDb);
+                account = accountmatch,
+                journal_accounts = ja
+            };
+            return View(account_ledger);
 
         }
 
-        
+
 
         [HttpPost]
         public IActionResult AccountLedger(int id)

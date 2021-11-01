@@ -64,9 +64,17 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult ChartOfAccounts()
         {
-            var sortList = _db.Account.ToList();
-            return View(sortList);
+            var accountlist= _db.Account.ToList();
+            List<AccountDB> CoA_list = new List<AccountDB>();
+            foreach(var item in accountlist)
+            {
+                if(item.ChartOfAccounts && item.Active)
+                {
+                    CoA_list.Add(item);
+                }
+            }
 
+            return View(CoA_list);
         }
 
         [HttpPost]

@@ -10,7 +10,6 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
-@*<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
 
 <br />
 <div class="sidebar-container border-dark">
@@ -29,18 +28,22 @@
             <a asp-controller="Accountant" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+            <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
         </li>
     </ul>
 </div>
 
+
 <h1 class="text-center">Chart Of Accounts</h1>
 <br />
 <br />
-<div class="form-group row">    
+<div class="form-group row">
     <div>
 
-        <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="post">
+        <form asp-controller="Manager" asp-action="ChartOfAccounts" method="post">
             <p>
                 <label>$</label>
                 <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
@@ -57,7 +60,7 @@
     </div>
     <div>&nbsp;&nbsp;</div>
     <div>
-        <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="get">
+        <form asp-controller="Manager" asp-action="ChartOfAccounts" method="get">
             <p>
                 <input type="submit" value="Reset">
             </p>
@@ -66,12 +69,11 @@
 
 </div>
 
-
-<div class="container-fluid">
-    <table class="table table-striped border"  id="table"
+<div>
+    <table class="table table-striped border" id="table"
            data-toggle="table"
            data-search="true"
-           data-filter-control="true" >
+           data-filter-control="true">
         <thead class="thead-dark">
             <tr>
                 <th data-field="accountNumber" data-sortable="true">
@@ -125,7 +127,7 @@
                             @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.ActionLink(@item.AccountName, "LinkedName", "Accountant", new { name = item.AccountName }, null)
+                            @Html.ActionLink(@item.AccountName, "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
@@ -161,9 +163,3 @@
     </table>
 </div>
 
-@*@section Scripts
-    {
-        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-        <script src="~/js/accountDatatable.js"></script>
-    }*@
