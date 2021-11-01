@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Models.ViewModels;
@@ -182,12 +183,25 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult Journalize()
         {
-            Journalize journalize = new Journalize();
-            journalize.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            var accountlist = _db.Account.ToList();
+            List<SelectListItem> journalize_list = new List<SelectListItem>();
+            foreach (var item in accountlist)
             {
-                Value = u.AccountName,
-                Text = u.AccountName
-            });
+                if (item.ChartOfAccounts && item.Active)
+                {
+                    SelectListItem journal_item = new SelectListItem() 
+                    { 
+                        Value = item.AccountName, 
+                        Text = item.AccountName 
+                    };
+                    journalize_list.Add(journal_item);
+                }
+            }
+
+            Journalize journalize = new Journalize
+            {
+                AccountList = journalize_list
+            };
 
             journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
             return View(journalize);
@@ -196,11 +210,21 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult Journalize(Journalize journal)
         {
-            journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            var accountlist = _db.Account.ToList();
+            List<SelectListItem> journalize_list = new List<SelectListItem>();
+            foreach (var item in accountlist)
             {
-                Value = u.AccountName,
-                Text = u.AccountName
-            });
+                if (item.ChartOfAccounts && item.Active)
+                {
+                    SelectListItem journal_item = new SelectListItem()
+                    {
+                        Value = item.AccountName,
+                        Text = item.AccountName
+                    };
+                    journalize_list.Add(journal_item);
+                }
+            }
+            journal.AccountList = journalize_list;
 
 
             if (ModelState.IsValid)
