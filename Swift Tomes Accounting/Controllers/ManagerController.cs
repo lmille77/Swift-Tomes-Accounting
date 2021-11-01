@@ -247,11 +247,35 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
-
-
-
             return View(sortList);
+        }
+        [HttpGet]
+        public IActionResult PostRef(int? id)
+        {
+            var all_accounts = _db.Journal_Accounts.ToList();
+            List<Journal_Accounts> selected_accounts = new List<Journal_Accounts>();
+            var jList = _db.Journalizes.ToList();
 
+            foreach(var s in all_accounts)
+            {
+                if(s.JournalId == id)
+                {
+                    selected_accounts.Add(s);
+                }
+            }
+
+            foreach (var s in selected_accounts)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
+            return View(selected_accounts);
         }
 
         public IActionResult DateSearch(DateTime date1, DateTime date2)
@@ -305,36 +329,20 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 return NotFound();
             }
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-            if (objFromDb == null)
+            var accountmatch= _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            var ja = _db.Journal_Accounts.ToList();
+            AccountLedger account_ledger = new AccountLedger
             {
-                return NotFound();
-            }
-            return View(objFromDb);
+                account = accountmatch,
+                journal_accounts = ja
+            };
+            return View(account_ledger);
 
         }
 
 
 
-        [HttpPost]
-        public IActionResult AccountLedger(int id)
-        {
-            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-
-
-            if (objFromdb == null)
-            {
-                return NotFound();
-            }
-
-
-            if (objFromdb.Active == true)
-            {
-                _db.SaveChanges();
-                return RedirectToAction("ChartofAccounts", "Manager");
-            }
-            return View(objFromdb);
-        }
+        
 
 
         [HttpGet]

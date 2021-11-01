@@ -1,120 +1,152 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountLedger
 
-@inject Microsoft.AspNetCore.Identity.UserManager<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser> roleManager
-
-
-
-
-
-@{
-    ViewData["Title"] = "AccountLedger";
+@{ 
+    double current_balance = Model.account.Initial;
 }
 
+<h2 class="text-center">@Model.account.AccountName</h2>
 
-   <h2 class="text-center">@Model.AccountName</h2>
-
-   <div class="p-4 rounded w-100">
-       <table class="table table-striped border">
-           <thead>
-               <tr>
-                   <th>
-                       @Html.DisplayNameFor(model => model.CreatedOn)
-                   </th>
-                   <th>
-                       @Html.DisplayNameFor(model => model.Description)
-                   </th>
-                   <th>
-                       @Html.DisplayNameFor(model => model.AccountNumber)
-                   </th>
-
-                   <th>
-                       @Html.DisplayNameFor(model => model.Debit)
-                   </th>
-                   <th>
-                       @Html.DisplayNameFor(model => model.Credit)
-                   </th>
-                   <th>
-                       @Html.DisplayNameFor(model => model.Balance)
-                   </th>
-                   <th>
-                       @Html.DisplayNameFor(model => model.UserName)
-                   </th>
-                   <th>
-                       @Html.DisplayNameFor(model => model.Comments)
-                   </th>
-               </tr>
-           </thead>
-           <tbody>
-               <tr>
-                   <th>
-                       @Html.DisplayFor(model => model.CreatedOn)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.Description)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.AccountNumber)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.Debit)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.Credit)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.Balance)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.UserName)
-                   </th>
-                   <th>
-                       @Html.DisplayFor(model => model.Comments)
-                   </th>
-               </tr>
-
-           </tbody>
-       </table>
-
-   </div>
-
-   
-
-<div class="text-center">
-    @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Manager", new { id = Model.AccountNumber }, null)
-</div>
 <br />
 <div class="text-center">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
+    <a onclick="history.go(-1);" class="btn btn-success w-10 text-white">Go Back</a>
+</div>
+<br />
+
+<div class="p-4 border w-100">
+    
+    <table class="table table-striped border">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Entry Date
+                </th>
+                <th>
+                    Post Reference
+                </th>
+                <th>
+                    Initial Balance
+                </th>
+                <th>
+                    Debit
+                </th>
+                <th>
+                    Credit
+                </th>
+                <th>
+                    Total Balance
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <td>
+                @Model.account.CreatedOn
+            </td>
+            <td>
+            </td>
+            <td>
+                @Model.account.Initial
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                @current_balance
+            </td>
+        </tr>
+        @foreach (var item in Model.journal_accounts)
+        {
+            @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
+            {
+                current_balance += item.Debit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Manager", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @item.Debit
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @current_balance
+                    </td>
+                </tr>
+            }
+            @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
+            {
+                current_balance -= item.Credit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Manager", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @item.Credit
+                    </td>
+                    <td>
+                        @current_balance
+                    </td>
+                </tr>
+            }
+
+        }
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                @Model.account.Balance
+            </td>
+        </tr>
+
+
+    </table>
 </div>
 
 
 
+    <div class="sidebar-container border-dark">
+        <div>
+            <br />
+            <div class="text-center">Quick Actions</div>
+            <br />
+        </div>
 
+        <ul class="sidebar-navigation">
 
-
-<div class="sidebar-container border-dark">
-    <div>
-        <br />
-        <div class="text-center">Quick Actions</div>
-        <br />
+            <li>
+                <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
+            </li>
+            <li>
+                <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+            </li>
+            <li>
+                <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+            </li>
+            <li>
+                <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
+            </li>
+        </ul>
     </div>
-
-    <ul class="sidebar-navigation">
-
-        <li>
-            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
-        </li>
-        <li>
-            <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
-        </li>
-    </ul>
-</div>
 
 
 
