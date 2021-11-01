@@ -305,36 +305,20 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 return NotFound();
             }
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-            if (objFromDb == null)
+            var accountmatch= _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            var ja = _db.Journal_Accounts.ToList();
+            AccountLedger account_ledger = new AccountLedger
             {
-                return NotFound();
-            }
-            return View(objFromDb);
+                account = accountmatch,
+                journal_accounts = ja
+            };
+            return View(account_ledger);
 
         }
 
 
 
-        [HttpPost]
-        public IActionResult AccountLedger(int id)
-        {
-            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-
-
-            if (objFromdb == null)
-            {
-                return NotFound();
-            }
-
-
-            if (objFromdb.Active == true)
-            {
-                _db.SaveChanges();
-                return RedirectToAction("ChartofAccounts", "Manager");
-            }
-            return View(objFromdb);
-        }
+        
 
 
         [HttpGet]
