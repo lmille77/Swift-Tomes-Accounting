@@ -127,7 +127,7 @@
                             @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Manager", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.ActionLink(@item.AccountName, "LinkedName", "Manager", new { name = item.AccountName }, null)
+                            @Html.ActionLink(@item.AccountName, "AccountLedger", "Manager", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
