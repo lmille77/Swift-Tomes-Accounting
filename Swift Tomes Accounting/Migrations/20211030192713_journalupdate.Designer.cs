@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211030150851_errortable")]
-    partial class errortable
+    [Migration("20211030192713_journalupdate")]
+    partial class journalupdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -534,6 +534,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<double>("Debit")
                         .HasColumnType("float");
 
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
+
                     b.Property<int>("JournalId")
                         .HasColumnType("int");
 
@@ -553,6 +556,12 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("docUrl")
                         .HasColumnType("nvarchar(max)");

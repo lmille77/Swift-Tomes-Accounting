@@ -3,12 +3,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class db : Migration
+    public partial class journalupdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
            
-
             migrationBuilder.CreateTable(
                 name: "Journalizes",
                 columns: table => new
@@ -26,8 +25,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     table.PrimaryKey("PK_Journalizes", x => x.JournalId);
                 });
 
-            
-
+          
             migrationBuilder.CreateTable(
                 name: "Journal_Accounts",
                 columns: table => new
@@ -53,8 +51,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-           
-
             migrationBuilder.CreateIndex(
                 name: "IX_Journal_Accounts_JournalId",
                 table: "Journal_Accounts",
@@ -63,11 +59,8 @@ namespace Swift_Tomes_Accounting.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-          
-
             migrationBuilder.DropTable(
                 name: "Journal_Accounts");
-
 
             migrationBuilder.DropTable(
                 name: "Journalizes");
