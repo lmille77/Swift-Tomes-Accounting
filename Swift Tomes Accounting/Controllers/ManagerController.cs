@@ -367,12 +367,35 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public IActionResult AccountLedger(int? id)
         {
+            var sortList = _db.Journal_Accounts.ToList();
+            var jList = _db.Journalizes.ToList();
+
+            foreach (var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
-            var accountmatch= _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-            var ja = _db.Journal_Accounts.ToList();
+
+            var accountmatch = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            List<Journal_Accounts> ja = new List<Journal_Accounts>();
+            foreach (var item in sortList)
+            {
+                if (item.IsApproved)
+                {
+                    ja.Add(item);
+                }
+            }
+
             AccountLedger account_ledger = new AccountLedger
             {
                 account = accountmatch,
@@ -384,7 +407,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
 
-        
+
 
 
         [HttpGet]
