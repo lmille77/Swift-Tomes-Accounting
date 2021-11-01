@@ -538,6 +538,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<int>("JournalId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("JAId");
 
                     b.HasIndex("JournalId");

@@ -94,6 +94,9 @@
                 <th data-field="isApproved" data-sortable="true">
                     Approval
                 </th>
+                <th >
+                    Reason
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -128,39 +131,39 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
                     <br />
 
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
-                                {
-                                    <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                    multipleCredit = true;
-                                    @arraylist[index + 1].AccountName2
-                                    <br />
-                                }
+                                <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                                multipleCredit = true;
+                                @arraylist[index + 1].AccountName2
+                                <br />
                             }
                         }
-                    </td>
-                    <td>
-                        @arraylist[i].JournalId
-                    </td>
-                    <td style="vertical-align: top; text-align:right">
-                        @arraylist[i].Debit.ToString("C")
-                        <br />
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
+                    }
+                </td>
+                <td>
+                    @arraylist[i].JournalId
+                </td>
+                <td style="vertical-align: top; text-align:right">
+                    @arraylist[i].Debit.ToString("C")
+                    <br />
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
-                                {
-                                    counter++;
-                                    @arraylist[index + 1].Debit.ToString("C")
-                                    <br />
+                                counter++;
+                                @arraylist[index + 1].Debit.ToString("C")
+                                <br />
 
-                                }
                             }
-
                         }
-                    </td>
+
+                    }
+                </td>
                 <td style="text-align:right">
                     @if (multipleDebit)
                     {
@@ -169,22 +172,22 @@
                             <br />
                         }
 
-                        }
-                        @if (multipleCredit == false)
+                    }
+                    @if (multipleCredit == false)
+                    {
+                        <br />
+                        @arraylist[i].Credit.ToString("C")
+                    }
+                    @if (multipleCredit)
+                    {
+                        <br />
+                        @arraylist[i].Credit.ToString("C")
+                        @for (int index = i; index < arraylist.Length - 1; index++)
                         {
-                            <br />
-                            @arraylist[i].Credit.ToString("C")
-                        }
-                        @if (multipleCredit)
-                        {
-                            <br />
-                            @arraylist[i].Credit.ToString("C")
-                            @for (int index = i; index < arraylist.Length - 1; index++)
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
-                                {
-                                    <br />
-                                    @arraylist[index + 1].Credit.ToString("C")
+                                <br />
+                                @arraylist[index + 1].Credit.ToString("C")
 
                             }
                         }
@@ -194,44 +197,67 @@
 
                 </td>
 
-                @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
+                @if (arraylist[i].IsRejected != true && arraylist[i].IsApproved != true)
                 {
-                    <td>
-                        <div class="text-center">
-                            <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
-
-                            <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                                Deny
-                            </a>
-
-                            <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
-                                    style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
-                                <span>
-                                    <i class="fa fa-check" aria-hidden="true"></i>
-                                    Approve
-                                </span>
-                            </button>
-                            </form>
-                        </div>
+                    <td class="text-center">
+                        Pending
                     </td>
-
                 }
-                else if(arraylist[i].IsRejected == true)
+
+                else if (arraylist[i].IsRejected == true)
                 {
-                    <td>
+                    <td class="text-center">
                         Rejected
                     </td>
                 }
                 else
                 {
-                 
-                        <td>
-                            Approved
-                        </td>
-                    
+
+                    <td class="text-center">
+                        Approved
+                    </td>
+
 
                 }
+
+                @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
+                {
+                    <td>
+
+                        <div class="text-center">
+
+                            <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
+
+                                <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                    Deny
+                                </a>
+
+                                <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
+                                        style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
+                                    <span>
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        Approve
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+
+                }
+
+                else if (arraylist[i].IsRejected == true)
+                {
+                    <td class="text-center">
+                        @arraylist[i].Reason
+                    </td>
+                }
+                else
+                {
+                    <td>
+                    </td>
+                }
+
             </tr>
                 i += counter;
             }
