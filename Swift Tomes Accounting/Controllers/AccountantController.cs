@@ -6,6 +6,7 @@ using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -195,18 +196,90 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult Journalize(Journalize journal)
         {
+            journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = u.AccountName,
+                Text = u.AccountName
+            });
+
+
             if (ModelState.IsValid)
             {
+                double totalcredit = 0;
+                double totaldebit = 0;
+                List<string> accountnames = new List<string>();
+                bool accountnameError = false;
+                journal.CreatedOn = DateTime.Now;
+                string uniqueFileName = GetUploadedFileName(journal);
+                journal.docUrl = uniqueFileName;
 
+                var errorList = _db.ErrorTable.ToList();
+
+                foreach (var item in journal.Journal_Accounts)
+                {
+                    accountnames.Add(item.AccountName1);
+                    accountnames.Add(item.AccountName2);
+                    totalcredit += item.Credit;
+                    totaldebit += item.Debit;
+                    item.CreatedOn = DateTime.Now;
+                }
+                foreach (var item in accountnames)
+                {
+                    int count = accountnames.Count(c => c == item && c != null);
+                    if (count > 1)
+                    {
+                        accountnameError = true;
+                        break;
+                    }
+                }
+                for (int i = 0; i < journal.Journal_Accounts.Count(); i++)
+                {
+                    if (journal.Journal_Accounts[i].Credit <= 0 && journal.Journal_Accounts[i].Debit <= 0)
+                    {
+                        ModelState.AddModelError("", errorList[6].Message);
+                        return View(journal);
+                    }
+                    if (journal.Journal_Accounts[i].AccountName1 == null && journal.Journal_Accounts[i].AccountName2 == null)
+                    {
+                        ModelState.AddModelError("", errorList[18].Message);
+                        return View(journal);
+                    }
+                }
+                if (totalcredit != totaldebit)
+                {
+                    ModelState.AddModelError("", errorList[7].Message);
+                    return View(journal);
+                }
+                else if (accountnameError)
+                {
+                    ModelState.AddModelError("", errorList[8].Message);
+                    return View(journal);
+                }
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
                 TempData[SD.Success] = "Journal entry submitted";
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("JournalIndex", "Accountant");
             }
 
 
             return View(journal);
 
+        }
+        private string GetUploadedFileName(Journalize journalize)
+        {
+            string uniqueFileName = null;
+
+            if (journalize.Document != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + journalize.Document.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    journalize.Document.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
         [HttpGet]
 
@@ -248,27 +321,28 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(eventlist);
         }
 
-        [HttpGet]
-        public IActionResult LinkedName(string name)
-        {
-            if (name == null)
-            {
-                return NotFound();
-            }
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
-            if (objFromDb == null)
-            {
-                return NotFound();
-            }
-            return View("AccountLedger", objFromDb);
-        }
-
 
         public IActionResult JournalIndex()
         {
             var sortList = _db.Journal_Accounts.ToList();
-            return View(sortList);
+            var jList = _db.Journalizes.ToList();
 
+            foreach (var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                    if (s.JournalId == j.JournalId && j.IsRejected == true)
+                    {
+                        s.Reason = j.Reason;
+                    }
+
+                }
+            }
+            return View(sortList);
         }
     }
 }
