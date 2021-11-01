@@ -8,7 +8,7 @@
 
 <br />
 <div class="text-center">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
+    <a onclick="history.go(-1);" class="btn btn-success w-10 text-white">Go Back</a>
 </div>
 <br />
 
@@ -33,7 +33,7 @@
                     Credit
                 </th>
                 <th>
-                    Balance
+                    Total Balance
                 </th>
             </tr>
         </thead>
@@ -64,7 +64,7 @@
                         @item.CreatedOn
                     </td>
                     <td>
-                        @item.JournalId
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Manager", new { id = item.JournalId }, null)
                     </td>
                     <td>
                     </td>
@@ -86,7 +86,7 @@
                         @item.CreatedOn
                     </td>
                     <td>
-                        @item.JournalId
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Manager", new { id = item.JournalId }, null)
                     </td>
                     <td>
                     </td>

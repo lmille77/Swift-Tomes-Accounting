@@ -247,11 +247,35 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
-
-
-
             return View(sortList);
+        }
+        [HttpGet]
+        public IActionResult PostRef(int? id)
+        {
+            var all_accounts = _db.Journal_Accounts.ToList();
+            List<Journal_Accounts> selected_accounts = new List<Journal_Accounts>();
+            var jList = _db.Journalizes.ToList();
 
+            foreach(var s in all_accounts)
+            {
+                if(s.JournalId == id)
+                {
+                    selected_accounts.Add(s);
+                }
+            }
+
+            foreach (var s in selected_accounts)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
+            return View(selected_accounts);
         }
 
         public IActionResult DateSearch(DateTime date1, DateTime date2)
