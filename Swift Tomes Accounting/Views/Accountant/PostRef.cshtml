@@ -78,133 +78,115 @@
                 {
                     continue;
                 }
-                <tr>
-                    <td>
-                        @arraylist[i].CreatedOn
-                    </td>
-                    <td>
+            <tr>
+                <td>
+                    @arraylist[i].CreatedOn
+                </td>
+                <td>
 
-                        @arraylist[i].AccountName1
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
-                            {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
-                                {
-                                    multipleDebit = true;
-                                    <br />
-                                    @arraylist[index + 1].AccountName1
-                                }
-                            }
-                        }
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
-                        <br />
-
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
-                            {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
-                                {
-                                    <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                    multipleCredit = true;
-                                    @arraylist[index + 1].AccountName2
-                                    <br />
-                                }
-                            }
-                        }
-                    </td>
-                    <td>
-                        @arraylist[i].JournalId
-                    </td>
-                    <td style="vertical-align: top; text-align:right">
-                        @arraylist[i].Debit.ToString("C")
-                        <br />
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
-                            {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
-                                {
-                                    counter++;
-                                    @arraylist[index + 1].Debit.ToString("C")
-                                    <br />
-
-                                }
-                            }
-
-                        }
-                    </td>
-                    <td style="text-align:right">
-                        @if (multipleDebit)
+                    @arraylist[i].AccountName1
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
                         {
-                            @for (int j = 0; j < counter; j++)
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
                             {
+                                multipleDebit = true;
+                                <br />
+                                @arraylist[index + 1].AccountName1
+                            }
+                        }
+                    }
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
+                    <br />
+
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
+                            {
+                                <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                                multipleCredit = true;
+                                @arraylist[index + 1].AccountName2
                                 <br />
                             }
-
                         }
-                        @if (multipleCredit == false)
+                    }
+                </td>
+                <td>
+                    @arraylist[i].JournalId
+                </td>
+                <td style="vertical-align: top; text-align:right">
+                    @arraylist[i].Debit.ToString("C")
+                    <br />
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
                         {
-                            <br />
-                            @arraylist[i].Credit.ToString("C")
-                        }
-                        @if (multipleCredit)
-                        {
-                            <br />
-                            @arraylist[i].Credit.ToString("C")
-                            @for (int index = i; index < arraylist.Length - 1; index++)
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
-                                {
-                                    <br />
-                                    @arraylist[index + 1].Credit.ToString("C")
+                                counter++;
+                                @arraylist[index + 1].Debit.ToString("C")
+                                <br />
 
-                                }
                             }
                         }
 
+                    }
+                </td>
+                <td style="text-align:right">
+                    @if (multipleDebit)
+                    {
+                        @for (int j = 0; j < counter; j++)
+                        {
+                            <br />
+                        }
+
+                    }
+                    @if (multipleCredit == false)
+                    {
+                        <br />
+                        @arraylist[i].Credit.ToString("C")
+                    }
+                    @if (multipleCredit)
+                    {
+                        <br />
+                        @arraylist[i].Credit.ToString("C")
+                        @for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
+                            {
+                                <br />
+                                @arraylist[index + 1].Credit.ToString("C")
+
+                            }
+                        }
+                    }
 
 
+
+                </td>
+
+                @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
+                {
+                    <td>
+                        Pending
                     </td>
 
-                    @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
-                    {
-                        <td>
-                            <div class="text-center">
-                                <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
+                }
+                else if (arraylist[i].IsRejected == true)
+                {
+                    <td>
+                        Rejected
+                    </td>
+                }
+                else
+                {
 
-                                    <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                        Deny
-                                    </a>
-
-                                    <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
-                                            style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
-                                        <span>
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                            Approve
-                                        </span>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-
-                    }
-                    else if (arraylist[i].IsRejected == true)
-                    {
-                        <td>
-                            Rejected
-                        </td>
-                    }
-                    else
-                    {
-
-                        <td>
-                            Approved
-                        </td>
-
-
-                    }
-                </tr>
+                    <td>
+                        Approved
+                    </td>
+                }
+            </tr>
                 i += counter;
             }
         </tbody>
