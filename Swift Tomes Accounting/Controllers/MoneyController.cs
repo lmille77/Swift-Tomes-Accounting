@@ -113,6 +113,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
 
             account.CreatedOn = DateTime.Now;
+            account.Balance = account.Initial;
 
             EventAccount new_account = new EventAccount
             {  
