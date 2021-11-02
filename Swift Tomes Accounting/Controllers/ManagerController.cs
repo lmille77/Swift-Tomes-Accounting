@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Models.ViewModels;
@@ -64,9 +65,17 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult ChartOfAccounts()
         {
-            var sortList = _db.Account.ToList();
-            return View(sortList);
+            var accountlist= _db.Account.ToList();
+            List<AccountDB> CoA_list = new List<AccountDB>();
+            foreach(var item in accountlist)
+            {
+                if(item.ChartOfAccounts && item.Active)
+                {
+                    CoA_list.Add(item);
+                }
+            }
 
+            return View(CoA_list);
         }
 
         [HttpPost]
@@ -79,71 +88,6 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
-        public IEnumerable<AccountDB> SearchResult(DateTime date1, DateTime date2, float balance1, float balance2)
-        {
-            var list = _db.Account.ToList();
-
-            List<AccountDB> activeList = new List<AccountDB>();
-            List<AccountDB> resultList = new List<AccountDB>();
-
-            foreach (var item in list)
-            {
-                if ((item.ChartOfAccounts) && (item.Active))
-                {
-                    activeList.Add(item);
-                }
-            }
- 
-
-            if (date1.ToString() != "1/1/0001 12:00:00 AM")
-            {
-                if (date2.ToString() == "1/1/0001 12:00:00 AM")
-                {
-                    date2 = DateTime.Now;
-                }
-                foreach (var item in activeList)
-                {
-                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
-                    {
-                        resultList.Add(item);
-                    }
-                }
-            }
-            if ((balance1 > 0) && (balance2 == 0))
-            {
-                foreach (var item in activeList)
-                {
-                    if (balance1 <= item.Balance)
-                    {
-                        resultList.Add(item);
-                    }
-                }
-            }
-            if ((balance1 == 0) && (balance2 > 0))
-            {
-                foreach (var item in activeList)
-                {
-                    if (item.Balance <= balance2)
-                    {
-                        resultList.Add(item);
-                    }
-                }
-            }
-            if ((balance1 > 0) && (balance2 > 0))
-            {
-                foreach (var item in activeList)
-                {
-                    if ((balance1 <= item.Balance) && (item.Balance <= balance2))
-                    {
-                        resultList.Add(item);
-                    }
-                }
-            }
-            return resultList;
-        }
-
-
-
         public IActionResult Report()
         {
            
@@ -154,12 +98,25 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult Journalize()
         {
-            Journalize journalize = new Journalize();
-            journalize.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            var accountlist = _db.Account.ToList();
+            List<SelectListItem> journalize_list = new List<SelectListItem>();
+            foreach (var item in accountlist)
             {
-                Value = u.AccountName,
-                Text = u.AccountName
-            });
+                if (item.ChartOfAccounts && item.Active)
+                {
+                    SelectListItem journal_item = new SelectListItem()
+                    {
+                        Value = item.AccountName,
+                        Text = item.AccountName
+                    };
+                    journalize_list.Add(journal_item);
+                }
+            }
+
+            Journalize journalize = new Journalize
+            {
+                AccountList = journalize_list
+            };
             journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
             return View(journalize);
         }
@@ -167,11 +124,21 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult Journalize(Journalize journal)
         {
-            journal.AccountList = _db.Account.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            var accountlist = _db.Account.ToList();
+            List<SelectListItem> journalize_list = new List<SelectListItem>();
+            foreach (var item in accountlist)
             {
-                Value = u.AccountName,
-                Text = u.AccountName
-            });
+                if (item.ChartOfAccounts && item.Active)
+                {
+                    SelectListItem journal_item = new SelectListItem()
+                    {
+                        Value = item.AccountName,
+                        Text = item.AccountName
+                    };
+                    journalize_list.Add(journal_item);
+                }
+            }
+            journal.AccountList = journalize_list;
 
 
             if (ModelState.IsValid)
@@ -236,7 +203,7 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(journal);
 
         }
-
+        [HttpGet]
         public IActionResult JournalIndex()
         {
             var sortList = _db.Journal_Accounts.ToList();
@@ -247,6 +214,29 @@ namespace Swift_Tomes_Accounting.Controllers
                 foreach (var j in jList)
                 {
                     if(s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                    if (s.JournalId == j.JournalId && j.IsRejected == true)
+                    {
+                        s.Reason = j.Reason;
+                    }
+
+                }
+            }
+            return View(sortList);
+        }
+        [HttpPost]
+        public IActionResult JournalIndex(DateTime dateSearch1,
+            DateTime dateSearch2)
+        {
+            var sortList = SearchResult(dateSearch1, dateSearch2);
+            var jList = _db.Journalizes.ToList();
+            foreach (var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
                         s.IsApproved = true;
                     }
@@ -335,12 +325,35 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public IActionResult AccountLedger(int? id)
         {
+            var sortList = _db.Journal_Accounts.ToList();
+            var jList = _db.Journalizes.ToList();
+
+            foreach (var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
-            var accountmatch= _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-            var ja = _db.Journal_Accounts.ToList();
+
+            var accountmatch = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
+            List<Journal_Accounts> ja = new List<Journal_Accounts>();
+            foreach (var item in sortList)
+            {
+                if (item.IsApproved)
+                {
+                    ja.Add(item);
+                }
+            }
+
             AccountLedger account_ledger = new AccountLedger
             {
                 account = accountmatch,
@@ -349,11 +362,39 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(account_ledger);
 
         }
+        [HttpPost]
+        public IActionResult AccountLedger(DateTime dateSearch1,
+           DateTime dateSearch2, double LedgerID)
+        {
+            List<Journal_Accounts> approved_results = new List<Journal_Accounts>();
+            var jList = _db.Journalizes.ToList();
+            AccountLedger account_ledger = new AccountLedger();
+            var accounts = _db.Account.ToList();
+           
+            foreach (var item in accounts)
+            {
+                if (item.AccountNumber == LedgerID)
+                {
+                    account_ledger.account = item;
+                }
+            }
 
+            var searchresult = SearchResult(dateSearch1, dateSearch2);
 
+            foreach (var s in searchresult)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        approved_results.Add(s);
+                    }
+                }
+            }
+            account_ledger.journal_accounts = approved_results;
 
-        
-
+            return View(account_ledger);
+        }
 
         [HttpGet]
         public IActionResult AcctEventLog(int? id)
@@ -373,24 +414,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 EventAccount = select_account
             };
             return View(eventlist);
-        }
-
-
-
-        [HttpGet]
-        public IActionResult LinkedName(string name)
-        {
-            if (name == null)
-            {
-                return NotFound();
-            }
-            var objFromDb = _db.Account.FirstOrDefault(u => u.AccountName == name);
-            if (objFromDb == null)
-            {
-                return NotFound();
-            }
-            return View("AccountLedger", objFromDb);
-        }
+        }      
 
 
 
@@ -553,75 +577,110 @@ namespace Swift_Tomes_Accounting.Controllers
                 _db.SaveChanges();
 
                 return RedirectToAction("JournalIndex", "Manager");
-
-
-
-
             }
-
-            
-            
-
-
             return View(Journal);
         }
+        public IEnumerable<AccountDB> SearchResult(DateTime date1, DateTime date2, float balance1, float balance2)
+        {
+            var list = _db.Account.ToList();
 
+            List<AccountDB> activeList = new List<AccountDB>();
+            List<AccountDB> resultList = new List<AccountDB>();
 
-        //[HttpGet]
+            foreach (var item in list)
+            {
+                if ((item.ChartOfAccounts) && (item.Active))
+                {
+                    activeList.Add(item);
+                }
+            }
 
-        //public IActionResult Approval(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var objFromDb = _db.Journal_Accounts.FirstOrDefault(u => u.JournalId == id);
-        //    if (objFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(objFromDb);
+            if (date1.ToString() != "1/1/0001 12:00:00 AM")
+            {
+                if (date2.ToString() == "1/1/0001 12:00:00 AM")
+                {
+                    date2 = DateTime.Now;
+                }
+                foreach (var item in activeList)
+                {
+                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 > 0) && (balance2 == 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if (balance1 <= item.Balance)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 == 0) && (balance2 > 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if (item.Balance <= balance2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            if ((balance1 > 0) && (balance2 > 0))
+            {
+                foreach (var item in activeList)
+                {
+                    if ((balance1 <= item.Balance) && (item.Balance <= balance2))
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            return resultList;
+        }
+        public IEnumerable<Journal_Accounts> SearchResult(DateTime date1, DateTime date2)
+        {
 
-        //}
+            List<Journal_Accounts> activeList = new List<Journal_Accounts>();
+            List<Journal_Accounts> resultList = new List<Journal_Accounts>();
 
+            var jaList = _db.Journal_Accounts.ToList();
+            var jList = _db.Journalizes.ToList();
 
+            foreach (var s in jaList)
+            {
+                activeList.Add(s);
+            }
 
-        //[HttpPost]
-        //public IActionResult Approval(Journal_Accounts JA)
-        //{
-        //    var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JA.JournalId);
-
-
-        //    if (objFromdb == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-
-
-
-
-        //        _db.SaveChanges();
-
-
-
-        //        TempData[SD.Success] = "Journal entry submitted";
-        //        return RedirectToAction("Index", "Admin");
-        //    }
-
-
-
-        //    return View(objFromdb);
-        //}
-
-
-
-
+            if (date1.ToString() != "1/1/0001 12:00:00 AM")
+            {
+                if (date2.ToString() == "1/1/0001 12:00:00 AM")
+                {
+                    date2 = DateTime.Now;
+                }
+                foreach (var item in activeList)
+                {
+                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
+                    {
+                        resultList.Add(item);
+                    }
+                }
+            }
+            return resultList;
+        }
 
 
     }
 
 
+
+
+
+
 }
+
+
+

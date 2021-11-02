@@ -1,12 +1,12 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.Journalize
-@using Microsoft.AspNetCore.Mvc.Rendering;
-
+﻿@using Microsoft.AspNetCore.Mvc.Rendering;
+@model Swift_Tomes_Accounting.Models.ViewModels.Journalize
 
 <h2 class="text-center">Journalize</h2>
+
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center border-info">Quick Actions</div>
+        <div class="text-center">Quick Actions</div>
         <br />
     </div>
 
@@ -19,52 +19,71 @@
             <a asp-controller="Accountant" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="Journalize" class="btn btn-info btn-outline-light">Journalize</a>
+            <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
         </li>
     </ul>
 </div>
 
-<br />
-<br />
+
 
 <div>
-    <form method="post" asp-action="Journalize" asp-controller="Admin" id="form1">
+    <form method="post" enctype="multipart/form-data" asp-action="Journalize" asp-controller="Accountant" id="form1">
 
-
-        <table class="table" id="jTable1">
-            <thead>
+        <div class=" form-group">
+            <label asp-for="Document" class="control-label">
+                <div class="custom-file">
+                    <input asp-for="Document" class="custom-file-input" id="document" />
+                    <label class="custom-file-label" for="document">Choose file</label>
+                </div>
+            </label>
+        </div>
+        <div asp-validation-summary="All" class="text-danger text-center"></div>
+        <table class="table w-100">
+            <thead class="thead-dark">
                 <tr>
-                    <th>
+                    <th style="width:250px">
                         Account Name
                     </th>
-                    <th>
+                    <th style="width:250px">
                         Debit
                     </th>
-                    <th>
+                    <th style="width:250px">
                         Credit
                     </th>
-                    <th>
+                    <th style="width:250px">
 
                     </th>
+
                 </tr>
             </thead>
+        </table>
+        <table class="table w-100" id="jTable1">
+
             <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td style="width:200px">
+                        <td style="width:250px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName1,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
-                        <td style="width:200px">
+                        <td>
                             @Html.EditorFor(x => x.Journal_Accounts[i].Debit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        </td>
+                        <td>
                         </td>
 
                         <td style="width:200px">
-                            <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:90%; position:absolute">Add</button>
-                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)" style="left:90%; position:absolute">Delete</button>
+                            <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m m my</button>
+                            <button id="btnadd1-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem1(this)" style="left:80%; position:absolute">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button id="btnremove1-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable1')" style="left:85%; position:absolute">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
+
                         </td>
                     </tr>
                 }
@@ -72,27 +91,34 @@
         </table>
 
 
-        <table class="table" id="jTable2">
+        <table class="table w-100" id="jTable2">
 
             <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
                 {
                     <tr>
-                        <td style="width:200px">
+                        <td style="width:250px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName2,
                             Model.AccountList,
                             "Select Account",
                             new { @class = "form-control" })
                         </td>
-
-                        <td style="padding-left:200px">
-                            @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        <td style="width:250px">
                         </td>
                         <td>
-                            <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:90%; position:absolute">Add</button>
-                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)" style="left:90%; position:absolute">Delete</button>
+                            @Html.EditorFor(x => x.Journal_Accounts[i].Credit, new { EndAddHtmlAttribute = new { @class = "form-control" } })
+                        </td>
+                        <td style="width:250px">
+                            <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Du m m my</button>
+                            <button id="btnadd2-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem2(this)" style="left:80%; position:absolute">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button id="btnremove2-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteRow('jTable2')" style="left:85%; position:absolute">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
                         </td>
                     </tr>
+
                 }
             </tbody>
         </table>
@@ -100,8 +126,8 @@
         <br />
 
         <div class="form-group text-center">
-            <input type="submit" value="Create Account" class=" btn btn-success " />
-            <a asp-action="Journalize" class="btn btn-outline-primary">Go Back</a>
+            <input type="submit" value="Create Journal Entry" class=" btn btn-success " />
+            <a asp-action="JournalIndex" class="btn btn-outline-primary">Go Back</a>
 
         </div>
     </form>
@@ -130,7 +156,12 @@
             $(btn).closest('tr').remove();
         }
 
+        function DeleteRow(tableID) {
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
 
+            table.deleteRow(rowCount - 1);
+        }
 
         function AddItem1(btn) {
 
@@ -139,7 +170,7 @@
 
             var rowOuterHtml = rows[rows.length - 1].outerHTML;
 
-            var lastrowIdx = document.getElementById('hdnLastIndex1').value;
+            var lastrowIdx = table.rows.length - 1;
 
             var nextrowIdx = eval(lastrowIdx) + 1;
 
@@ -149,25 +180,13 @@
             rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
             rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
 
-
-            var newRow = table.insertRow();
+            var rowCount = table.rows.length;
+            var newRow = table.insertRow(rowCount);
             newRow.innerHTML = rowOuterHtml;
 
 
-
-            var btnAddID = btn.id;
-            var btnDeleteid = btnAddID.replaceAll('btnadd1', 'btnremove1');
-
-            var delbtn = document.getElementById(btnDeleteid);
-            delbtn.classList.add("visible");
-            delbtn.classList.remove("invisible");
-
-
-            var addbtn = document.getElementById(btnAddID);
-            addbtn.classList.remove("visible");
-            addbtn.classList.add("invisible");
-
         }
+
         function AddItem2(btn) {
 
             var table = document.getElementById('jTable2');
@@ -175,7 +194,7 @@
 
             var rowOuterHtml = rows[rows.length - 1].outerHTML;
 
-            var lastrowIdx = document.getElementById('hdnLastIndex2').value;
+            var lastrowIdx = table.rows.length - 1;
 
             var nextrowIdx = eval(lastrowIdx) + 1;
 
@@ -185,23 +204,10 @@
             rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
             rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
 
-
-            var newRow = table.insertRow();
+            var rowCount = table.rows.length;
+            var newRow = table.insertRow(rowCount);
             newRow.innerHTML = rowOuterHtml;
 
-
-
-            var btnAddID = btn.id;
-            var btnDeleteid = btnAddID.replaceAll('btnadd2', 'btnremove2');
-
-            var delbtn = document.getElementById(btnDeleteid);
-            delbtn.classList.add("visible");
-            delbtn.classList.remove("invisible");
-
-
-            var addbtn = document.getElementById(btnAddID);
-            addbtn.classList.remove("visible");
-            addbtn.classList.add("invisible");
 
         }
 

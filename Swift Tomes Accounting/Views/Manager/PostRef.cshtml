@@ -29,9 +29,6 @@
         <li>
             <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
         </li>
-        <li>
-            <a asp-controller="Manager" asp-action="Pending" class="btn btn-dark btn-outline-info">Pending Entries</a>
-        </li>
     </ul>
 </div>
 
@@ -172,23 +169,7 @@
                     @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
                     {
                         <td>
-                            <div class="text-center">
-                                <form asp-action="Pending" asp-route-JournalId="@arraylist[i].JournalId">
-
-                                    <a asp-action="DenyEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-danger" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Deny Entry">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                        Deny
-                                    </a>
-
-                                    <button asp-action="ApproveEntry" asp-route-JournalId="@arraylist[i].JournalId" class="btn btn-success"
-                                            style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Approve Entry">
-                                        <span>
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                            Approve
-                                        </span>
-                                    </button>
-                                </form>
-                            </div>
+                            Pending
                         </td>
 
                     }
@@ -204,8 +185,6 @@
                         <td>
                             Approved
                         </td>
-
-
                     }
                 </tr>
                 i += counter;

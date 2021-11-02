@@ -1,88 +1,143 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountLedger
 
 @{
-    ViewData["Title"] = "AccountLedger";
+    double current_balance = Model.account.Initial;
 }
 
-<h2 class="text-center">@Model.AccountName</h2>
+<link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
-<div class="p-4 rounded w-100">
-    <table class="table table-striped border">
-        <thead>
+
+<h2 class="text-center">@Model.account.AccountName</h2>
+
+<br />
+<div class="text-center">
+    <a onclick="history.go(-1);" class="btn btn-success w-10 text-white">Go Back</a>
+</div>
+<br />
+
+<div class="p-4 border w-100">
+
+    <table class="table table-striped border" id="table"
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true">
+        <thead class="thead-dark">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.CreatedOn)
+                    Entry Date
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                    Post Reference
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AccountNumber)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Debit)
+                    Initial Balance
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Credit)
+                    Debit
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Balance)
+                    Credit
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
+                    Total Balance
                 </th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <th>
-                    @Html.DisplayFor(model => model.CreatedOn)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.AccountNumber)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Debit)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Credit)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Balance)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Comments)
-                </th>
-            </tr>
+        <tr>
+            <td>
+                @Model.account.CreatedOn
+            </td>
+            <td>
+            </td>
+            <td>
+                @Model.account.Initial
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                @current_balance
+            </td>
+        </tr>
+        @foreach (var item in Model.journal_accounts)
+        {
+            @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
+            {
+                current_balance += item.Debit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @item.Debit
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @current_balance
+                    </td>
+                </tr>
+            }
+            @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
+            {
+                current_balance -= item.Credit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @item.Credit
+                    </td>
+                    <td>
+                        @current_balance
+                    </td>
+                </tr>
+            }
 
-        </tbody>
+        }
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                @Model.account.Balance
+            </td>
+        </tr>
+
+
     </table>
-
 </div>
 
 
-<div class="text-center">
-    @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Money", new { id = Model.AccountNumber }, null)
-</div>
-<br />
-<div class="text-center">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
-</div>
 
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center">Quick Actions</div>
+        <div class="text-center border-info">Quick Actions</div>
         <br />
     </div>
 
@@ -97,16 +152,10 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Money" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-info btn-outline-light">Account List</a>
         </li>
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
