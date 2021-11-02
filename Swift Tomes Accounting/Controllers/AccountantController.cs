@@ -442,7 +442,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
-            if ((balance1 > 0) && (balance2 == 0))
+            if ((balance1 >= 0) && (balance2 == 0))
             {
                 foreach (var item in activeList)
                 {
@@ -456,7 +456,7 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 foreach (var item in activeList)
                 {
-                    if (item.Balance <= balance2)
+                    if (item.Balance <= balance2 && item.Balance >= 0)
                     {
                         resultList.Add(item);
                     }
