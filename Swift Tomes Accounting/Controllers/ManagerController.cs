@@ -275,6 +275,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
                         s.IsApproved = true;
+                        s.docUrl = j.docUrl;
                     }
                 }
             }
