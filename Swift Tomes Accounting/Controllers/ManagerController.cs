@@ -216,6 +216,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 string uniqueFileName = GetUploadedFileName(journal);
                 journal.docUrl = uniqueFileName;
 
+
                 var errorList = _db.ErrorTable.ToList();
                 
                 foreach (var item in journal.Journal_Accounts)
@@ -225,6 +226,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     totalcredit += item.Credit;
                     totaldebit += item.Debit;
                     item.CreatedOn = DateTime.Now;
+                    item.docUrl = uniqueFileName;
                 }
                 foreach(var item in accountnames)
                 {
@@ -291,6 +293,8 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(sortList);
         }
+        
+        
         [HttpGet]
         public IActionResult PostRef(int? id)
         {
@@ -319,6 +323,10 @@ namespace Swift_Tomes_Accounting.Controllers
 
             return View(selected_accounts);
         }
+
+
+
+
 
         public IActionResult DateSearch(DateTime date1, DateTime date2)
         {
@@ -605,54 +613,32 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
 
-        //[HttpGet]
+        public FileResult DownloadFile(int? id)
+        {
+            var jList = _db.Journalizes.ToList();
 
-        //public IActionResult Approval(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var objFromDb = _db.Journal_Accounts.FirstOrDefault(u => u.JournalId == id);
-        //    if (objFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(objFromDb);
-
-        //}
+            string fileName = "";
+            foreach (var item in jList)
+            {
+                if(item.JournalId == id)
+                {
+                    fileName = item.docUrl;
+                }
+            }
 
 
 
-        //[HttpPost]
-        //public IActionResult Approval(Journal_Accounts JA)
-        //{
-        //    var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JA.JournalId);
+            //Build the File Path.
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "images/") + fileName;
 
+            //string path = "~/images/" + fileName;
 
-        //    if (objFromdb == null)
-        //    {
-        //        return NotFound();
-        //    }
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
 
-        //    if (ModelState.IsValid)
-        //    {
-
-
-
-
-        //        _db.SaveChanges();
-
-
-
-        //        TempData[SD.Success] = "Journal entry submitted";
-        //        return RedirectToAction("Index", "Admin");
-        //    }
-
-
-
-        //    return View(objFromdb);
-        //}
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileName);
+        }
 
 
 

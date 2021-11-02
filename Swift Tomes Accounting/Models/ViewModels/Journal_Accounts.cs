@@ -44,7 +44,10 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         
         public string Reason { get; set; }
 
- 
+        [NotMapped]
+        public string docUrl { get; set; }
+
+
         public bool IsRejected { get; set; }
     }
 
