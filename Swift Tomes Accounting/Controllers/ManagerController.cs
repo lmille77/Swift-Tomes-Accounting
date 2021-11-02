@@ -367,32 +367,57 @@ namespace Swift_Tomes_Accounting.Controllers
            DateTime dateSearch2, double LedgerID)
         {
             List<Journal_Accounts> approved_results = new List<Journal_Accounts>();
+            var sortList = _db.Journal_Accounts.ToList();
             var jList = _db.Journalizes.ToList();
             AccountLedger account_ledger = new AccountLedger();
             var accounts = _db.Account.ToList();
-           
+            int counter = 0;
+
+            //selects the account for the ledger
             foreach (var item in accounts)
             {
                 if (item.AccountNumber == LedgerID)
                 {
                     account_ledger.account = item;
+                    break;
+                }
+            }
+            //determines original length of list before filtering
+            foreach (var s in sortList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName1 == account_ledger.account.AccountName)
+                    {
+                        counter++;
+                    }
+                    if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName2 == account_ledger.account.AccountName)
+                    {
+                        counter++;
+                    }
                 }
             }
 
+            //returns search results
             var searchresult = SearchResult(dateSearch1, dateSearch2);
-
             foreach (var s in searchresult)
             {
                 foreach (var j in jList)
                 {
-                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName1 == account_ledger.account.AccountName)
+                    {
+                        approved_results.Add(s);
+                    }
+                    if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName2 == account_ledger.account.AccountName)
                     {
                         approved_results.Add(s);
                     }
                 }
             }
             account_ledger.journal_accounts = approved_results;
-
+            ViewBag.Search1 = dateSearch1;
+            ViewBag.Search2 = dateSearch2;
+            ViewBag.Counter = counter;
             return View(account_ledger);
         }
 

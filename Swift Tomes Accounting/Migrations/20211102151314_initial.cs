@@ -3,10 +3,38 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class dbconfig : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Account",
+                columns: table => new
+                {
+                    AccountNumber = table.Column<double>(type: "float", nullable: false),
+                    AccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormSide = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Initial = table.Column<double>(type: "float", nullable: false),
+                    Debit = table.Column<double>(type: "float", nullable: false),
+                    Credit = table.Column<double>(type: "float", nullable: false),
+                    Balance = table.Column<double>(type: "float", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    Statement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Contra = table.Column<bool>(type: "bit", nullable: false),
+                    ChartOfAccounts = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Account", x => x.AccountNumber);
+                });
+
             
 
             migrationBuilder.CreateTable(
@@ -26,7 +54,7 @@ namespace Swift_Tomes_Accounting.Migrations
                     table.PrimaryKey("PK_Journalizes", x => x.JournalId);
                 });
 
-            
+           
 
             migrationBuilder.CreateTable(
                 name: "Journal_Accounts",
@@ -64,12 +92,10 @@ namespace Swift_Tomes_Accounting.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-           
-
+            migrationBuilder.DropTable(
+                name: "Account");
             migrationBuilder.DropTable(
                 name: "Journal_Accounts");
-
-        
 
             migrationBuilder.DropTable(
                 name: "Journalizes");
