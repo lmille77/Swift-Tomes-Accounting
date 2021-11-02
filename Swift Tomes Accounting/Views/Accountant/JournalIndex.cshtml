@@ -42,27 +42,20 @@
 <br />
 
 
-<div class="form-group row">
-    <div>
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:175px;padding-left:20px">
 
-        <form asp-controller="Accountant" asp-action="DateSearch">
-            <p>
-                <input type="date" name="DateSearch1" value="@ViewBag.result" />
-                <label> - </label>
-                <input type="date" name="DateSearch2" value="@ViewBag.result" />
-                &nbsp;&nbsp;
-                <input type="submit" value="Filter" />
-            </p>
-        </form>
-    </div>
-    <div>&nbsp;&nbsp;</div>
-    <div>
-        <form asp-controller="Accountant" asp-action="JournalIndex">
-            <p>
-                <input type="submit" value="Reset">
-            </p>
-        </form>
-    </div>
+    <form asp-controller="Accountant" asp-action="JournalIndex" method="post">
+        <input style="width:150px" name="DateSearch1" value="@ViewBag.result" placeholder="Begin Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <label> - </label>
+        <input style="width:150px" name="DateSearch2" value="@ViewBag.result" placeholder="End Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data with a Date Range or Balance Search" />
+
+    </form>
+    <div>&nbsp;</div>
+    <form asp-controller="Accountant" asp-action="JournalIndex" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
+
+    </form>
 
 </div>
 
