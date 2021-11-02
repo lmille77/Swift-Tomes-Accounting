@@ -19,6 +19,24 @@
 </div>
 <br />
 
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:175px;padding-left:20px">
+
+    <form asp-controller="Accountant" asp-action="AccountLedger" method="post">
+        <input style="width:150px" name="DateSearch1" value="@ViewBag.result" placeholder="Begin Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <label> - </label>
+        <input style="width:150px" name="DateSearch2" value="@ViewBag.result" placeholder="End Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <input type="hidden" name="LedgerID" value="@Model.account.AccountNumber" />
+        <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data with a Date Range or Balance Search" />
+        
+    </form>
+    <div>&nbsp;</div>
+    <form asp-controller="Accountant" asp-action="AccountLedger" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
+
+    </form>
+
+</div>
+
 <div class="p-4 border w-100">
 
     <table class="table table-striped border" id="table"
