@@ -151,6 +151,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 string uniqueFileName = GetUploadedFileName(journal);
                 journal.docUrl = uniqueFileName;
 
+
                 var errorList = _db.ErrorTable.ToList();
                 
                 foreach (var item in journal.Journal_Accounts)
@@ -160,6 +161,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     totalcredit += item.Credit;
                     totaldebit += item.Debit;
                     item.CreatedOn = DateTime.Now;
+                    item.docUrl = uniqueFileName;
                 }
                 foreach(var item in accountnames)
                 {
@@ -226,6 +228,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(sortList);
         }
+
         [HttpPost]
         public IActionResult JournalIndex(DateTime dateSearch1,
             DateTime dateSearch2)
@@ -249,6 +252,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(sortList);
         }
+
         [HttpGet]
         public IActionResult PostRef(int? id)
         {
@@ -277,6 +281,10 @@ namespace Swift_Tomes_Accounting.Controllers
 
             return View(selected_accounts);
         }
+
+
+
+
 
         public IActionResult DateSearch(DateTime date1, DateTime date2)
         {
@@ -604,7 +612,36 @@ namespace Swift_Tomes_Accounting.Controllers
                 return RedirectToAction("JournalIndex", "Manager");
             }
             return View(Journal);
+        }      
+
+
+       public FileResult DownloadFile(int? id)
+        {
+            var jList = _db.Journalizes.ToList();
+
+            string fileName = "";
+            foreach (var item in jList)
+            {
+                if(item.JournalId == id)
+                {
+                    fileName = item.docUrl;
+                }
+            }
+
+
+
+            //Build the File Path.
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "images/") + fileName;
+
+            //string path = "~/images/" + fileName;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileName);
         }
+        
         public IEnumerable<AccountDB> SearchResult(DateTime date1, DateTime date2, float balance1, float balance2)
         {
             var list = _db.Account.ToList();
@@ -697,8 +734,8 @@ namespace Swift_Tomes_Accounting.Controllers
             return resultList;
         }
 
-
     }
+
 
 
 
