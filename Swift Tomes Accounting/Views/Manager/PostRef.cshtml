@@ -81,126 +81,133 @@
                 {
                     continue;
                 }
-                <tr>
-                    <td>
-                        @arraylist[i].CreatedOn
-                    </td>
-                    <td>
+            <tr>
+                <td>
+                    @arraylist[i].CreatedOn
+                </td>
+                <td>
 
-                        @arraylist[i].AccountName1
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
-                            {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
-                                {
-                                    multipleDebit = true;
-                                    <br />
-                                    @arraylist[index + 1].AccountName1
-                                }
-                            }
-                        }
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
-                        <br />
-
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
-                            {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
-                                {
-                                    <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                    multipleCredit = true;
-                                    @arraylist[index + 1].AccountName2
-                                    <br />
-                                }
-                            }
-                        }
-                    </td>
-                    <td>
-                        @arraylist[i].JournalId
-                    </td>
-                    <td style="vertical-align: top; text-align:right">
-                        @arraylist[i].Debit.ToString("C")
-                        <br />
-                        @{
-                            for (int index = i; index < arraylist.Length - 1; index++)
-                            {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
-                                {
-                                    counter++;
-                                    @arraylist[index + 1].Debit.ToString("C")
-                                    <br />
-
-                                }
-                            }
-
-                        }
-                    </td>
-                    <td style="text-align:right">
-                        @if (multipleDebit)
+                    @arraylist[i].AccountName1
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
                         {
-                            @for (int j = 0; j < counter; j++)
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName1 != null)
                             {
+                                multipleDebit = true;
+                                <br />
+                                @arraylist[index + 1].AccountName1
+                            }
+                        }
+                    }
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
+                    <br />
+
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].AccountName2 != null)
+                            {
+                                <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                                multipleCredit = true;
+                                @arraylist[index + 1].AccountName2
                                 <br />
                             }
-
                         }
-                        @if (multipleCredit == false)
+                    }
+                </td>
+                <td>
+                    @arraylist[i].JournalId
+                </td>
+                <td style="vertical-align: top; text-align:right">
+                    @arraylist[i].Debit.ToString("C")
+                    <br />
+                    @{
+                        for (int index = i; index < arraylist.Length - 1; index++)
                         {
-                            <br />
-                            @arraylist[i].Credit.ToString("C")
-                        }
-                        @if (multipleCredit)
-                        {
-                            <br />
-                            @arraylist[i].Credit.ToString("C")
-                            @for (int index = i; index < arraylist.Length - 1; index++)
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Debit != 0)
                             {
-                                if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
-                                {
-                                    <br />
-                                    @arraylist[index + 1].Credit.ToString("C")
+                                counter++;
+                                @arraylist[index + 1].Debit.ToString("C")
+                                <br />
 
-                                }
                             }
                         }
 
+                    }
+                </td>
+                <td style="text-align:right">
+                    @if (multipleDebit)
+                    {
+                        @for (int j = 0; j < counter; j++)
+                        {
+                            <br />
+                        }
+
+                    }
+                    @if (multipleCredit == false)
+                    {
+                        <br />
+                        @arraylist[i].Credit.ToString("C")
+                    }
+                    @if (multipleCredit)
+                    {
+                        <br />
+                        @arraylist[i].Credit.ToString("C")
+                        @for (int index = i; index < arraylist.Length - 1; index++)
+                        {
+                            if (arraylist[index + 1].JournalId == arraylist[i].JournalId && arraylist[index + 1].Credit != 0 && arraylist[index + 1].AccountName2 != null)
+                            {
+                                <br />
+                                @arraylist[index + 1].Credit.ToString("C")
+
+                            }
+                        }
+                    }
 
 
+
+                </td>
+
+                @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
+                {
+                    <td>
+                        Pending
                     </td>
 
-                    @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
-                    {
-                        <td>
-                            Pending
-                        </td>
-
-                    }
-                    else if (arraylist[i].IsRejected == true)
-                    {
-                        <td>
-                            Rejected
-                        </td>
-                    }
-                    else
-                    {
-
-                        <td>
-                            Approved
-                        </td>
-                    }
-                    
+                }
+                else if (arraylist[i].IsRejected == true)
+                {
                     <td>
+                        Rejected
+                    </td>
+                }
+                else
+                {
+
+                    <td>
+                        Approved
+                    </td>
+                }
+
+
+                <td>
+                    @if (arraylist[i].docUrl != null)
+                    {
                         <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
                             <i class="fa fa-download" aria-hidden="true"></i>
                             Download
                         </a>
-                    </td>
+                    }
+                    else
+                    {
+                             <text> No document was uploaded</text>
+                    }
+                </td>
 
-
-                </tr>
-                            i += counter;
-                        }
+             </tr>
+            i += counter;
+        }
         </tbody>
     </table>
 </div>
