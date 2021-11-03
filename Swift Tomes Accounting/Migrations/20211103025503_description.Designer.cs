@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211101230213_init")]
-    partial class init
+    [Migration("20211103025503_description")]
+    partial class description
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -534,6 +534,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<double>("Debit")
                         .HasColumnType("float");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsRejected")
                         .HasColumnType("bit");
 
@@ -559,6 +562,9 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsRejected")
                         .HasColumnType("bit");

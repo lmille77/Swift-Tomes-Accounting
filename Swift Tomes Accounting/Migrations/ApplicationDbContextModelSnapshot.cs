@@ -532,6 +532,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<double>("Debit")
                         .HasColumnType("float");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsRejected")
                         .HasColumnType("bit");
 
@@ -557,6 +560,9 @@ namespace Swift_Tomes_Accounting.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsRejected")
                         .HasColumnType("bit");
