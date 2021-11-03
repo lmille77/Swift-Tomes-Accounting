@@ -545,28 +545,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(account_ledger);
         }
 
-
-
-        [HttpPost]
-        public IActionResult AccountLedger(int id)
-        {
-            var objFromdb = _db.Account.FirstOrDefault(u => u.AccountNumber == id);
-
-
-            if (objFromdb == null)
-            {
-                return NotFound();
-            }
-
-
-            if (objFromdb.Active == true)
-            {
-                _db.SaveChanges();
-                return RedirectToAction("Accounts", "Money");
-            }
-            return View(objFromdb);
-        }
-
         [HttpGet]
 
         public IActionResult AcctEventLog(int? id)
