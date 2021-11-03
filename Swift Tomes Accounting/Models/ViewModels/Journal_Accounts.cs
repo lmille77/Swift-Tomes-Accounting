@@ -52,6 +52,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
        
         public string Description { get; set; }
+        [NotMapped]
+        public string Type { get; set; }
     }
 
 }

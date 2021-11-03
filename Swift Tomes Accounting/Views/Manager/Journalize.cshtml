@@ -2,7 +2,7 @@
 @model Swift_Tomes_Accounting.Models.ViewModels.Journalize
 
 <h2 class="text-center">Journalize</h2>
-
+<br />
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -29,22 +29,24 @@
 <div>
     <form method="post" enctype="multipart/form-data" asp-action="Journalize" asp-controller="Manager" id="form1">
 
-        <div class=" form-group">
+        <div class=" form-group row">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <select asp-for="Type" class="col-lg-2 form-control">
+                <option disabled>--Select Journal Type--</option>
+                <option>Regular</option>
+                <option>Adjusting</option>
+                <option>Reversing</option>
+            </select>
+            &nbsp;&nbsp;
             <label asp-for="Document" class="control-label">
                 <div class="custom-file">
                     <input asp-for="Document" class="custom-file-input" id="document" />
                     <label class="custom-file-label" for="document">Choose file</label>
                 </div>
-                </label>
-        </div>
-
-        <div class="form-text" title="Description">
-            
-            <textarea asp-for="Description" placeholder="Description">
-                
-             </textarea>
+            </label>
 
         </div>
+
         <div asp-validation-summary="All" class="text-danger text-center"></div>
         <table class="table w-100">
             <thead class="thead-dark">
@@ -103,7 +105,7 @@
 
             <tbody>
                 @for (int i = 0; i < Model.Journal_Accounts.Count; i++)
-                 {
+                {
                     <tr>
                         <td style="width:250px">
                             @Html.DropDownListFor(x => x.Journal_Accounts[i].AccountName2,
@@ -127,10 +129,18 @@
                         </td>
                     </tr>
 
-                 }
+                }
             </tbody>
         </table>
+        <br />
+        <div class="text-center form-text" title="Description">
 
+            <textarea asp-for="Description" placeholder="Description" class="col-lg-6">
+                
+             </textarea>
+
+        </div>
+        <br />
         <br />
 
         <div class="form-group text-center">
