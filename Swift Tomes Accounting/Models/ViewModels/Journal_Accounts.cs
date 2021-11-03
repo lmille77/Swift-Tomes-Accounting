@@ -49,6 +49,9 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
 
         public bool IsRejected { get; set; }
+
+       
+        public string Description { get; set; }
     }
 
 }

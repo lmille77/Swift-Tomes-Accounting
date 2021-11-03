@@ -215,13 +215,20 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 foreach (var j in jList)
                 {
-                    if(s.JournalId == j.JournalId && j.isApproved == true)
+                    if (s.JournalId == j.JournalId)
+                    {
+                        s.Description = j.Description;
+                    }
+
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
                         s.IsApproved = true;
                     }
+
                     if (s.JournalId == j.JournalId && j.IsRejected == true)
                     {
                         s.Reason = j.Reason;
+                        
                     }
 
                 }

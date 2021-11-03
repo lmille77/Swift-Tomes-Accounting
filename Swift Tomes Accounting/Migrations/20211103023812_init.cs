@@ -185,7 +185,8 @@ namespace Swift_Tomes_Accounting.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     docUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsRejected = table.Column<bool>(type: "bit", nullable: false)
+                    IsRejected = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
