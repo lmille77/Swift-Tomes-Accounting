@@ -570,6 +570,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("docUrl")
                         .HasColumnType("nvarchar(max)");
 

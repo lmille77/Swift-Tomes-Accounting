@@ -79,6 +79,8 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
+                        s.Description = j.Description;
+                        s.Type = j.Type;
                         s.IsApproved = true;
                     }
                 }
@@ -254,9 +256,12 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 foreach (var j in jList)
                 {
+                    
                     if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
                         s.IsApproved = true;
+                        s.Description = j.Description;
+                        s.Type = j.Type;
                     }
                 }
             }
@@ -311,6 +316,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName1 == account_ledger.account.AccountName)
                     {
+
                         counter++;
                     }
                     if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName2 == account_ledger.account.AccountName)
@@ -327,11 +333,15 @@ namespace Swift_Tomes_Accounting.Controllers
                 foreach (var j in jList)
                 {
                     if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName1 == account_ledger.account.AccountName)
-                    {
+                    {                        
+                        s.Description = j.Description;
+                        s.Type = j.Type;
                         approved_results.Add(s);
                     }
                     if (s.JournalId == j.JournalId && j.isApproved == true && s.AccountName2 == account_ledger.account.AccountName)
                     {
+                        s.Description = j.Description;
+                        s.Type = j.Type;
                         approved_results.Add(s);
                     }
                 }
@@ -354,6 +364,11 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 foreach (var j in jList)
                 {
+                    if (s.JournalId == j.JournalId)
+                    {
+                        s.Description = j.Description;
+                        s.Type = j.Type;
+                    }
                     if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
                         s.IsApproved = true;
@@ -378,6 +393,11 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 foreach (var j in jList)
                 {
+                    if (s.JournalId == j.JournalId)
+                    {
+                        s.Description = j.Description;
+                        s.Type = j.Type;
+                    }
                     if (s.JournalId == j.JournalId && j.isApproved == true)
                     {
                         s.IsApproved = true;

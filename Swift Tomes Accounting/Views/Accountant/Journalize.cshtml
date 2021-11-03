@@ -29,14 +29,24 @@
 <div>
     <form method="post" enctype="multipart/form-data" asp-action="Journalize" asp-controller="Accountant" id="form1">
 
-        <div class=" form-group">
+        <div class=" form-group row">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <select asp-for="Type" class="col-lg-2 form-control">
+                <option disabled>--Select Journal Type--</option>
+                <option>Regular</option>
+                <option>Adjusting</option>
+                <option>Reversing</option>
+            </select>
+            &nbsp;&nbsp;
             <label asp-for="Document" class="control-label">
                 <div class="custom-file">
                     <input asp-for="Document" class="custom-file-input" id="document" />
                     <label class="custom-file-label" for="document">Choose file</label>
                 </div>
             </label>
+
         </div>
+
         <div asp-validation-summary="All" class="text-danger text-center"></div>
         <table class="table w-100">
             <thead class="thead-dark">
@@ -124,7 +134,15 @@
         </table>
 
         <br />
+        <div class="text-center form-text" title="Description">
 
+            <textarea asp-for="Description" placeholder="Description" class="col-lg-6">
+                
+             </textarea>
+
+        </div>
+        <br />
+        <br />
         <div class="form-group text-center">
             <input type="submit" value="Create Journal Entry" class=" btn btn-success " />
             <a asp-action="JournalIndex" class="btn btn-outline-primary">Go Back</a>

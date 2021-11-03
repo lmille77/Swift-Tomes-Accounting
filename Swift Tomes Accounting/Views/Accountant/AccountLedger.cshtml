@@ -42,199 +42,243 @@
 
 @if (original_length > Model.journal_accounts.Count())
 {
-    <div class="p-4 border w-100">
+<div class="p-4 border w-100">
 
-        <table class="table table-striped border" id="table"
-               data-toggle="table"
-               data-search="true"
-               data-filter-control="true">
-            <thead class="thead-dark">
-                <tr>
-                    <th>
-                        Entry Date
-                    </th>
-                    <th>
-                        Post Reference
-                    </th>
-                    <th>
-                        Initial Balance
-                    </th>
-                    <th>
-                        Debit
-                    </th>
-                    <th>
-                        Credit
-                    </th>
-                    <th>
-                        Total Balance
-                    </th>
-                </tr>
-            </thead>
-            @foreach (var item in Model.journal_accounts)
+    <table class="table table-striped border" id="table"
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Entry Date
+                </th>
+                <th>
+                    Entry Type
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Post Reference
+                </th>
+                <th>
+                    Initial Balance
+                </th>
+                <th>
+                    Debit
+                </th>
+                <th>
+                    Credit
+                </th>
+                <th>
+                    Total Balance
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.journal_accounts)
+        {
+            @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
             {
-                @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
-                {
-                    current_balance += item.Debit;
-                    <tr>
-                        <td>
-                            @item.CreatedOn
-                        </td>
-                        <td>
-                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
-                        </td>
-                        <td>
-                        </td>
-                        <td style="text-align:right">
-                            @item.Debit.ToString("C")
-                        </td>
-                        <td>
-                        </td>
-                        <td style="text-align:right">
-                            @current_balance.ToString("C")
-                        </td>
-                    </tr>
-                }
-                @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
-                {
-                    current_balance -= item.Credit;
-                    <tr>
-                        <td>
-                            @item.CreatedOn
-                        </td>
-                        <td>
-                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td style="text-align:right">
-                            @item.Credit.ToString("C")
-                        </td>
-                        <td style="text-align:right">
-                            @current_balance.ToString("C")
-                        </td>
-                    </tr>
-                }
-
+                current_balance += item.Debit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td style="text-align:right">
+                        @item.Debit.ToString("C")
+                    </td>
+                    <td>
+                    </td>
+                    <td style="text-align:right">
+                        @current_balance.ToString("C")
+                    </td>
+                </tr>
             }
-        </table>
-    </div>
+            @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
+            {
+                current_balance -= item.Credit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td style="text-align:right">
+                        @item.Credit.ToString("C")
+                    </td>
+                    <td style="text-align:right">
+                        @current_balance.ToString("C")
+                    </td>
+                </tr>
+            }
+
+        }
+    </table>
+</div>
 }
 else
 {
-    <div class="p-4 border w-100">
+<div class="p-4 border w-100">
 
-        <table class="table table-striped border" id="table"
-               data-toggle="table"
-               data-search="true"
-               data-filter-control="true">
-            <thead class="thead-dark">
-                <tr>
-                    <th>
-                        Entry Date
-                    </th>
-                    <th>
-                        Post Reference
-                    </th>
-                    <th>
-                        Initial Balance
-                    </th>
-                    <th>
-                        Debit
-                    </th>
-                    <th>
-                        Credit
-                    </th>
-                    <th>
-                        Total Balance
-                    </th>
-                </tr>
-            </thead>
+    <table class="table table-striped border" id="table"
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true">
+        <thead class="thead-dark">
             <tr>
-                <td>
-                    @Model.account.CreatedOn
-                </td>
-                <td>
-                </td>
-                <td style="text-align:right">
-                    @Model.account.Initial.ToString("C")
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td style="text-align:right">
-                    @current_balance.ToString("C")
-                </td>
+                <th>
+                    Entry Date
+                </th>
+                <th>
+                    Entry Type
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Post Reference
+                </th>
+                <th>
+                    Initial Balance
+                </th>
+                <th>
+                    Debit
+                </th>
+                <th>
+                    Credit
+                </th>
+                <th>
+                    Total Balance
+                </th>
             </tr>
-            @foreach (var item in Model.journal_accounts)
+        </thead>
+        <tr>
+            <td>
+                @Model.account.CreatedOn
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="text-align:right">
+                @Model.account.Initial.ToString("C")
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="text-align:right">
+                @current_balance.ToString("C")
+            </td>
+        </tr>
+        @foreach (var item in Model.journal_accounts)
+        {
+            @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
             {
-                @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
-                {
-                    current_balance += item.Debit;
-                    <tr>
-                        <td>
-                            @item.CreatedOn
-                        </td>
-                        <td>
-                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
-                        </td>
-                        <td>
-                        </td>
-                        <td style="text-align:right">
-                            @item.Debit.ToString("C")
-                        </td>
-                        <td>
-                        </td>
-                        <td style="text-align:right">
-                            @current_balance.ToString("C")
-                        </td>
-                    </tr>
-                }
-                @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
-                {
-                    current_balance -= item.Credit;
-                    <tr>
-                        <td>
-                            @item.CreatedOn
-                        </td>
-                        <td>
-                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td style="text-align:right">
-                            @item.Credit.ToString("C")
-                        </td>
-                        <td style="text-align:right">
-                            @current_balance.ToString("C")
-                        </td>
-                    </tr>
-                }
-
+                current_balance += item.Debit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td style="text-align:right">
+                        @item.Debit.ToString("C")
+                    </td>
+                    <td>
+                    </td>
+                    <td style="text-align:right">
+                        @current_balance.ToString("C")
+                    </td>
+                </tr>
             }
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td style="text-align:right">
-                    @Model.account.Balance.ToString("C")
-                </td>
-            </tr>
+            @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
+            {
+                current_balance -= item.Credit;
+                <tr>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Accountant", new { id = item.JournalId }, null)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td style="text-align:right">
+                        @item.Credit.ToString("C")
+                    </td>
+                    <td style="text-align:right">
+                        @current_balance.ToString("C")
+                    </td>
+                </tr>
+            }
+
+        }
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="text-align:right">
+                @Model.account.Balance.ToString("C")
+            </td>
+        </tr>
 
 
-        </table>
-    </div>
+    </table>
+</div>
 }
 
 <div class="form-group row col-lg-4 mx-auto">

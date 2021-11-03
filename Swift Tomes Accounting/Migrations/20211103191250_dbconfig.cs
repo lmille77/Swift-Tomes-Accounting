@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class initial : Migration
+    public partial class dbconfig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,14 +20,15 @@ namespace Swift_Tomes_Accounting.Migrations
                     docUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsRejected = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Journalizes", x => x.JournalId);
                 });
 
-           
+          
 
             migrationBuilder.CreateTable(
                 name: "Journal_Accounts",
@@ -56,7 +57,7 @@ namespace Swift_Tomes_Accounting.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-           
+            
 
             migrationBuilder.CreateIndex(
                 name: "IX_Journal_Accounts_JournalId",
@@ -66,10 +67,11 @@ namespace Swift_Tomes_Accounting.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-          
-
+            
             migrationBuilder.DropTable(
                 name: "Journal_Accounts");
+
+         
 
             migrationBuilder.DropTable(
                 name: "Journalizes");
