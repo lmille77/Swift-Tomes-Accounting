@@ -72,6 +72,9 @@
                 <th data-field="isApproved" data-sortable="true">
                     Approval
                 </th>
+                <th>
+
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -198,6 +201,12 @@
                         Approved
                     </td>
                 }
+                <td>
+                    <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        Download
+                    </a>
+                </td>
             </tr>
                 i += counter;
             }

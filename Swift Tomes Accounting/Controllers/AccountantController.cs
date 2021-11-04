@@ -236,6 +236,32 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(journal);
 
         }
+        public FileResult DownloadFile(int? id)
+        {
+            var jList = _db.Journalizes.ToList();
+
+            string fileName = "";
+            foreach (var item in jList)
+            {
+                if (item.JournalId == id)
+                {
+                    fileName = item.docUrl;
+                }
+            }
+
+
+
+            //Build the File Path.
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "images/") + fileName;
+
+            //string path = "~/images/" + fileName;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileName);
+        }
         private string GetUploadedFileName(Journalize journalize)
         {
             string uniqueFileName = null;
