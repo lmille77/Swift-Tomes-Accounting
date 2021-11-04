@@ -521,7 +521,6 @@ namespace Swift_Tomes_Accounting.Controllers
                     activeList.Add(item);
                 }
             }
-
             if (date1.ToString() != "1/1/0001 12:00:00 AM")
             {
                 if (date2.ToString() == "1/1/0001 12:00:00 AM")
@@ -536,17 +535,14 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
+
             if ((balance1 > 0) && (balance2 == 0))
             {
                 foreach (var item in activeList)
                 {
                     if (balance1 <= item.Balance)
                     {
-                        if(!resultList.Contains(item))
-                        {
-                            resultList.Add(item);
-                        }
-                        
+                        resultList.Add(item);
                     }
                 }
             }
@@ -554,12 +550,9 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 foreach (var item in activeList)
                 {
-                    if (item.Balance <= balance2 && item.Balance >= 0)
+                    if (item.Balance <= balance2)
                     {
-                        if (!resultList.Contains(item))
-                        {
-                            resultList.Add(item);
-                        }
+                        resultList.Add(item);
                     }
                 }
             }
@@ -569,10 +562,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if ((balance1 <= item.Balance) && (item.Balance <= balance2))
                     {
-                        if (!resultList.Contains(item))
-                        {
-                            resultList.Add(item);
-                        }
+                        resultList.Add(item);
                     }
                 }
             }

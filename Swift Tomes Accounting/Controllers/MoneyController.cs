@@ -587,13 +587,7 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var list = _db.Account.ToList();
 
-            List<AccountDB> activeList = new List<AccountDB>();
             List<AccountDB> resultList = new List<AccountDB>();
-
-            foreach (var item in list)
-            {
-                activeList.Add(item);
-            }
 
             if (date1.ToString() != "1/1/0001 12:00:00 AM")
             {
@@ -601,7 +595,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     date2 = DateTime.Now;
                 }
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
                     if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
                     {
@@ -609,43 +603,34 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
+
             if ((balance1 > 0) && (balance2 == 0))
             {
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
                     if (balance1 <= item.Balance)
                     {
-                        if (!resultList.Contains(item))
-                        {
-                            resultList.Add(item);
-                        }
-
+                        resultList.Add(item);
                     }
                 }
             }
             if ((balance1 == 0) && (balance2 > 0))
             {
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
-                    if (item.Balance <= balance2 && item.Balance >= 0)
+                    if (item.Balance <= balance2)
                     {
-                        if (!resultList.Contains(item))
-                        {
-                            resultList.Add(item);
-                        }
+                        resultList.Add(item);
                     }
                 }
             }
             if ((balance1 > 0) && (balance2 > 0))
             {
-                foreach (var item in activeList)
+                foreach (var item in list)
                 {
                     if ((balance1 <= item.Balance) && (item.Balance <= balance2))
                     {
-                        if (!resultList.Contains(item))
-                        {
-                            resultList.Add(item);
-                        }
+                        resultList.Add(item);
                     }
                 }
             }
