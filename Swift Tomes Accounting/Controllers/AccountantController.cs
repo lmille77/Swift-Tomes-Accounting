@@ -110,8 +110,15 @@ namespace Swift_Tomes_Accounting.Controllers
               DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
         {
             var sortList = SearchResult(dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
-
-            return View(sortList);
+            List<AccountDB> resultlist = new List<AccountDB>();
+            foreach(var item in sortList)
+            {
+                if(item.ChartOfAccounts && item.Active)
+                {
+                    resultlist.Add(item);
+                }
+            }
+            return View(resultlist);
 
         }        
         public IActionResult Report()
@@ -535,7 +542,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (balance1 <= item.Balance)
                     {
-                        resultList.Add(item);
+                        if(!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
+                        
                     }
                 }
             }
@@ -545,7 +556,10 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (item.Balance <= balance2 && item.Balance >= 0)
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
                     }
                 }
             }
@@ -555,7 +569,10 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if ((balance1 <= item.Balance) && (item.Balance <= balance2))
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
                     }
                 }
             }

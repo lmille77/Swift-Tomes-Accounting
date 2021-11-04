@@ -80,11 +80,18 @@ namespace Swift_Tomes_Accounting.Controllers
 
         [HttpPost]
         public IActionResult ChartOfAccounts(DateTime dateSearch1,
-             DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
+              DateTime dateSearch2, float balanceSearch1, float balanceSearch2)
         {
             var sortList = SearchResult(dateSearch1, dateSearch2, balanceSearch1, balanceSearch2);
-
-            return View(sortList);
+            List<AccountDB> resultlist = new List<AccountDB>();
+            foreach (var item in sortList)
+            {
+                if (item.ChartOfAccounts && item.Active)
+                {
+                    resultlist.Add(item);
+                }
+            }
+            return View(resultlist);
 
         }
 
@@ -731,7 +738,7 @@ namespace Swift_Tomes_Accounting.Controllers
             //Send the File to Download.
             return File(bytes, "application/octet-stream", fileName);
         }
-        
+
         public IEnumerable<AccountDB> SearchResult(DateTime date1, DateTime date2, float balance1, float balance2)
         {
             var list = _db.Account.ToList();
@@ -767,7 +774,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (balance1 <= item.Balance)
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
+
                     }
                 }
             }
@@ -777,7 +788,10 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (item.Balance <= balance2 && item.Balance >= 0)
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
                     }
                 }
             }
@@ -787,7 +801,10 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if ((balance1 <= item.Balance) && (item.Balance <= balance2))
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
                     }
                 }
             }

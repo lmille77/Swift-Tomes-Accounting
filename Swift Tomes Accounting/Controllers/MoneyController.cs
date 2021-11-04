@@ -618,7 +618,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (balance1 <= item.Balance)
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
+
                     }
                 }
             }
@@ -628,7 +632,10 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if (item.Balance <= balance2 && item.Balance >= 0)
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
                     }
                 }
             }
@@ -638,7 +645,10 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     if ((balance1 <= item.Balance) && (item.Balance <= balance2))
                     {
-                        resultList.Add(item);
+                        if (!resultList.Contains(item))
+                        {
+                            resultList.Add(item);
+                        }
                     }
                 }
             }
