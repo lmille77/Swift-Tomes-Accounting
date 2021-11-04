@@ -352,13 +352,74 @@ namespace Swift_Tomes_Accounting.Controllers
             ViewBag.Counter = counter;
             return View(account_ledger);
         }
+        [HttpPost]
+        public IActionResult showEntryType(Journal_Accounts obj)
+        {
+            
+            var jaList = _db.Journal_Accounts.ToList();
+            var jList = _db.Journalizes.ToList();
+            List<Journal_Accounts> filteredResults = new List<Journal_Accounts>();
 
+            var eventTypes = new List<SelectListItem>();
+            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = eventTypes;
+
+            foreach (var s in jaList)
+            {
+                foreach (var j in jList)
+                {
+                    if (s.JournalId == j.JournalId)
+                    {
+                        s.Description = j.Description;
+                        s.Type = j.Type;
+                    }
+
+                    if (s.JournalId == j.JournalId && j.isApproved == true)
+                    {
+                        s.IsApproved = true;
+                    }
+
+                    if (s.JournalId == j.JournalId && j.IsRejected == true)
+                    {
+                        s.Reason = j.Reason;
+
+                    }
+
+                }
+            }
+            if (obj.SelectedType == "All")
+            {
+                return View("JournalIndex", jaList);
+            }
+            else
+            {
+                foreach(var item in jaList)
+                {
+                    if(item.Type == obj.SelectedType)
+                    {
+                        filteredResults.Add(item);
+                    }
+                }
+                return View("JournalIndex", filteredResults);
+            }            
+
+        }
 
         [HttpGet]
         public IActionResult JournalIndex()
         {
             var sortList = _db.Journal_Accounts.ToList();
             var jList = _db.Journalizes.ToList();
+
+            var eventTypes = new List<SelectListItem>();
+            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = eventTypes;
 
             foreach (var s in sortList)
             {
@@ -387,6 +448,12 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult JournalIndex(DateTime dateSearch1,
             DateTime dateSearch2)
         {
+            var eventTypes = new List<SelectListItem>();
+            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = eventTypes;
             var sortList = SearchResult(dateSearch1, dateSearch2);
             var jList = _db.Journalizes.ToList();
             foreach (var s in sortList)

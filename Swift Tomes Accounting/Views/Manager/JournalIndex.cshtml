@@ -1,6 +1,9 @@
+@using Swift_Tomes_Accounting.Models.ViewModels
 @model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts>
 @{
     var arraylist = Model.ToArray();
+    Journal_Accounts obj = new Journal_Accounts();
+    
 }
 
 <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
@@ -8,9 +11,8 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
+<h3 class="text-center">Journal</h3>
 
-
-<br />
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -36,6 +38,7 @@
 <div class="justify-content-start">
     <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
        data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+        <i class="fa fa-plus" aria-hidden="true"></i>
         Add Entry
     </a>
 </div>
@@ -43,8 +46,15 @@
 
 
 
-<div class="form-group row w-75 justify-content-start" style="position:absolute;top:175px;padding-left:20px">
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:210px;padding-left:3%">
 
+    <div>
+        <form asp-controller="Manager" asp-action="showEntryType" method="post">
+            <select asp-for="@obj.SelectedType" asp-items="@ViewBag.types" class="col-lg-12 form-control" onchange="this.form.submit()">
+            </select>
+        </form>
+    </div>
+    <div style="width:150px"></div>
     <form asp-controller="Manager" asp-action="JournalIndex" method="post">
         <input style="width:150px" name="DateSearch1" value="@ViewBag.result" placeholder="Begin Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
         <label> - </label>
@@ -60,7 +70,7 @@
 
 </div>
 
-<div class="container-fluid">
+<div class="p-4 border w-100">
 
     <table class="table table-striped border" id="table" data-toggle="table"
            data-search="true"
