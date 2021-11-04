@@ -69,10 +69,9 @@
                 <th>
                     Credit
                 </th>
-                <th data-field="isApproved" data-sortable="true">
-                    Approval
+                <th>
+
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -179,27 +178,7 @@
 
                 </td>
 
-                @if ((i < arraylist.Length && arraylist[i].IsApproved == false) && arraylist[i].IsRejected == false)
-                {
-                    <td>
-                        Pending
-                    </td>
-
-                }
-                else if (arraylist[i].IsRejected == true)
-                {
-                    <td>
-                        Rejected
-                    </td>
-                }
-                else
-                {
-
-                    <td>
-                        Approved
-                    </td>
-                }
-                <td>
+                               
                 <td>
                     <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
                         <i class="fa fa-download" aria-hidden="true"></i>
