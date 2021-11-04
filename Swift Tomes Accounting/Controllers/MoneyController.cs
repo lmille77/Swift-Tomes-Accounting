@@ -88,26 +88,56 @@ namespace Swift_Tomes_Accounting.Controllers
 
             if (account.Category == "Asset")
             {
+                account.Statement = "Balance Sheet";
+                account.NormSide = "Left";
+                if (account.Contra)
+                {
+                    account.NormSide = "Right";
+                }
                 temp = "1" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Expenses")
             {
+                account.Statement = "Income Statement";
+                account.NormSide = "Left";
+                if (account.Contra)
+                {
+                    account.NormSide = "Right";
+                }
                 temp = "2" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Liability")
             {
+                account.Statement = "Balance Sheet";
+                account.NormSide = "Right";
+                if (account.Contra)
+                {
+                    account.NormSide = "Left";
+                }
                 temp = "3" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Equity")
             {
+                account.Statement = "Balance Sheet";
+                account.NormSide = "Right";
+                if (account.Contra)
+                {
+                    account.NormSide = "Left";
+                }
                 temp = "4" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Revenue")
             {
+                account.Statement = "Income Statement";
+                account.NormSide = "Right";
+                if (account.Contra)
+                {
+                    account.NormSide = "Left";
+                }
                 temp = "5" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
@@ -266,6 +296,56 @@ namespace Swift_Tomes_Accounting.Controllers
                     ModelState.AddModelError("", errorList[11].Message);
                     return View(obj);
                 }
+
+
+                if (obj.Category == "Asset")
+                {
+                    obj.Statement = "Balance Sheet";
+                    obj.NormSide = "Left";
+                    if (obj.Contra)
+                    {
+                        obj.NormSide = "Right";
+                    }
+                }
+                else if (obj.Category == "Expenses")
+                {
+                    obj.Statement = "Income Statement";
+                    obj.NormSide = "Left";
+                    if (obj.Contra)
+                    {
+                        obj.NormSide = "Right";
+                    }
+
+                }
+                else if (obj.Category == "Liability")
+                {
+                    obj.Statement = "Balance Sheet";
+                    obj.NormSide = "Right";
+                    if (obj.Contra)
+                    {
+                        obj.NormSide = "Left";
+                    }
+
+                }
+                else if (obj.Category == "Equity")
+                {
+                    obj.Statement = "Balance Sheet";
+                    obj.NormSide = "Right";
+                    if (obj.Contra)
+                    {
+                        obj.NormSide = "Left";
+                    }
+                }
+                else if (obj.Category == "Revenue")
+                {
+                    obj.Statement = "Income Statement";
+                    obj.NormSide = "Right";
+                    if (obj.Contra)
+                    {
+                        obj.NormSide = "Left";
+                    }
+                }
+
 
                 EventAccount new_account = new EventAccount
                 {
