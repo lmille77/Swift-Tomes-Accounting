@@ -105,7 +105,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     account.NormSide = "Right";
                 }
-                temp = "2" + zero + temp;
+                temp = "5" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Liability")
@@ -116,7 +116,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     account.NormSide = "Left";
                 }
-                temp = "3" + zero + temp;
+                temp = "2" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Equity")
@@ -127,7 +127,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     account.NormSide = "Left";
                 }
-                temp = "4" + zero + temp;
+                temp = "3" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
             else if (account.Category == "Revenue")
@@ -138,7 +138,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     account.NormSide = "Left";
                 }
-                temp = "5" + zero + temp;
+                temp = "4" + zero + temp;
                 account.AccountNumber = double.Parse(temp);
             }
 
