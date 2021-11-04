@@ -10,8 +10,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
-
-<br />
+<h3 class="text-center">Chart Of Accounts</h3>
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -32,12 +31,7 @@
         </li>
     </ul>
 </div>
-
-
-<h1 class="text-center">Chart Of Accounts</h1>
-<br />
-<br />
-<div class="form-group row w-75 justify-content-start" style="position:absolute;top:200px;padding-left:20px">
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:150px;padding-left:3%">
 
     <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="post">
         <input style="width:150px" name="BalanceSearch1" value="@ViewBag.result" placeholder="$0.00" />
@@ -59,7 +53,7 @@
 </div>
 
 
-<div>
+<div class="p-4 border w-100">
     <table class="table table-striped border" id="table"
            data-toggle="table"
            data-search="true"
