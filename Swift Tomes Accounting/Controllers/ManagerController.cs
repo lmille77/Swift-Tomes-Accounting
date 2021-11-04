@@ -761,7 +761,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 foreach (var item in activeList)
                 {
-                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
+                    if (date1.Date <= item.CreatedOn.Date && item.CreatedOn.Date <= date2.Date)
                     {
                         resultList.Add(item);
                     }
@@ -822,7 +822,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 foreach (var item in activeList)
                 {
-                    if (date1 <= item.CreatedOn && item.CreatedOn <= date2)
+                    if (date1.Date <= item.CreatedOn.Date && item.CreatedOn.Date <= date2.Date)
                     {
                         resultList.Add(item);
                     }
