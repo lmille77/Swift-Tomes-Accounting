@@ -50,5 +50,12 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         [NotMapped]
         public IEnumerable<SelectListItem> Accounts { get; set; }
+
+
+        [NotMapped]
+        public double TotalRev { get; set; }
+
+        [NotMapped]
+        public double TotalEx { get; set; }
     }
 }

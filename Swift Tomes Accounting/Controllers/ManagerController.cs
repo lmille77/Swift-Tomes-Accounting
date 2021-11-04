@@ -831,6 +831,48 @@ namespace Swift_Tomes_Accounting.Controllers
             return resultList;
         }
 
+
+        public IActionResult IncomeStatement()
+        {
+            var list = _db.Account.ToList();
+            double totalRev = 0;
+            double totalEx = 0;
+
+
+            List<AccountDB> accounts = new List<AccountDB>();
+            
+            foreach(var item in list)
+            {
+                if(item.Statement == "Income Statement" && item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.Category == "Revenue")
+                    {
+                        totalRev += item.Balance;
+                    }
+
+                    if (item.Category == "Expenses")
+                    {
+                        totalEx += item.Balance;
+                    }
+                }
+
+            }
+
+            IncomeStatement income = new IncomeStatement()
+            {
+                Accounts = accounts,
+                TotalRev = totalRev,
+                TotalEx = totalEx
+            };
+            //_db.IncomeStatement.Add(income);
+            //_db.SaveChanges();
+
+
+            return View(income);
+        }
+
     }
 
 
