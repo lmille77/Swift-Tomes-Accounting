@@ -592,10 +592,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             foreach (var item in list)
             {
-                if ((item.ChartOfAccounts) && (item.Active))
-                {
-                    activeList.Add(item);
-                }
+                activeList.Add(item);
             }
 
             if (date1.ToString() != "1/1/0001 12:00:00 AM")
@@ -612,7 +609,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
-            if ((balance1 >= 0) && (balance2 == 0))
+            if ((balance1 > 0) && (balance2 == 0))
             {
                 foreach (var item in activeList)
                 {

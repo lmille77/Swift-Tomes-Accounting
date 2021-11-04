@@ -768,7 +768,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
                 }
             }
-            if ((balance1 >= 0) && (balance2 == 0))
+            if ((balance1 > 0) && (balance2 == 0))
             {
                 foreach (var item in activeList)
                 {
