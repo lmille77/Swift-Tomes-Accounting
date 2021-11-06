@@ -6,23 +6,17 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Models.ViewModels
 {
-    public class IncomeStatement
+    public class TrialBalance
     {
         [Key]
-        public int IncomeId { get; set; }
+        public int TrialId { get; set; }
 
         [DataType(DataType.Currency)]
-        public double TotalRev { get; set; }
+        public double TotalDebit { get; set; }
 
 
         [DataType(DataType.Currency)]
-        public double TotalEx { get; set; }
-
-        [DataType(DataType.Currency)]
-        public double Total { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedOn { get; set; }
+        public double TotalCredit { get; set; }
 
         public virtual List<AccountDB> Accounts { get; set; } = new List<AccountDB>();
     }
