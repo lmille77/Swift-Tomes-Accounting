@@ -13,15 +13,15 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
 
         [Key]
-        [Display(Name = "Number")]
+        [Display(Name = "Account Number")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public double AccountNumber { get; set; }
        
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Account Name")]
         public string AccountName { get; set; }
         public string Description { get; set; }
-        [Required]
+       
         public string NormSide { get; set; }
         [Required]
         public string Category { get; set; }
@@ -50,5 +50,12 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
 
         [NotMapped]
         public IEnumerable<SelectListItem> Accounts { get; set; }
+
+
+        [NotMapped]
+        public double TotalRev { get; set; }
+
+        [NotMapped]
+        public double TotalEx { get; set; }
     }
 }

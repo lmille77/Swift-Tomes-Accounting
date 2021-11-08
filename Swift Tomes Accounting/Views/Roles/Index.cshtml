@@ -14,7 +14,7 @@
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center border-info">Quick Actions</div>
+        <div class="text-center">Quick Actions</div>
         <br />
     </div>
 
@@ -29,16 +29,10 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">User Management</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
         </li>
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
@@ -51,17 +45,20 @@
     @if (Model.Any())
     {
         <table class="table table-striped border">
-            <tr class="table-secondary">
+            <thead class="thead-dark">
+                <tr class="table-secondary">
 
-                <th>
-                    ID
-                </th>
-                <th>
-                    Name
-                </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
 
-                <th></th>
-            </tr>
+                    <th></th>
+                </tr>
+            </thead>
+            
             @foreach (var item in Model)
             {
                 <tr>

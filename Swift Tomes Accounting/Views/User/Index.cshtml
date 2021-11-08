@@ -6,7 +6,7 @@
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center border-info">Quick Actions</div>
+        <div class="text-center">Quick Actions</div>
         <br />
     </div>
 
@@ -21,17 +21,11 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">User Management</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
-        </li>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
+        </li>     
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
@@ -122,7 +116,7 @@
     <div class="form-group row justify-content-center" style="padding-top:15px">
         <a asp-action="Create" asp-controller="User" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Create a New User">
             <i class="fa fa-plus" aria-hidden="true"></i>
-            Create User
+            Create New User
         </a>
         <div>&nbsp;</div>
         <a asp-action="Index" asp-controller="Roles" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add, Edit,and Create Roles">

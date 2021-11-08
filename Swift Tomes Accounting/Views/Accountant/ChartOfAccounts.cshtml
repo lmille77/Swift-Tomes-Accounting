@@ -10,9 +10,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
-@*<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
-
-<br />
+<h3 class="text-center">Chart Of Accounts</h3>
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -29,49 +27,37 @@
             <a asp-controller="Accountant" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+            <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
         </li>
     </ul>
 </div>
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:150px;padding-left:3%">
 
-<h1 class="text-center">Chart Of Accounts</h1>
-<br />
-<br />
-<div class="form-group row">    
-    <div>
+    <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="post">
+        <input style="width:150px" name="BalanceSearch1" value="@ViewBag.result" placeholder="$0.00" />
+        <label> - </label>
+        <input style="width:150px" name="BalanceSearch2" value="@ViewBag.result" placeholder="$0.00" />
+        <label> or </label>
+        <input style="width:150px" name="DateSearch1" value="@ViewBag.result" placeholder="Begin Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <label> - </label>
+        <input style="width:150px" name="DateSearch2" value="@ViewBag.result" placeholder="End Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data with a Date Range or Balance Search" />
 
-        <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="post">
-            <p>
-                <label>$</label>
-                <input type="text" name="BalanceSearch1" value="@ViewBag.result" />
-                <label> - $</label>
-                <input type="text" name="BalanceSearch2" value="@ViewBag.result" />
-                &nbsp;&nbsp;
-                <input type="date" name="DateSearch1" value="@ViewBag.result" />
-                <label> - </label>
-                <input type="date" name="DateSearch2" value="@ViewBag.result" />
-                &nbsp;&nbsp;
-                <input type="submit" value="Filter" />
-            </p>
-        </form>
-    </div>
-    <div>&nbsp;&nbsp;</div>
-    <div>
-        <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="get">
-            <p>
-                <input type="submit" value="Reset">
-            </p>
-        </form>
-    </div>
+    </form>
+    <div>&nbsp;</div>
+    <form asp-controller="Accountant" asp-action="ChartOfAccounts" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
+
+    </form>
 
 </div>
 
 
-<div class="container-fluid">
-    <table class="table table-striped border"  id="table"
+<div class="p-4 border w-100">
+    <table class="table table-striped border" id="table"
            data-toggle="table"
            data-search="true"
-           data-filter-control="true" >
+           data-filter-control="true">
         <thead class="thead-dark">
             <tr>
                 <th data-field="accountNumber" data-sortable="true">
@@ -109,11 +95,7 @@
         </thead>
         @if (Model.Count() == 0)
         {
-            <tr>
-                <td colspan="4">
-                    No Records match search criteria
-                </td>
-            </tr>
+            
         }
         else
         {
@@ -125,7 +107,7 @@
                             @Html.ActionLink(Convert.ToString(item.AccountNumber), "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.ActionLink(@item.AccountName, "LinkedName", "Accountant", new { name = item.AccountName }, null)
+                            @Html.ActionLink(@item.AccountName, "AccountLedger", "Accountant", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
@@ -139,7 +121,7 @@
                         </td>
 
 
-                        <td>
+                        <td style="text-align:right">
                             @Html.DisplayFor(modelItem => item.Balance)
                         </td>
                         <td>
@@ -161,9 +143,3 @@
     </table>
 </div>
 
-@*@section Scripts
-    {
-        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-        <script src="~/js/accountDatatable.js"></script>
-    }*@

@@ -133,6 +133,7 @@ namespace Swift_Tomes_Accounting.Controllers
             });
 
             journalize.Journal_Accounts.Add(new Journal_Accounts() { JAId = 1 });
+            
             return View(journalize);
         }
 

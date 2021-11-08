@@ -1,84 +1,19 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountLedger
 
 @{
-    ViewData["Title"] = "AccountLedger";
+    double current_balance = Model.account.Initial;
+    int original_length = 0;
+    if (ViewBag.Counter != null)
+    {
+        original_length = ViewBag.Counter;
+    }
 }
 
-<h2 class="text-center">@Model.AccountName</h2>
-
-<div class="p-4 rounded w-100">
-    <table class="table table-striped border">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedOn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AccountNumber)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Debit)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Credit)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Balance)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>
-                    @Html.DisplayFor(model => model.CreatedOn)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.AccountNumber)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Debit)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Credit)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Balance)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayFor(model => model.Comments)
-                </th>
-            </tr>
-
-        </tbody>
-    </table>
-
-</div>
-
-
-<div class="text-center">
-    @Html.ActionLink("View Account's Event Log", "AcctEventLog", "Money", new { id = Model.AccountNumber }, null)
-</div>
-<br />
-<div class="text-center">
-    <a asp-action="ChartOfAccounts" class="btn btn-success w-10">Go Back</a>
-</div>
-
+<link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
 
 <div class="sidebar-container border-dark">
     <div>
@@ -98,16 +33,10 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-info btn-outline-light">Account List</a>
         </li>
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
@@ -117,3 +46,273 @@
 
 
 
+
+<h2 class="text-center">@Model.account.AccountName</h2>
+
+<br />
+
+<div class="form-group row w-75 justify-content-start" style="position:absolute;top:180px;padding-left:5%">
+
+    <form asp-controller="Money" asp-action="AccountLedger" method="post">
+        <input style="width:150px" name="DateSearch1" value="@ViewBag.Search1" placeholder="Begin Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <label> - </label>
+        <input style="width:150px" name="DateSearch2" value="@ViewBag.Search2" placeholder="End Date:" onfocus="(this.type='date')" onblur="(this.type='text')" />
+        <input type="hidden" name="LedgerID" value="@Model.account.AccountNumber" />
+        <input type="submit" value="Filter" data-toggle="tooltip" data-placement="bottom" title="Filter the Chart of Accounts Data with a Date Range or Balance Search" />
+
+    </form>
+    <div>&nbsp;</div>
+    <form asp-controller="Money" asp-action="AccountLedger" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset the Filtered Data">
+
+    </form>
+
+</div>
+
+
+@if (original_length > Model.journal_accounts.Count())
+{
+    <div class="p-4 border w-100">
+
+        <table class="table table-striped border" id="table"
+               data-toggle="table"
+               data-search="true"
+               data-filter-control="true">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Entry Date
+                    </th>
+                    <th>
+                        Entry Type
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Post Reference
+                    </th>
+                    <th>
+                        Initial Balance
+                    </th>
+                    <th>
+                        Debit
+                    </th>
+                    <th>
+                        Credit
+                    </th>
+                    <th>
+                        Total Balance
+                    </th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.journal_accounts)
+            {
+                @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
+                {
+                    current_balance += item.Debit;
+                    <tr>
+                        <td>
+                            @item.CreatedOn
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">
+                            @item.Debit.ToString("C")
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">
+                            @current_balance.ToString("C")
+                        </td>
+                    </tr>
+                }
+                @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
+                {
+                    current_balance -= item.Credit;
+                    <tr>
+                        <td>
+                            @item.CreatedOn
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">
+                            @item.Credit.ToString("C")
+                        </td>
+                        <td style="text-align:right">
+                            @current_balance.ToString("C")
+                        </td>
+                    </tr>
+                }
+
+            }
+        </table>
+    </div>
+}
+else
+{
+    <div class="p-4 border w-100">
+
+        <table class="table table-striped border" id="table"
+               data-toggle="table"
+               data-search="true"
+               data-filter-control="true">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Entry Date
+                    </th>
+                    <th>
+                        Entry Type
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Post Reference
+                    </th>
+                    <th>
+                        Initial Balance
+                    </th>
+                    <th>
+                        Debit
+                    </th>
+                    <th>
+                        Credit
+                    </th>
+                    <th>
+                        Total Balance
+                    </th>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    @Model.account.CreatedOn
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="text-align:right">
+                    @Model.account.Initial.ToString("C")
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="text-align:right">
+                    @current_balance.ToString("C")
+                </td>
+            </tr>
+            @foreach (var item in Model.journal_accounts)
+            {
+                @if (item.AccountName1 == Model.account.AccountName && item.IsRejected == false)
+                {
+                    current_balance += item.Debit;
+                    <tr>
+                        <td>
+                            @item.CreatedOn
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">
+                            @item.Debit.ToString("C")
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">
+                            @current_balance.ToString("C")
+                        </td>
+                    </tr>
+                }
+                @if (item.AccountName2 == Model.account.AccountName && item.IsRejected == false)
+                {
+                    current_balance -= item.Credit;
+                    <tr>
+                        <td>
+                            @item.CreatedOn
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">
+                            @item.Credit.ToString("C")
+                        </td>
+                        <td style="text-align:right">
+                            @current_balance.ToString("C")
+                        </td>
+                    </tr>
+                }
+
+            }
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="text-align:right">
+                    @Model.account.Balance.ToString("C")
+                </td>
+            </tr>
+
+
+        </table>
+    </div>
+}
+
+<br />
+<div class="text-center">
+    <a asp-action="Accounts" asp-controller="Money" class="btn btn-success">Go to Accounts List</a>    
+</div>
+<br />

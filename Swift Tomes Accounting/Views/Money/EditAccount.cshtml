@@ -7,7 +7,7 @@
         <img src="~/frontend/STLogo.png" alt=”Image” style="width:50px; height:50px">
     </div>
     <br />
-    <h4 class="text-center">Add an Account</h4>
+    <h4 class="text-center">Edit an Account</h4>
     <br />
     <form asp-action="EditAccount">
 
@@ -18,26 +18,6 @@
             <div class="col-xs-2">
                 <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
                 <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Description" class="form-control" placeholder="Description" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <select asp-for="NormSide" class="form-control">
-                    <option disabled>--Select a Normal Side--</option>
-                    <option>Left</option>
-                    <option>Right</option>
-                </select>
-                <span asp-validation-for="NormSide" class="text-danger"></span>
             </div>
         </div>
         <br />
@@ -71,6 +51,14 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
+                <label>Contra Account: </label>
+                @Html.CheckBoxFor(m => m.Contra)
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-md-8">
                 <label>Chart of Accounts: </label>
                 @Html.CheckBoxFor(m => m.ChartOfAccounts)
             </div>
@@ -87,12 +75,11 @@
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
-                <input asp-for="Statement" class="form-control" placeholder="Statement" />
-                <span asp-validation-for="Statement" class="text-danger"></span>
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
         <br />
-
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-md-8">
@@ -116,7 +103,7 @@
                     }
                 </div>
                 <div class="col">
-                    <a asp-action="ChartOfAccounts" class="btn btn-success w-100">Back</a>
+                    <a asp-action="Accounts" class="btn btn-success w-100">Back</a>
                 </div>
             </div>
         </div>
