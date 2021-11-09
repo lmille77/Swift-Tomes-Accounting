@@ -179,12 +179,25 @@
                 </td>
 
                                
-                <td>
-                    <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                        Download
-                    </a>
-                </td>
+                
+                    @if (arraylist[i].docUrl != null)
+                    {
+                        <td>
+                            <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                Download
+                            </a>
+                        </td>
+                     }
+                        
+                    else
+                    {
+                        <td>
+                            No document was uploaded
+                        </td>
+
+                    }
+                
                
             </tr>
                 i += counter;
