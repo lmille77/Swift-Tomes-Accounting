@@ -108,7 +108,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 roa = neti / tasset;
                 turnover = sales / (tasset / 2);
                 roe = neti / shareeq;
-
+                margin = (neti / rev) * 100;
 
 
                 Ratio ratio = new Ratio()
