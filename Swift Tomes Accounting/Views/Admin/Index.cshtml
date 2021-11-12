@@ -8,6 +8,8 @@
 
 
 <h2 class="text-center" style="margin-left:50px">Admin Dashboard</h2>
+<br />
+<br />
 
 <div class="sidebar-container border-dark">
     <div>
@@ -51,6 +53,7 @@
     double margin = Model.Margin;
     double quick = Model.Quick;
     double current = Model.Current;
+    double turnover = Model.Turnover;
 }
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -79,12 +82,13 @@
                 ['Label', 'Value'],
                  ['Quick', @quick],
                  ['Current', @current],
+                 ['Turnover', @turnover]
 
             ]);
 
 
             var options = {
-                width: 550, height: 270,
+                width: 450, height: 170,
                 redFrom: 0, redTo: 5,
                 yellowFrom: 6, yellowTo: 19,
                 greenFrom: 20, greenTo: 50,
@@ -94,7 +98,7 @@
             };
 
             var options1 = {
-                width: 550, height: 270,
+                width: 450, height: 170,
                 redFrom: 0, redTo: 10,
                 yellowFrom: 11, yellowTo: 14,
                 greenFrom: 15, greenTo: 50,
@@ -116,20 +120,23 @@
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
             var chart1 = new google.visualization.Gauge(document.getElementById('chart_div1'));
             var chart2 = new google.visualization.Gauge(document.getElementById('chart_div2'));
+            
 
             chart.draw(data, options);
             chart1.draw(data1, options1);
             chart2.draw(data2, options2);
+            
 
 
         }
     </script>
 </head>
 <body>
-    <div>
+    <div align="center">
         <div id="chart_div"></div>
         <div id="chart_div1"></div>
         <div id="chart_div2"></div>
+        
     </div>
 </body>
 </html>
