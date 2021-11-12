@@ -1,7 +1,11 @@
-﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.Ratio
 @{
     ViewData["Title"] = "Admin Page";
 }
+
+
+
+
 
 <h2 class="text-center" style="margin-left:50px">Admin Dashboard</h2>
 
@@ -39,3 +43,93 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
+
+<html>
+@{
+    double roa = Model.RoA;
+    double roe = Model.RoE;
+    double margin = Model.Margin;
+    double quick = Model.Quick;
+    double current = Model.Current;
+}
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['gauge'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['ROA (%)', @roa],
+                ['NPM (%)', @margin]
+
+            ]);
+
+              var data1 = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['ROE (%)', @roe]
+
+            ]);
+
+             var data2 = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                 ['Quick', @quick],
+                 ['Current', @current],
+
+            ]);
+
+
+            var options = {
+                width: 550, height: 270,
+                redFrom: 0, redTo: 5,
+                yellowFrom: 6, yellowTo: 19,
+                greenFrom: 20, greenTo: 50,
+                min: 0,
+                max: 50
+
+            };
+
+            var options1 = {
+                width: 550, height: 270,
+                redFrom: 0, redTo: 10,
+                yellowFrom: 11, yellowTo: 14,
+                greenFrom: 15, greenTo: 50,
+                min: 0,
+                max: 50
+
+            };
+
+            var options2 = {
+                width: 550, height: 270,
+                redFrom: 0, redTo: .5,
+                yellowFrom: .6, yellowTo: 1,
+                greenFrom: 1, greenTo: 10,
+                min: 0,
+                max: 10
+
+            };
+
+            var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+            var chart1 = new google.visualization.Gauge(document.getElementById('chart_div1'));
+            var chart2 = new google.visualization.Gauge(document.getElementById('chart_div2'));
+
+            chart.draw(data, options);
+            chart1.draw(data1, options1);
+            chart2.draw(data2, options2);
+
+
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div id="chart_div"></div>
+        <div id="chart_div1"></div>
+        <div id="chart_div2"></div>
+    </div>
+</body>
+</html>

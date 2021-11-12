@@ -78,7 +78,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         inv += item.Balance;
                     }
-                    if (item.AccountName == "Sales")
+                    if (item.AccountName == "Service Revenue")
                     {
                         sales += item.Balance;
                     }
