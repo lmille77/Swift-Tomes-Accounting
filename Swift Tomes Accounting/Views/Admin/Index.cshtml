@@ -10,6 +10,8 @@
 <h2 class="text-center" style="margin-left:50px">Admin Dashboard</h2>
 <br />
 <br />
+<br />
+<br />
 
 <div class="sidebar-container border-dark">
     <div>
@@ -72,7 +74,7 @@
 
             ]);
 
-              var data1 = google.visualization.arrayToDataTable([
+             var data1 = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
                 ['ROE (%)', @roe]
 
@@ -81,11 +83,16 @@
              var data2 = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
                  ['Quick', @quick],
-                 ['Current', @current],
-                 ['Turnover', @turnover]
+                 ['Current', @current]
+
 
             ]);
 
+              var data3 = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                 ['Turnover', @turnover],
+
+            ]);
 
             var options = {
                 width: 450, height: 170,
@@ -108,7 +115,7 @@
             };
 
             var options2 = {
-                width: 550, height: 270,
+                width: 450, height: 170,
                 redFrom: 0, redTo: .5,
                 yellowFrom: .6, yellowTo: 1,
                 greenFrom: 1, greenTo: 10,
@@ -117,15 +124,25 @@
 
             };
 
+            var options3 = {
+                width: 450, height: 170,
+                redFrom: 0, redTo: .5,
+                yellowFrom: .5, yellowTo: 1,
+                greenFrom: 1, greenTo: 2,
+                min: 0,
+                max: 2
+
+            }
+
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
             var chart1 = new google.visualization.Gauge(document.getElementById('chart_div1'));
             var chart2 = new google.visualization.Gauge(document.getElementById('chart_div2'));
-            
+            var chart3 = new google.visualization.Gauge(document.getElementById('chart_div3'));
 
             chart.draw(data, options);
             chart1.draw(data1, options1);
             chart2.draw(data2, options2);
-            
+            chart3.draw(data3, options3);
 
 
         }
@@ -133,10 +150,12 @@
 </head>
 <body>
     <div align="center">
-        <div id="chart_div"></div>
-        <div id="chart_div1"></div>
-        <div id="chart_div2"></div>
-        
+
+        <div style="width: 400px; height: 0px; margin-left:330px" id="chart_div1"> </div>
+        <div align="left" style="margin-left: 570px" id="chart_div"></div>
+        <div style="width: 400px; height: 0px;  margin-left: 330px; " id="chart_div3"></div>
+        <div style="margin-right:180px" id="chart_div2"></div>
+
     </div>
 </body>
 </html>
