@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
+using Swift_Tomes_Accounting.Helpers;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -144,6 +145,36 @@ namespace Swift_Tomes_Accounting.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        public IActionResult Send()
+        {
+            var userList = _db.ApplicationUser.ToList();
+            List<SelectListItem> users = new List<SelectListItem>();
+            foreach (var user in userList)
+            {
+                SelectListItem li = new SelectListItem
+                {
+                    Value = user.Email,
+                    Text = user.LastName + ", " + user.FirstName + " <" + user.Email + ">"
+
+                };
+                users.Add(li);
+                ViewBag.Users = users;
+            }
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Send(Message obj)
+        {
+            var toEmail = obj.ToEmail;
+            var subject = obj.Subject;
+            var body = obj.Body;
+            var mailHelper = new MailHelper(_configuration);
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            return RedirectToAction("Index", "Manager");
+        }
 
         [HttpGet]
         public IActionResult ChartOfAccounts()
