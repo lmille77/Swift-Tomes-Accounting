@@ -102,19 +102,20 @@ namespace Swift_Tomes_Accounting.Controllers
                 neti = rev - exp;
 
                 current = casset / cliab;
-                quick = (casset - inv - inv) / cliab;
-                roa = neti / tasset;
+                quick = (casset - inv) / cliab;
+                roa = (neti / tasset) * 100;
                 turnover = sales / (tasset / 2);
-                roe = neti / shareeq;
+                roe = (neti / shareeq) * 100;
                 margin = (neti / rev) * 100;
+
 
 
                 Ratio ratio = new Ratio()
                 {
                     Current = current,
-                    RoA = roa,
-                    RoE = roe,
-                    Margin = margin,
+                    RoA = Math.Round(roa, 2),
+                    RoE = Math.Round(roe, 2),
+                    Margin = Math.Round(margin, 2),
                     Turnover = turnover,
                     Quick = quick
 
