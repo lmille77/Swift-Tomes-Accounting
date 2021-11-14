@@ -739,6 +739,254 @@ namespace Swift_Tomes_Accounting.Controllers
             return resultList;
         }
 
-        
+        public IActionResult IncomeStatement()
+        {
+            var list = _db.Account.ToList();
+            double totalRev = 0;
+            double totalEx = 0;
+
+
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Statement == "Income Statement" && item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.Category == "Revenue")
+                    {
+                        totalRev += item.Balance;
+                    }
+
+                    if (item.Category == "Expenses")
+                    {
+                        totalEx += item.Balance;
+                    }
+                }
+
+            }
+
+            IncomeStatement income = new IncomeStatement()
+            {
+                Accounts = accounts,
+                TotalRev = totalRev,
+                TotalEx = totalEx,
+                Total = totalRev - totalEx,
+                CreatedOn = DateTime.Now
+            };
+            //_db.IncomeStatement.Add(income);
+            //_db.SaveChanges();
+
+
+            return View(income);
+        }
+
+        public IActionResult BalanceSheet()
+        {
+            var list = _db.Account.ToList();
+            double totalAs = 0;
+            double totalLi = 0;
+            double totalEq = 0;
+
+            double beginRE = 0;
+            double netInc = 0;
+            double div = 0;
+            double rev = 0;
+            double exp = 0;
+            double endRE = 0;
+
+
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Statement == "Balance Sheet" && item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.Category == "Asset")
+                    {
+                        if (item.Contra)
+                        {
+                            totalAs -= item.Balance;
+                        }
+                        else
+                        {
+                            totalAs += item.Balance;
+                        }
+                    }
+
+                    if (item.Category == "Liability")
+                    {
+                        if (item.Contra)
+                        {
+                            totalLi -= item.Balance;
+                        }
+                        else
+                        {
+                            totalLi += item.Balance;
+                        }
+                    }
+
+                    if (item.Category == "Equity")
+                    {
+                        if (item.Contra)
+                        {
+                            totalEq -= item.Balance;
+                        }
+                        else
+                        {
+                            totalEq += item.Balance;
+                        }
+                    }
+                }
+
+                if (item.Balance > 0)
+                {
+
+                    if (item.AccountName == "Retained Earnings")
+                    {
+                        beginRE += item.Balance;
+                    }
+
+                    if (item.AccountName == "Common Dividends Payable" || item.AccountName == "Preferred Dividends Payable")
+                    {
+                        div += item.Balance;
+                    }
+
+                    if (item.Category == "Revenue")
+                    {
+                        rev += item.Balance;
+                    }
+
+                    if (item.Category == "Expenses")
+                    {
+                        exp += item.Balance;
+
+                    }
+                }
+
+            }
+
+            netInc = rev - exp;
+            endRE = (beginRE + netInc) - div;
+            totalEq += endRE;
+
+            BalanceSheet balance = new BalanceSheet()
+            {
+                Accounts = accounts,
+                TotalAs = totalAs,
+                TotalLi = totalLi,
+                TotalEQ = totalEq,
+                EndRE = endRE
+            };
+
+            //_db.BalanceSheet.Add(balance);
+            //_db.SaveChanges();
+
+            return View(balance);
+        }
+
+        public IActionResult TrialBalance()
+        {
+            var list = _db.Account.ToList();
+            double totalDebit = 0;
+            double totalCredit = 0;
+
+
+
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.NormSide == "Left")
+                    {
+                        totalDebit += item.Balance;
+                    }
+
+                    if (item.NormSide == "Right")
+                    {
+                        totalCredit += item.Balance;
+                    }
+
+                }
+
+            }
+
+            TrialBalance trial = new TrialBalance()
+            {
+                Accounts = accounts,
+                TotalDebit = totalDebit,
+                TotalCredit = totalCredit
+            };
+
+            //_db.TrialBalance.Add(trial);
+            //_db.SaveChanges();
+
+            return View(trial);
+        }
+
+        public IActionResult RetainedEarnings()
+        {
+            var list = _db.Account.ToList();
+            double beginRE = 0;
+            double netInc = 0;
+            double div = 0;
+            double rev = 0;
+            double exp = 0;
+            double endRE = 0;
+
+
+
+            foreach (var item in list)
+            {
+                if (item.Balance > 0)
+                {
+
+                    if (item.AccountName == "Retained Earnings")
+                    {
+                        beginRE += item.Balance;
+                    }
+
+                    if (item.AccountName == "Common Dividends Payable" || item.AccountName == "Preferred Dividends Payable")
+                    {
+                        div += item.Balance;
+                    }
+
+                    if (item.Category == "Revenue")
+                    {
+                        rev += item.Balance;
+                    }
+
+                    if (item.Category == "Expenses")
+                    {
+                        exp += item.Balance;
+                    }
+                }
+
+            }
+
+            netInc = rev - exp;
+            endRE = (beginRE + netInc) - div;
+
+            RetainedEarnings earnings = new RetainedEarnings()
+            {
+                BeginRE = beginRE,
+                NetInc = netInc,
+                Div = div,
+                EndRE = endRE
+            };
+
+            //_db.RetainedEarnings.Add(earnings);
+            //_db.SaveChanges();
+
+            return View(earnings);
+        }
+
     }
 }

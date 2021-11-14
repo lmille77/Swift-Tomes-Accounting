@@ -1084,7 +1084,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(balance);
         }
 
-     
         public IActionResult TrialBalance()
         {
             var list = _db.Account.ToList();
@@ -1128,8 +1127,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(trial);
         }
     
-
-
         public IActionResult RetainedEarnings()
         {
             var list = _db.Account.ToList();
