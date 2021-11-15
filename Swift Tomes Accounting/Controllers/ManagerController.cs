@@ -1163,12 +1163,21 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     if (item.NormSide == "Left")
                     {
-                        totalDebit += item.Balance;
+                        
+                        if (item.Contra)
+                        {
+                            totalCredit += item.Balance;
+                        }
+                        else
+                        {
+                            totalDebit += item.Balance;
+                        }
                     }
 
                     if (item.NormSide == "Right")
                     {
                         totalCredit += item.Balance;
+                       
                     }
 
                 }
