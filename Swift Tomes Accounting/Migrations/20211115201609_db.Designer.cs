@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211115023306_init")]
-    partial class init
+    [Migration("20211115201609_db")]
+    partial class db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -578,6 +578,9 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isCJE")
                         .HasColumnType("bit");
 
                     b.HasKey("JournalId");

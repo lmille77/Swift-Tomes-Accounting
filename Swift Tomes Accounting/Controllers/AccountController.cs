@@ -108,6 +108,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
                 var user = await _userManager.FindByNameAsync(obj.Email);
                 int num = 0;
+
                 if(user != null)
                 {
                     num = 3 - user.AccessFailedCount;

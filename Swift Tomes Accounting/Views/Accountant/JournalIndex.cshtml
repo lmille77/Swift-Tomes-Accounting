@@ -46,15 +46,25 @@
     </ul>
 </div>
 
-
-<div class="justify-content-start">
-    <a asp-controller="Accountant" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
-       data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-        Add Entry
-    </a>
+<div class="form-group row" style="margin-left:1%">
+    <div>
+        <a asp-controller="Accountant" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
+           data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add Entry
+        </a>
+    </div>
+    &nbsp;&nbsp;
+    <div>
+        <a asp-controller="Accountant" asp-action="CJE" class="btn btn-dark btn-outline-info text-white"
+           data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Generate Closing Entry
+        </a>
+    </div>
+    <br />
 </div>
-<br />
+
 
 
 <div class="form-group row w-75 justify-content-start" style="position:absolute;top:210px;padding-left:3%">

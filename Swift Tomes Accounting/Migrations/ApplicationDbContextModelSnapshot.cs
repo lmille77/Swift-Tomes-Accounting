@@ -578,6 +578,9 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.Property<bool>("isApproved")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("isCJE")
+                        .HasColumnType("bit");
+
                     b.HasKey("JournalId");
 
                     b.ToTable("Journalizes");

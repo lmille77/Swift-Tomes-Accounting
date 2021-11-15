@@ -350,6 +350,55 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(journal);
 
         }
+
+       
+
+        
+        public IActionResult CJE()
+        {
+            var accounts = _db.Account.ToList();
+            double total = 0;
+            Journalize journal_entry = new Journalize();
+            var counter = 0;
+            var expense_total = 0.0;
+            var revenue_total = 0.0;
+            journal_entry.Type = "Closing";
+            journal_entry.CreatedOn = DateTime.Now;
+
+            for(int i = 0; i < 10; i++)
+            {
+                journal_entry.Journal_Accounts.Add(new Journal_Accounts());
+            }
+            
+            journal_entry.Journal_Accounts[counter].AccountName1 = "Service Revenue";
+
+            foreach(var item in accounts)
+            {
+                if(item.Category == "Expenses" && item.ChartOfAccounts)
+                {
+                    total += item.Balance;
+                    expense_total += item.Balance;
+                    journal_entry.Journal_Accounts[counter].AccountName2 = item.AccountName;                    
+                    journal_entry.Journal_Accounts[counter].Credit = item.Balance;
+                    journal_entry.Journal_Accounts[counter].CreatedOn = DateTime.Now;
+                    counter++;
+                }
+                if (item.Category == "Revenue" && item.ChartOfAccounts)
+                {
+                    revenue_total += item.Balance;
+                    
+                }
+            }
+            journal_entry.Journal_Accounts[counter].AccountName2 = "Retained Earnings";
+            journal_entry.Journal_Accounts[counter].Credit = revenue_total - expense_total;
+            total += revenue_total - expense_total;
+            journal_entry.Journal_Accounts[0].Debit = total;
+            _db.Journalizes.Add(journal_entry);
+            _db.SaveChanges();
+            TempData[SD.Success] = "Closing Journal entry submitted";
+            return RedirectToAction("JournalIndex", "Accountant");
+        }
+
         public FileResult DownloadFile(int? id)
         {
             var jList = _db.Journalizes.ToList();
