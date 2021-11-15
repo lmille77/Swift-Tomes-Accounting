@@ -351,9 +351,9 @@ namespace Swift_Tomes_Accounting.Controllers
 
         }
 
-       
 
-        
+
+
         public IActionResult CJE()
         {
             var accounts = _db.Account.ToList();
@@ -364,21 +364,34 @@ namespace Swift_Tomes_Accounting.Controllers
             var revenue_total = 0.0;
             journal_entry.Type = "Closing";
             journal_entry.CreatedOn = DateTime.Now;
+            journal_entry.isCJE = true;
 
-            for(int i = 0; i < 10; i++)
+            //calculates closing entry length
+            for (int i = 0; i < accounts.Count(); i++)
+            {
+                if (accounts[i].Category == "Expenses")
+                {
+                    counter++;
+                }
+            }
+            counter += 2;
+
+            //creates blank indicies for each account in the closing entry
+            for (int i = 0; i < counter; i++)
             {
                 journal_entry.Journal_Accounts.Add(new Journal_Accounts());
             }
-            
-            journal_entry.Journal_Accounts[counter].AccountName1 = "Service Revenue";
+            counter = 0;
 
-            foreach(var item in accounts)
+            //fills each index with the corresponding account in the closing journal entry
+            journal_entry.Journal_Accounts[counter].AccountName1 = "Service Revenue";
+            foreach (var item in accounts)
             {
-                if(item.Category == "Expenses" && item.ChartOfAccounts)
+                if (item.Category == "Expenses" && item.ChartOfAccounts)
                 {
                     total += item.Balance;
                     expense_total += item.Balance;
-                    journal_entry.Journal_Accounts[counter].AccountName2 = item.AccountName;                    
+                    journal_entry.Journal_Accounts[counter].AccountName2 = item.AccountName;
                     journal_entry.Journal_Accounts[counter].Credit = item.Balance;
                     journal_entry.Journal_Accounts[counter].CreatedOn = DateTime.Now;
                     counter++;
@@ -386,13 +399,15 @@ namespace Swift_Tomes_Accounting.Controllers
                 if (item.Category == "Revenue" && item.ChartOfAccounts)
                 {
                     revenue_total += item.Balance;
-                    
+
                 }
             }
             journal_entry.Journal_Accounts[counter].AccountName2 = "Retained Earnings";
             journal_entry.Journal_Accounts[counter].Credit = revenue_total - expense_total;
             total += revenue_total - expense_total;
             journal_entry.Journal_Accounts[0].Debit = total;
+
+            //save database changes and redirect             
             _db.Journalizes.Add(journal_entry);
             _db.SaveChanges();
             TempData[SD.Success] = "Closing Journal entry submitted";
@@ -556,12 +571,12 @@ namespace Swift_Tomes_Accounting.Controllers
             var jList = _db.Journalizes.ToList();
             List<Journal_Accounts> filteredResults = new List<Journal_Accounts>();
 
-            var eventTypes = new List<SelectListItem>();
-            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
-            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
-            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
-            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
-            ViewBag.types = eventTypes;
+            var entryTypes = new List<SelectListItem>();
+            entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = entryTypes;
 
             foreach (var s in jaList)
             {
@@ -610,12 +625,12 @@ namespace Swift_Tomes_Accounting.Controllers
             var sortList = _db.Journal_Accounts.ToList();
             var jList = _db.Journalizes.ToList();
 
-            var eventTypes = new List<SelectListItem>();
-            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
-            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
-            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
-            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
-            ViewBag.types = eventTypes;
+            var entryTypes = new List<SelectListItem>();
+            entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = entryTypes;
 
             foreach (var s in sortList)
             {
@@ -644,12 +659,12 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult JournalIndex(DateTime dateSearch1,
             DateTime dateSearch2)
         {
-            var eventTypes = new List<SelectListItem>();
-            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
-            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
-            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
-            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
-            ViewBag.types = eventTypes;
+            var entryTypes = new List<SelectListItem>();
+            entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = entryTypes;
             var sortList = SearchResult(dateSearch1, dateSearch2);
             var jList = _db.Journalizes.ToList();
             foreach (var s in sortList)
