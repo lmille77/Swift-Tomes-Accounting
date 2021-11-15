@@ -1162,16 +1162,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     accounts.Add(item);
 
                     if (item.NormSide == "Left")
-                    {
-                        
-                        if (item.Contra)
-                        {
-                            totalCredit += item.Balance;
-                        }
-                        else
-                        {
+                    {      
                             totalDebit += item.Balance;
-                        }
                     }
 
                     if (item.NormSide == "Right")
@@ -1181,8 +1173,9 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
 
                 }
-
             }
+
+
 
             TrialBalance trial = new TrialBalance()
             {

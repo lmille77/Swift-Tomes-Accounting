@@ -976,11 +976,12 @@ namespace Swift_Tomes_Accounting.Controllers
                     if (item.NormSide == "Right")
                     {
                         totalCredit += item.Balance;
+
                     }
 
                 }
-
             }
+
 
             TrialBalance trial = new TrialBalance()
             {
