@@ -161,8 +161,11 @@
         <div class="form-group text-center">
             <input type="submit" value="Create Journal Entry" class=" btn btn-success " />
             <a asp-action="JournalIndex" class="btn btn-outline-primary">Go Back</a>
-
         </div>
+    </form>
+    <div>&nbsp;</div>
+    <form asp-controller="Accountant" asp-action="Journalize" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset Journal Entry">
     </form>
 
 
