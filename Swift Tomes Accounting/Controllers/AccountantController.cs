@@ -988,5 +988,58 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(earnings);
         }
 
+        public IActionResult PostTrialBalance()
+        {
+            var list = _db.Account.ToList();
+            double totalDebit = 0;
+            double totalCredit = 0;
+            bool cje = false;
+
+            List<Journalize> journal = new List<Journalize>();
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.NormSide == "Left")
+                    {
+                        totalDebit += item.Balance;
+                    }
+
+                    if (item.NormSide == "Right")
+                    {
+                        totalCredit += item.Balance;
+                    }
+
+                }
+
+            }
+
+            foreach (var item in journal)
+            {
+                if (item.isApproved && item.isCJE)
+                {
+                    cje = true;
+                    break;
+                }
+            }
+
+            PostTrialBalance ptrial = new PostTrialBalance()
+            {
+                Accounts = accounts,
+                TotalDebit = totalDebit,
+                TotalCredit = totalCredit,
+                CJE = cje
+            };
+
+            //_db.PostTrialBalance.Add(ptrial);
+            //_db.SaveChanges();
+
+            return View(ptrial);
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.TrialBalance
 
+
 <div class="p-4 border w-100">
     <div class="text-center p-1 border w-125">
         <h2>Addams & Family Inc</h2>
@@ -14,6 +15,14 @@
         <table class="table table-borderless">
             
             <tbody>
+                <tr>
+                    <th class="font-weight-bold">
+                        Assets & Expenses
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
                 @foreach (var item in Model.Accounts)
                 {
 
@@ -39,7 +48,7 @@
                 <tr>
 
                     <th class="font-weight-bold">
-                        Expenses
+                        Liabilities, Revenue & Equity
                     </th>
                     <th>
 
@@ -111,6 +120,9 @@
         </li>
         <li>
             <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
         </li>
     </ul>
 </div>
