@@ -33,6 +33,9 @@
         <li>
             <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
         </li>
+        <li>
+            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+        </li>
     </ul>
 </div>
 
@@ -161,7 +164,10 @@
 
         </div>
     </form>
-
+        <div>&nbsp;</div>
+    <form asp-controller="Manager" asp-action="Journalize" method="get">
+        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset Journal Entry">
+    </form>
 
 </div>
 
