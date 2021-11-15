@@ -1200,18 +1200,20 @@ namespace Swift_Tomes_Accounting.Controllers
                     accounts.Add(item);
 
                     if (item.NormSide == "Left")
-                    {
-                        totalDebit += item.Balance;
+                    {      
+                            totalDebit += item.Balance;
                     }
 
                     if (item.NormSide == "Right")
                     {
                         totalCredit += item.Balance;
+                       
                     }
 
                 }
-
             }
+
+
 
             TrialBalance trial = new TrialBalance()
             {

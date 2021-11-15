@@ -2,92 +2,113 @@
 
 @if (Model.CJE)
 {
-    <div class="p-4 border w-100">
-        <div class="text-center p-1 border w-125">
-            <h2>Addams & Family Inc</h2>
-            <h2>Post-Closing Trial Balance</h2>
-            <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
-        </div>
-        <br />
-        <br />
+<div class="p-4 border w-100">
+    <div class="text-center p-1 border w-125">
+        <h2>Addams & Family Inc</h2>
+        <h2>Post-Closing Trial Balance</h2>
+        <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+    </div>
+    <br />
+    <br />
 
 
-        <div>
-            <table class="table table-borderless">
+    <div>
+    <table class="table table-borderless">
+        <thead>
+        <th></th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="font-weight-bold">
+                    Assets & Expenses
+                </th>
+                <th></th>
+                <th>
 
-                <tbody>
+                </th>
+            </tr>
+            @foreach (var item in Model.Accounts)
+            {
+
                 <tr>
-                    <th class="font-weight-bold">
-                        Assets & Expenses
-                    </th>
-                    <th>
 
-                    </th>
+                    @if (item.NormSide == "Left" && item.Contra != true)
+                    {
+                        <td>
+                            <text> &nbsp; &nbsp;</text> @item.AccountName
+                        </td>
+                        <td style="text-align:right">
+                            @item.Balance.ToString("C")
+                        </td>
+                        <td></td>
+                    }
+                    @if (item.NormSide == "Right" && item.Contra)
+                    {
+                        <td>
+                            <text> &nbsp; &nbsp;</text> @item.AccountName
+                        </td>
+                        <td>
+                        </td>
+                        <td style="text-align:right">@item.Balance.ToString("C")</td>
+                    }
                 </tr>
-                    @foreach (var item in Model.Accounts)
+            }
+            <tr>
+                <td>
+                </td>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+
+                <th class="font-weight-bold">
+                    Liabilities, Revenue & Equity
+                </th>
+                <th>
+
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.Accounts)
+            {
+                <tr>
+
+                    @if (item.NormSide == "Right")
                     {
+                        <td>
+                            <text> &nbsp; &nbsp;</text> @item.AccountName
+                        </td>
+                        <td></td>
+                        <td style="text-align:right">
 
-                        <tr>
-
-                            @if (item.NormSide == "Left")
-                            {
-                                <td>
-                                    <text> &nbsp; &nbsp;</text> @item.AccountName
-                                </td>
-                                <td style="text-align:right">
-                                    @item.Balance.ToString("C")
-                                </td>
-                            }
-                        </tr>
+                            @item.Balance.ToString("C")
+                        </td>
                     }
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="font-weight-bold">
-                            Liabilities, Revenue & Equity 
-                        </th>
-                        <th>
+                </tr>
 
-                        </th>
-                    </tr>
-                    @foreach (var item in Model.Accounts)
-                    {
-                        <tr>
-
-                            @if (item.NormSide == "Right")
-                            {
-                                <td>
-                                    <text> &nbsp; &nbsp;</text> @item.AccountName
-                                </td>
-                                <td style="text-align:right">
-
-                                    @item.Balance.ToString("C")
-                                </td>
-                            }
-                        </tr>
-
-                    }
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr class="table-secondary">
-                        <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double" >
-                            @Model.TotalDebit.ToString("C")
-                        </td>
-                        <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
-                            @Model.TotalCredit.ToString("C")
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            }
+            <tr>
+                <td>
+                </td>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+            <tr class="table-secondary">
+                <td></td>
+                <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                    @Model.TotalDebit.ToString("C")
+                </td>
+                <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                    @Model.TotalCredit.ToString("C")
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
     </div>
 }
 else
