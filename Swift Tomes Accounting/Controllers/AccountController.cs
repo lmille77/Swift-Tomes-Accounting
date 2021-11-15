@@ -107,7 +107,12 @@ namespace Swift_Tomes_Accounting.Controllers
                 //checks database to see if user and password are correct
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
                 var user = await _userManager.FindByNameAsync(obj.Email);
-                var num = 3 - user.AccessFailedCount;
+                int num = 0;
+                if(user != null)
+                {
+                    num = 3 - user.AccessFailedCount;
+                }
+                
                 //error list
                 var errorList = _db.ErrorTable.ToList();
 
@@ -175,7 +180,11 @@ namespace Swift_Tomes_Accounting.Controllers
                 else
                 {
                     ModelState.AddModelError("", errorList[3].Message);
-                    TempData[SD.Error] = "Attempts remaining: " + num;
+                    if(user != null)
+                    {
+                        TempData[SD.Error] = "Attempts remaining: " + num;
+                    }
+                    
                 }
             }
             return View(obj);
