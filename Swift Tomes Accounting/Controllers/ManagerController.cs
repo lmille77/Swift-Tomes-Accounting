@@ -448,6 +448,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 }
             }
+            total += revenue_total - expense_total;
             journal_entry.Journal_Accounts[counter].AccountName2 = "Retained Earnings";
             journal_entry.Journal_Accounts[counter].Credit = revenue_total - expense_total;
             total += revenue_total - expense_total;
@@ -751,82 +752,119 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult ApproveEntry(int JournalId)
         {
+            
             var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
-            var JournalAccounts = _db.Journal_Accounts.ToList();
-            var coa = _db.Account.ToList();
-
-            List<Journal_Accounts> Ja = new List<Journal_Accounts>();
-
-            if (objFromdb == null)
+            if(objFromdb.isCJE)
             {
-                return NotFound();
-            }
+                var accounts = _db.Account.ToList();
+                double total = 0;
+                var expense_total = 0.0;
+                var revenue_total = 0.0;
 
-            foreach (var item in JournalAccounts)
-            {
-                if(item.JournalId == JournalId)
+                foreach (var item in accounts)
                 {
-                    Ja.Add(item);
-                }
-            }
-
-            foreach(var item in coa)
-            {
-                foreach(var j in Ja)
-                {
-                    if (item.AccountName == j.AccountName1)
+                    if (item.Category == "Expenses" && item.ChartOfAccounts)
                     {
-                        if(item.NormSide == "Left")
-                        {
-                            item.Balance += j.Debit;
-                        }
-                        if (item.NormSide == "Right")
-                        {
-                            item.Balance -= j.Debit;
-                        }
+                        total += item.Balance;
+                        expense_total += item.Balance;
+                        
                     }
-                    if (item.AccountName == j.AccountName2)
+                    if (item.Category == "Revenue" && item.ChartOfAccounts)
                     {
-                        if (item.NormSide == "Left")
-                        {
-                            item.Balance -= j.Credit;
-                        }
-                        if (item.NormSide == "Right")
-                        {
-                            item.Balance += j.Credit;
-                        }
+                        revenue_total += item.Balance;
+
                     }
-
                 }
-                
-            }
-            _db.SaveChanges();
+                total += revenue_total - expense_total;
 
-            if (objFromdb.isApproved == false)
-            {
-
+                var ServiceRevenue = _db.Account.Where(u => u.AccountName == "Service Revenue").Select(u => u).FirstOrDefault();
+                ServiceRevenue.Balance -= total;
                 objFromdb.isApproved = true;
-                TempData[SD.Success] = "Entry approved successfully.";
+                _db.SaveChanges();
+                return RedirectToAction("JournalIndex", "Manager");
             }
+            else
+            {
+                var JournalAccounts = _db.Journal_Accounts.ToList();
+                var coa = _db.Account.ToList();
+
+                List<Journal_Accounts> Ja = new List<Journal_Accounts>();
+
+                if (objFromdb == null)
+                {
+                    return NotFound();
+                }
+
+                foreach (var item in JournalAccounts)
+                {
+                    if (item.JournalId == JournalId)
+                    {
+                        Ja.Add(item);
+                    }
+                }
+
+                foreach (var item in coa)
+                {
+                    foreach (var j in Ja)
+                    {
+                        if (item.AccountName == j.AccountName1)
+                        {
+                            if (item.NormSide == "Left")
+                            {
+                                item.Balance += j.Debit;
+                            }
+                            if (item.NormSide == "Right")
+                            {
+                                item.Balance -= j.Debit;
+                            }
+                        }
+                        if (item.AccountName == j.AccountName2)
+                        {
+                            if (item.NormSide == "Left")
+                            {
+                                item.Balance -= j.Credit;
+                            }
+                            if (item.NormSide == "Right")
+                            {
+                                item.Balance += j.Credit;
+                            }
+                        }
+
+                    }
+
+                }
+                _db.SaveChanges();
+
+                if (objFromdb.isApproved == false)
+                {
+
+                    objFromdb.isApproved = true;
+                    TempData[SD.Success] = "Entry approved successfully.";
+                }
+
+
+
+
+                _db.SaveChanges();
+
+
+                var obj = _db.Journal_Accounts.ToList();
+
+                foreach (var r in obj)
+                {
+                    if (r.JournalId == JournalId)
+                    {
+                        r.IsApproved = true;
+                    }
+                }
+                _db.SaveChanges();
+
+                return RedirectToAction("JournalIndex", "Manager");
+            }
+
+
 
             
-
-
-            _db.SaveChanges();
-
-
-            var obj = _db.Journal_Accounts.ToList();
-
-            foreach(var r in obj)
-            {
-              if(r.JournalId == JournalId)
-                {
-                    r.IsApproved = true;
-                }
-            }
-            _db.SaveChanges();
-
-            return RedirectToAction("JournalIndex", "Manager");
         }
 
         [HttpGet]
