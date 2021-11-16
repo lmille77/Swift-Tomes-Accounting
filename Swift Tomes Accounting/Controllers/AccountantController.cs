@@ -964,7 +964,8 @@ namespace Swift_Tomes_Accounting.Controllers
 
             foreach (var item in list)
             {
-                if (item.Balance > 0)
+                if (item.Balance > 0 || item.AccountName == "Dividends Declared"
+                    || item.AccountName == "Retained Earnings")
                 {
                     accounts.Add(item);
 
@@ -1065,7 +1066,8 @@ namespace Swift_Tomes_Accounting.Controllers
 
             foreach (var item in list)
             {
-                if (item.Balance > 0)
+                if (item.Balance > 0 || item.AccountName == "Dividends Declared"
+                     || item.AccountName == "Service Revenue" || (item.Category == "Expenses" && item.ChartOfAccounts))
                 {
                     accounts.Add(item);
 
