@@ -415,7 +415,7 @@ namespace Swift_Tomes_Accounting.Controllers
             //calculates closing entry length
             for (int i = 0; i < accounts.Count(); i++)
             {
-                if(accounts[i].Category == "Expenses")
+                if (accounts[i].Category == "Expenses" && accounts[i].ChartOfAccounts)
                 {
                     counter++;
                 }
@@ -448,17 +448,16 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 }
             }
-            total += revenue_total - expense_total;
             journal_entry.Journal_Accounts[counter].AccountName2 = "Retained Earnings";
             journal_entry.Journal_Accounts[counter].Credit = revenue_total - expense_total;
             total += revenue_total - expense_total;
             journal_entry.Journal_Accounts[0].Debit = total;
-            
+
             //save database changes and redirect             
             _db.Journalizes.Add(journal_entry);
             _db.SaveChanges();
             TempData[SD.Success] = "Closing Journal entry submitted";
-            return RedirectToAction("JournalIndex", "Accountant");
+            return RedirectToAction("JournalIndex", "Manager");
         }
 
         [HttpPost]
