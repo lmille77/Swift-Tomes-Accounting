@@ -775,11 +775,15 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     }
                 }
-                total += revenue_total - expense_total;
-
+                
+                var RetainedEarnings = _db.Account.Where(u => u.AccountName == "Retained Earnings").Select(u => u).FirstOrDefault();
                 var ServiceRevenue = _db.Account.Where(u => u.AccountName == "Service Revenue").Select(u => u).FirstOrDefault();
+
+                RetainedEarnings.Balance = revenue_total - expense_total;
+                total += RetainedEarnings.Balance;
                 ServiceRevenue.Balance -= total;
                 objFromdb.isApproved = true;
+                
                 _db.SaveChanges();
                 return RedirectToAction("JournalIndex", "Manager");
             }
