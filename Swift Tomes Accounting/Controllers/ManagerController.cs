@@ -420,7 +420,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     counter++;
                 }
             }
-            counter += 2;
+            counter ++;
 
             //creates blank indicies for each account in the closing entry
             for (int i = 0; i < counter; i++)
