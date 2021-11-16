@@ -766,6 +766,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     {
                         total += item.Balance;
                         expense_total += item.Balance;
+                        item.Balance -= item.Balance;
                         
                     }
                     if (item.Category == "Revenue" && item.ChartOfAccounts)
