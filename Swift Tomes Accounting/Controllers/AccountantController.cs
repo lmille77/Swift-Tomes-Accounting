@@ -369,7 +369,7 @@ namespace Swift_Tomes_Accounting.Controllers
             //calculates closing entry length
             for (int i = 0; i < accounts.Count(); i++)
             {
-                if (accounts[i].Category == "Expenses")
+                if (accounts[i].Category == "Expenses" && accounts[i].ChartOfAccounts)
                 {
                     counter++;
                 }
