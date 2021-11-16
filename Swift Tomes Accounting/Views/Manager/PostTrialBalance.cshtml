@@ -2,14 +2,15 @@
 
 @if (Model.CJE)
 {
-<div class="p-4 border w-100">
-    <div class="text-center p-1 border w-125">
-        <h2>Addams & Family Inc</h2>
-        <h2>Post-Closing Trial Balance</h2>
-        <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
-    </div>
-    <br />
-    <br />
+    <div class="p-4 border w-100">
+        <div class="text-center p-1 border w-125">
+            <h2>Addams & Family Inc</h2>
+            <h2>Post-Closing Trial Balance</h2>
+            <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+        </div>
+        <br />
+        <br />
+
 
 
     <div>
@@ -113,10 +114,13 @@
 }
 else
 {
-    <p class="align-content-center">
+    <p class="text-center">
         There have not been any approved closing entries ceated yet.
     </p>
 }
+
+
+
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -147,7 +151,7 @@ else
         <li>
             <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
         </li>
-                <li>
+        <li>
             <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-info btn-outline-light">Closing Trial Balance</a>
         </li>
     </ul>
