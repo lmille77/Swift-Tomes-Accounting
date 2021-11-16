@@ -75,7 +75,7 @@
                 {
                     <tr>
 
-                        @if (item.NormSide == "Right")
+                        @if (item.NormSide == "Right" && item.Contra != true)
                         {
                             <td>
                                 <text> &nbsp; &nbsp;</text> @item.AccountName
