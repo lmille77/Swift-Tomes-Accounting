@@ -1,0 +1,113 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.RetainedEarnings
+@{ 
+    var today = DateTime.Today;
+    DateTime begin = new DateTime(today.Year, today.Month, 1);
+}
+
+<div class="p-4 border w-100">
+    <div class="text-center p-1 border w-125">
+        <h2>Addams & Family Inc</h2>
+        <h2>Retained Earnings</h2>
+        <h2>For the period ending on @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+    </div>
+    <br />
+    <br />
+
+
+    <div>
+        <table class="table table-borderless">
+            <tbody>
+
+                <tr>
+                    <td>
+                        Beg Retained Earnings, @begin.ToString("M/d/yy")
+                    </td>
+                    <td style="text-align:right">
+                        @Model.BeginRE.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Add: Net Income
+                    </td>
+                    <td style="text-align:right">
+                        @Model.NetInc.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        Less: Dividends
+                    </td>
+                    <td style="text-align:right">
+                        @Model.Div.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+                <tr class="table-secondary">
+                    <td>
+                        End Retained Earnings, @DateTime.Now.ToString("M/d/yy")
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                        @Model.EndRE.ToString("C")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-info btn-outline-light">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+        </li>
+    </ul>
+</div>

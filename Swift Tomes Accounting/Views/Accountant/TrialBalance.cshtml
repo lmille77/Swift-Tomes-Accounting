@@ -1,0 +1,148 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.TrialBalance
+
+<div class="p-4 border w-100">
+    <div class="text-center p-1 border w-125">
+        <h2>Addams & Family Inc</h2>
+        <h2>Trial Balance</h2>
+        <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+    </div>
+    <br />
+    <br />
+
+
+    <div>
+        <table class="table table-borderless">
+            <thead>
+            <th></th>
+            <th></th>
+            <th></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="font-weight-bold">
+                        Assets & Expenses
+                    </th>
+                    <th></th>
+                    <th>
+
+                    </th>
+                </tr>
+                @foreach (var item in Model.Accounts)
+                {
+
+                    <tr>
+
+                        @if (item.NormSide == "Left" && item.Contra != true)
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td style="text-align:right">
+                                @item.Balance.ToString("C")
+                            </td>
+                            <td></td>
+                        }
+                        @if (item.NormSide == "Right" && item.Contra)
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td>
+                            </td>
+                            <td style="text-align:right">@item.Balance.ToString("C")</td>
+                        }
+                    </tr>
+                }
+                <tr>
+                    <td>
+                    </td>
+                    <td></td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+
+                    <th class="font-weight-bold">
+                        Liabilities, Revenue & Equity
+                    </th>
+                    <th>
+
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Accounts)
+                {
+                    <tr>
+
+                        @if (item.NormSide == "Right" && item.Contra != true)
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td></td>
+                            <td style="text-align:right">
+
+                                @item.Balance.ToString("C")
+                            </td>
+                        }
+                    </tr>
+
+                }
+                <tr>
+                    <td>
+                    </td>
+                    <td></td>
+                    <td>
+                    </td>
+                </tr>
+                <tr class="table-secondary">
+                    <td></td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                        @Model.TotalDebit.ToString("C")
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                        @Model.TotalCredit.ToString("C")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="TrialBalance" class="btn btn-info btn-outline-light">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+        </li>
+    </ul>
+</div>

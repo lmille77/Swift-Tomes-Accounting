@@ -24,10 +24,25 @@
             <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+            <a asp-controller="Accountant" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
         </li>
         <li>
             <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
         </li>
     </ul>
 </div>
@@ -177,13 +192,26 @@
 
 
                 </td>
-                
-                <td>
-                    <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                        Download
-                    </a>
-                </td>
+
+
+                @if (arraylist[i].docUrl != null)
+                {
+                    <td>
+                        <a asp-action="DownloadFile" asp-route-id="@arraylist[i].JournalId" class="btn btn-info" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="Download document">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            Download
+                        </a>
+                    </td>
+                }
+
+                else
+                {
+                    <td>
+                        No document was uploaded
+                    </td>
+
+                }
+
             </tr>
                 i += counter;
             }

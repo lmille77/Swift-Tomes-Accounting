@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Swift_Tomes_Accounting.Data;
+using Swift_Tomes_Accounting.Helpers;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,90 @@ namespace Swift_Tomes_Accounting.Controllers
 
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
             {
-                return View();
+                var account = _db.Account.ToList();
+
+                double current = 0;
+                double casset = 0;
+                double cliab = 0;
+
+                double roa = 0;
+                double neti = 0;
+                double tasset = 0;
+                double exp = 0;
+
+                double roe = 0;
+                double shareeq = 0;
+
+                double margin = 0;
+                double rev = 0;
+
+                double turnover = 0;
+                double sales = 0;
+
+                double quick = 0;
+                double inv = 0;
+
+                foreach (var item in account)
+                {
+                    if (item.Category == "Asset" && item.SubCategory == "Current")
+                    {
+                        casset += item.Balance;
+                    }
+                    if (item.Category == "Liability" && item.SubCategory == "Current")
+                    {
+                        cliab += item.Balance;
+                    }
+                    if (item.AccountName == "Merchandise Inventory")
+                    {
+                        inv += item.Balance;
+                    }
+                    if (item.AccountName == "Service Revenue")
+                    {
+                        sales += item.Balance;
+                    }
+                    if (item.AccountName == "Contributed Capital")
+                    {
+                        shareeq += item.Balance;
+                    }
+                    if (item.Category == "Revenue")
+                    {
+                        rev += item.Balance;
+                    }
+                    if (item.Category == "Expenses")
+                    {
+                        exp += item.Balance;
+                    }
+                    if (item.Category == "Asset")
+                    {
+                        tasset += item.Balance;
+                    }
+
+                }
+
+                neti = rev - exp;
+
+                current = casset / cliab;
+                quick = (casset - inv) / cliab;
+                roa = (neti / tasset) * 100;
+                turnover = sales / (tasset / 2);
+                roe = (neti / shareeq) * 100;
+                margin = (neti / rev) * 100;
+
+
+
+                Ratio ratio = new Ratio()
+                {
+                    Current = current,
+                    RoA = Math.Round(roa, 2),
+                    RoE = Math.Round(roe, 2),
+                    Margin = Math.Round(margin, 2),
+                    Turnover = turnover,
+                    Quick = quick
+
+                };
+
+
+                return View(ratio);
             }
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
@@ -61,6 +145,36 @@ namespace Swift_Tomes_Accounting.Controllers
             }
         }
 
+
+
+        [HttpGet]
+        public IActionResult Send()
+        {
+            var userList = _db.ApplicationUser.ToList();
+            List<SelectListItem> users = new List<SelectListItem>();
+            foreach (var user in userList)
+            {
+                SelectListItem li = new SelectListItem
+                {
+                    Value = user.Email,
+                    Text = user.LastName + ", " + user.FirstName + " <" + user.Email + ">"
+
+                };
+                users.Add(li);
+                ViewBag.Users = users;
+            }
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Send(Message obj)
+        {
+            var toEmail = obj.ToEmail;
+            var subject = obj.Subject;
+            var body = obj.Body;
+            var mailHelper = new MailHelper(_configuration);
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            return RedirectToAction("Index", "Manager");
+        }
 
         [HttpGet]
         public IActionResult ChartOfAccounts()
@@ -217,11 +331,11 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var sortList = _db.Journal_Accounts.ToList();
             var jList = _db.Journalizes.ToList();
-            var eventTypes = new List<SelectListItem>();
-            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
-            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
-            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
-            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            var entryTypes = new List<SelectListItem>();
+            entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
             foreach (var s in sortList)
             {
                 foreach (var j in jList)
@@ -245,7 +359,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 }
             }
-            ViewBag.types = eventTypes;
+            ViewBag.types = entryTypes;
             return View(sortList);
         }
 
@@ -256,12 +370,12 @@ namespace Swift_Tomes_Accounting.Controllers
             var sortList = SearchResult(dateSearch1, dateSearch2);
             var jList = _db.Journalizes.ToList();
 
-            var eventTypes = new List<SelectListItem>();
-            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
-            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
-            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
-            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
-            ViewBag.types = eventTypes;
+            var entryTypes = new List<SelectListItem>();
+            entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = entryTypes;
 
             foreach (var s in sortList)
             {
@@ -285,6 +399,67 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(sortList);
         }
+
+        public IActionResult CJE()
+        {
+            var accounts = _db.Account.ToList();
+            double total = 0;
+            Journalize journal_entry = new Journalize();
+            var counter = 0;
+            var expense_total = 0.0;
+            var revenue_total = 0.0;
+            journal_entry.Type = "Closing";
+            journal_entry.CreatedOn = DateTime.Now;
+            journal_entry.isCJE = true;
+
+            //calculates closing entry length
+            for (int i = 0; i < accounts.Count(); i++)
+            {
+                if (accounts[i].Category == "Expenses" && accounts[i].ChartOfAccounts)
+                {
+                    counter++;
+                }
+            }
+            counter ++;
+
+            //creates blank indicies for each account in the closing entry
+            for (int i = 0; i < counter; i++)
+            {
+                journal_entry.Journal_Accounts.Add(new Journal_Accounts());
+            }
+            counter = 0;
+
+            //fills each index with the corresponding account in the closing journal entry
+            journal_entry.Journal_Accounts[counter].AccountName1 = "Service Revenue";
+            foreach (var item in accounts)
+            {
+                if (item.Category == "Expenses" && item.ChartOfAccounts)
+                {
+                    total += item.Balance;
+                    expense_total += item.Balance;
+                    journal_entry.Journal_Accounts[counter].AccountName2 = item.AccountName;
+                    journal_entry.Journal_Accounts[counter].Credit = item.Balance;
+                    journal_entry.Journal_Accounts[counter].CreatedOn = DateTime.Now;
+                    counter++;
+                }
+                if (item.Category == "Revenue" && item.ChartOfAccounts)
+                {
+                    revenue_total += item.Balance;
+
+                }
+            }
+            journal_entry.Journal_Accounts[counter].AccountName2 = "Retained Earnings";
+            journal_entry.Journal_Accounts[counter].Credit = revenue_total - expense_total;
+            total += revenue_total - expense_total;
+            journal_entry.Journal_Accounts[0].Debit = total;
+
+            //save database changes and redirect             
+            _db.Journalizes.Add(journal_entry);
+            _db.SaveChanges();
+            TempData[SD.Success] = "Closing Journal entry submitted";
+            return RedirectToAction("JournalIndex", "Manager");
+        }
+
         [HttpPost]
         public IActionResult showEntryType(Journal_Accounts obj)
         {
@@ -293,12 +468,12 @@ namespace Swift_Tomes_Accounting.Controllers
             var jList = _db.Journalizes.ToList();
             List<Journal_Accounts> filteredResults = new List<Journal_Accounts>();
 
-            var eventTypes = new List<SelectListItem>();
-            eventTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
-            eventTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
-            eventTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
-            eventTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
-            ViewBag.types = eventTypes;
+            var entryTypes = new List<SelectListItem>();
+            entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
+            entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
+            entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
+            entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            ViewBag.types = entryTypes;
 
             foreach (var s in jaList)
             {
@@ -373,10 +548,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(selected_accounts);
         }
 
-
-
-
-
         public IActionResult DateSearch(DateTime date1, DateTime date2)
         {
             var sortList = _db.Journal_Accounts.ToList();
@@ -421,7 +592,6 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
         [HttpGet]
-
         public IActionResult AccountLedger(int? id)
         {
             var sortList = _db.Journal_Accounts.ToList();
@@ -546,8 +716,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(eventlist);
         }      
 
-
-
         public IActionResult Pending()
         {
             var all_entries = _db.Journalizes.ToList();
@@ -563,7 +731,6 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(unapproved_entries);
         }
-
 
         [HttpPost]
         public IActionResult DeleteEntry(int JournalId)
@@ -581,88 +748,128 @@ namespace Swift_Tomes_Accounting.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         [HttpPost]
         public IActionResult ApproveEntry(int JournalId)
         {
+            
             var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
-            var JournalAccounts = _db.Journal_Accounts.ToList();
-            var coa = _db.Account.ToList();
-
-            List<Journal_Accounts> Ja = new List<Journal_Accounts>();
-
-            if (objFromdb == null)
+            if(objFromdb.isCJE)
             {
-                return NotFound();
-            }
+                var accounts = _db.Account.ToList();
+                double total = 0;
+                var expense_total = 0.0;
+                var revenue_total = 0.0;
 
-            foreach (var item in JournalAccounts)
-            {
-                if(item.JournalId == JournalId)
+                foreach (var item in accounts)
                 {
-                    Ja.Add(item);
-                }
-            }
-
-            foreach(var item in coa)
-            {
-                foreach(var j in Ja)
-                {
-                    if (item.AccountName == j.AccountName1)
+                    if (item.Category == "Expenses" && item.ChartOfAccounts)
                     {
-                        if(item.NormSide == "Left")
-                        {
-                            item.Balance += j.Debit;
-                        }
-                        if (item.NormSide == "Right")
-                        {
-                            item.Balance -= j.Debit;
-                        }
+                        total += item.Balance;
+                        expense_total += item.Balance;
+                        item.Balance -= item.Balance;
+                        
                     }
-                    if (item.AccountName == j.AccountName2)
+                    if (item.Category == "Revenue" && item.ChartOfAccounts)
                     {
-                        if (item.NormSide == "Left")
-                        {
-                            item.Balance -= j.Credit;
-                        }
-                        if (item.NormSide == "Right")
-                        {
-                            item.Balance += j.Credit;
-                        }
-                    }
+                        revenue_total += item.Balance;
 
+                    }
                 }
                 
-            }
-            _db.SaveChanges();
+                var RetainedEarnings = _db.Account.Where(u => u.AccountName == "Retained Earnings").Select(u => u).FirstOrDefault();
+                var ServiceRevenue = _db.Account.Where(u => u.AccountName == "Service Revenue").Select(u => u).FirstOrDefault();
 
-            if (objFromdb.isApproved == false)
-            {
-
+                RetainedEarnings.Balance = revenue_total - expense_total;
+                total += RetainedEarnings.Balance;
+                ServiceRevenue.Balance -= total;
                 objFromdb.isApproved = true;
-                TempData[SD.Success] = "Entry approved successfully.";
+                
+                _db.SaveChanges();
+                return RedirectToAction("JournalIndex", "Manager");
             }
+            else
+            {
+                var JournalAccounts = _db.Journal_Accounts.ToList();
+                var coa = _db.Account.ToList();
+
+                List<Journal_Accounts> Ja = new List<Journal_Accounts>();
+
+                if (objFromdb == null)
+                {
+                    return NotFound();
+                }
+
+                foreach (var item in JournalAccounts)
+                {
+                    if (item.JournalId == JournalId)
+                    {
+                        Ja.Add(item);
+                    }
+                }
+
+                foreach (var item in coa)
+                {
+                    foreach (var j in Ja)
+                    {
+                        if (item.AccountName == j.AccountName1)
+                        {
+                            if (item.NormSide == "Left")
+                            {
+                                item.Balance += j.Debit;
+                            }
+                            if (item.NormSide == "Right")
+                            {
+                                item.Balance -= j.Debit;
+                            }
+                        }
+                        if (item.AccountName == j.AccountName2)
+                        {
+                            if (item.NormSide == "Left")
+                            {
+                                item.Balance -= j.Credit;
+                            }
+                            if (item.NormSide == "Right")
+                            {
+                                item.Balance += j.Credit;
+                            }
+                        }
+
+                    }
+
+                }
+                _db.SaveChanges();
+
+                if (objFromdb.isApproved == false)
+                {
+
+                    objFromdb.isApproved = true;
+                    TempData[SD.Success] = "Entry approved successfully.";
+                }
+
+
+
+
+                _db.SaveChanges();
+
+
+                var obj = _db.Journal_Accounts.ToList();
+
+                foreach (var r in obj)
+                {
+                    if (r.JournalId == JournalId)
+                    {
+                        r.IsApproved = true;
+                    }
+                }
+                _db.SaveChanges();
+
+                return RedirectToAction("JournalIndex", "Manager");
+            }
+
+
 
             
-
-
-            _db.SaveChanges();
-
-
-            var obj = _db.Journal_Accounts.ToList();
-
-            foreach(var r in obj)
-            {
-              if(r.JournalId == JournalId)
-                {
-                    r.IsApproved = true;
-                }
-            }
-            _db.SaveChanges();
-
-            return RedirectToAction("JournalIndex", "Manager");
         }
-
 
         [HttpGet]
         public IActionResult DenyEntry(int? JournalId)
@@ -710,7 +917,6 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return View(Journal);
         }      
-
 
        public FileResult DownloadFile(int? id)
         {
@@ -800,6 +1006,7 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return resultList;
         }
+
         public IEnumerable<Journal_Accounts> SearchResult(DateTime date1, DateTime date2)
         {
 
@@ -830,7 +1037,6 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             return resultList;
         }
-
 
         public IActionResult IncomeStatement()
         {
@@ -864,7 +1070,9 @@ namespace Swift_Tomes_Accounting.Controllers
             {
                 Accounts = accounts,
                 TotalRev = totalRev,
-                TotalEx = totalEx
+                TotalEx = totalEx,
+                Total = totalRev - totalEx,
+                CreatedOn = DateTime.Now
             };
             //_db.IncomeStatement.Add(income);
             //_db.SaveChanges();
@@ -873,14 +1081,267 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(income);
         }
 
+        public IActionResult BalanceSheet()
+        {
+            var list = _db.Account.ToList();
+            double totalAs = 0;
+            double totalLi = 0;
+            double totalEq = 0;
+
+            double beginRE = 0;
+            double netInc = 0;
+            double div = 0;
+            double rev = 0;
+            double exp = 0;
+            double endRE = 0;
+
+
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Statement == "Balance Sheet" && item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.Category == "Asset")
+                    {
+                        if (item.Contra)
+                        {
+                            totalAs -= item.Balance;
+                        }
+                        else
+                        {
+                            totalAs += item.Balance;
+                        }
+                    }
+
+                    if (item.Category == "Liability")
+                    {
+                        if (item.Contra)
+                        {
+                            totalLi -= item.Balance;
+                        }
+                        else
+                        {
+                            totalLi += item.Balance;
+                        }
+                    }
+
+                    if (item.Category == "Equity")
+                    {
+                        if (item.Contra)
+                        {
+                            totalEq -= item.Balance;
+                        }
+                        else
+                        {
+                            totalEq += item.Balance;
+                        }
+                    }
+                }
+
+                if (item.Balance > 0)
+                {
+
+                    if (item.AccountName == "Retained Earnings")
+                    {
+                        beginRE += item.Balance;
+                    }
+
+                    if (item.AccountName == "Common Dividends Payable" || item.AccountName == "Preferred Dividends Payable")
+                    {
+                        div += item.Balance;
+                    }
+
+                    if (item.Category == "Revenue")
+                    {
+                        rev += item.Balance;
+                    }
+
+                    if (item.Category == "Expenses")
+                    {
+                        exp += item.Balance;
+
+                    }
+                }
+
+            }
+
+            netInc = rev - exp;
+            endRE = (beginRE + netInc) - div;
+            totalEq += endRE;
+
+            BalanceSheet balance = new BalanceSheet()
+            {
+                Accounts = accounts,
+                TotalAs = totalAs,
+                TotalLi = totalLi,
+                TotalEQ = totalEq,
+                EndRE = endRE
+            };
+
+            //_db.BalanceSheet.Add(balance);
+            //_db.SaveChanges();
+
+            return View(balance);
+        }
+
+        public IActionResult TrialBalance()
+        {
+            var list = _db.Account.ToList();
+            double totalDebit = 0;
+            double totalCredit = 0;
+            
+
+
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.NormSide == "Left")
+                    {      
+                            totalDebit += item.Balance;
+                    }
+
+                    if (item.NormSide == "Right")
+                    {
+                        totalCredit += item.Balance;
+                       
+                    }
+
+                }
+            }
+
+
+
+            TrialBalance trial = new TrialBalance()
+            {
+                Accounts = accounts,
+                TotalDebit = totalDebit,
+                TotalCredit = totalCredit
+            };
+
+            //_db.TrialBalance.Add(trial);
+            //_db.SaveChanges();
+
+            return View(trial);
+        }
+    
+        public IActionResult RetainedEarnings()
+        {
+            var list = _db.Account.ToList();
+            double beginRE = 0;
+            double netInc = 0;
+            double div = 0;
+            double rev = 0;
+            double exp = 0;
+            double endRE = 0;
+
+
+
+            foreach (var item in list)
+            {
+                if (item.Balance > 0)
+                {
+
+                    if (item.AccountName == "Retained Earnings")
+                    {
+                        beginRE += item.Balance;
+                    }
+
+                    if (item.AccountName == "Common Dividends Payable" || item.AccountName == "Preferred Dividends Payable")
+                    {
+                        div += item.Balance;
+                    }
+
+                    if (item.Category == "Revenue")
+                    {
+                        rev += item.Balance;
+                    }
+
+                    if (item.Category == "Expenses")
+                    {
+                        exp += item.Balance;
+                    }
+                }
+
+            }
+
+            netInc = rev - exp;
+            endRE = (beginRE + netInc) - div;
+
+            RetainedEarnings earnings = new RetainedEarnings()
+            {
+                BeginRE = beginRE,
+                NetInc = netInc,
+                Div = div,
+                EndRE = endRE
+            };
+
+            //_db.RetainedEarnings.Add(earnings);
+            //_db.SaveChanges();
+
+            return View(earnings);
+        }
+
+        public IActionResult PostTrialBalance()
+        {
+            var list = _db.Account.ToList();
+            double totalDebit = 0;
+            double totalCredit = 0;
+            bool cje = false;
+
+            List<Journalize> journal = _db.Journalizes.ToList();
+            List<AccountDB> accounts = new List<AccountDB>();
+
+            foreach (var item in list)
+            {
+                if (item.Balance > 0)
+                {
+                    accounts.Add(item);
+
+                    if (item.NormSide == "Left")
+                    {
+                        totalDebit += item.Balance;
+                    }
+
+                    if (item.NormSide == "Right")
+                    {
+                        totalCredit += item.Balance;
+                    }
+
+                }
+
+            }
+
+            foreach (var item in journal)
+            {
+                if (item.isApproved && item.isCJE)
+                {
+                    cje = true;
+                    break;
+                }
+            }
+
+            PostTrialBalance ptrial = new PostTrialBalance()
+            {
+                Accounts = accounts,
+                TotalDebit = totalDebit,
+                TotalCredit = totalCredit,
+                CJE = cje
+            };
+
+            //_db.PostTrialBalance.Add(ptrial);
+            //_db.SaveChanges();
+
+            return View(ptrial);
+        }
     }
-
-
-
-
-
-
-
 }
 
 

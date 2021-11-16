@@ -1,0 +1,43 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.RetainedEarnings
+@{
+    var today = DateTime.Today;
+    DateTime begin = new DateTime(today.Year, today.Month, 1);
+}
+
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="RetainedEarnings" class="btn btn-info btn-outline-light">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+        </li>
+    </ul>
+</div>

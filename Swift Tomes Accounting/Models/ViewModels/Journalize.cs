@@ -45,5 +45,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public string Description { get; set; }
        
         public string Type { get; set; }
+
+        public bool isCJE { get; set; }
     }
 }

@@ -44,8 +44,91 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-               // var all_users = await _userManager.GetUsersInRoleAsync("Unapproved");
-                return View();
+                // var all_users = await _userManager.GetUsersInRoleAsync("Unapproved");
+
+                var account = _db.Account.ToList();
+                
+                double current = 0;
+                double casset = 0;
+                double cliab = 0;
+
+                double roa = 0;
+                double neti = 0;
+                double tasset = 0;
+                double exp = 0;
+
+                double roe = 0;
+                double shareeq = 0;
+
+                double margin = 0;
+                double rev = 0;
+
+                double turnover = 0;
+                double sales = 0;
+
+                double quick = 0;
+                double inv = 0;
+
+                foreach (var item in account)
+                {
+                    if (item.Category == "Asset" && item.SubCategory == "Current")
+                    {
+                        casset += item.Balance;
+                    }
+                    if (item.Category == "Liability" && item.SubCategory == "Current")
+                    {
+                        cliab += item.Balance;
+                    }
+                    if (item.AccountName == "Merchandise Inventory")
+                    {
+                        inv += item.Balance;
+                    }
+                    if (item.AccountName == "Service Revenue")
+                    {
+                        sales += item.Balance;
+                    }
+                    if (item.AccountName == "Contributed Capital")
+                    {
+                        shareeq += item.Balance;
+                    }
+                    if (item.Category == "Revenue")
+                    {
+                        rev += item.Balance;
+                    }
+                    if (item.Category == "Expenses")
+                    {
+                        exp += item.Balance;
+                    }
+                    if (item.Category == "Asset")
+                    {
+                        tasset += item.Balance;
+                    }
+
+                }
+
+                neti = rev - exp; 
+
+                current = casset / cliab;
+                quick = (casset - inv) / cliab;              
+                roa = (neti / tasset) * 100;
+                turnover = sales / (tasset / 2);
+                roe = (neti / shareeq) * 100;
+                margin = (neti / rev) * 100;
+
+
+
+                Ratio ratio = new Ratio()
+                {
+                    Current = current,
+                    RoA = Math.Round(roa, 2),
+                    RoE = Math.Round(roe,2) ,
+                    Margin = Math.Round(margin,2),
+                    Turnover = turnover,
+                    Quick = quick
+
+                };
+
+                return View(ratio);
             }            
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
             {

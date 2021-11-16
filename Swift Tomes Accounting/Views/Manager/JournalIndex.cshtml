@@ -26,23 +26,48 @@
             <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
-            <a asp-controller="Manager" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+            <a asp-controller="Manager" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
         </li>
         <li>
             <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-info btn-outline-light">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
         </li>
     </ul>
 </div>
 
 
-<div class="justify-content-start">
-    <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
-       data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-        Add Entry
-    </a>
+<div class="form-group row" style="margin-left:1%">
+    <div>
+        <a asp-controller="Manager" asp-action="Journalize" class="btn btn-dark btn-outline-info text-white"
+           data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add Entry
+        </a>
+    </div>
+    &nbsp;&nbsp;
+    <div>
+        <a asp-controller="Manager" asp-action="CJE" class="btn btn-dark btn-outline-info text-white"
+           data-toggle="tooltip" data-placement="bottom" title="Add a New Journal Entry to the System">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Generate Closing Entry
+        </a>
+    </div>
+    <br />
 </div>
-<br />
 
 
 

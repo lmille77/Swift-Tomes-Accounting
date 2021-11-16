@@ -1,13 +1,11 @@
-﻿@model Swift_Tomes_Accounting.Models.ViewModels.IncomeStatement
-@{
-    var net = Model.Total;
-}
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.TrialBalance
+
 
 <div class="p-4 border w-100">
     <div class="text-center p-1 border w-125">
         <h2>Addams & Family Inc</h2>
-        <h2>Income Statement</h2>
-        <h2>For the period ending on @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+        <h2>Trial Balance</h2>
+        <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
     </div>
     <br />
     <br />
@@ -16,65 +14,74 @@
     <div>
         <table class="table table-borderless">
             <thead>
+                <th></th>
+                <th></th>
+                <th></th>
+            </thead>
+            <tbody>
                 <tr>
-                    <th>
-                        Revenues
+                    <th class="font-weight-bold">
+                        Assets & Expenses
                     </th>
+                    <th></th>
                     <th>
 
                     </th>
                 </tr>
-            </thead>
-            <tbody>
                 @foreach (var item in Model.Accounts)
                 {
 
-                    <tr>
+            <tr>
 
-                        @if (item.Category == "Revenue")
-                        {
-                            <td>
-                                <text> &nbsp; &nbsp;</text> @item.AccountName
-                            </td>
-                            <td style="text-align:right">
-                                @item.Balance.ToString("C")
-                            </td>
-                        }
-                    </tr>
+                @if (item.NormSide == "Left" && item.Contra != true)
+                {
+                    <td>
+                        <text> &nbsp; &nbsp;</text> @item.AccountName
+                    </td>
+                    <td style="text-align:right">
+                        @item.Balance.ToString("C")
+                    </td>
+                    <td></td>
                 }
-                <tr class="table-secondary">
-                    <td class="font-weight-bold">
-                        Total Revenues
+                @if (item.NormSide == "Right" && item.Contra)
+                {
+                    <td>
+                        <text> &nbsp; &nbsp;</text> @item.AccountName
                     </td>
-                    <td style="text-align:right; text-decoration: underline">
-                        @Model.TotalRev.ToString("C")
+                    <td>
                     </td>
-                </tr>
+                    <td style="text-align:right">@item.Balance.ToString("C")</td>
+                }
+            </tr>
+                }
                 <tr>
                     <td>
                     </td>
+                    <td></td>
                     <td>
                     </td>
                 </tr>
                 <tr>
 
                     <th class="font-weight-bold">
-                        Expenses
+                        Liabilities, Revenue & Equity
                     </th>
                     <th>
 
                     </th>
+                    <th></th>
                 </tr>
                 @foreach (var item in Model.Accounts)
                 {
                     <tr>
 
-                        @if (item.Category == "Expenses")
+                        @if (item.NormSide == "Right" && item.Contra != true)
                         {
                             <td>
                                 <text> &nbsp; &nbsp;</text> @item.AccountName
                             </td>
-                            <td style="text-align:right; ">
+                            <td></td>
+                            <td style="text-align:right">
 
                                 @item.Balance.ToString("C")
                             </td>
@@ -82,26 +89,20 @@
                     </tr>
 
                 }
-                <tr class="table-secondary">
-                    <td class="font-weight-bold">
-                        Total Expenses
-                    </td>
-                    <td style="text-align:right; text-decoration:underline">
-                        @Model.TotalEx.ToString("C")
-                    </td>
-                </tr>
                 <tr>
                     <td>
                     </td>
+                    <td></td>
                     <td>
                     </td>
                 </tr>
                 <tr class="table-secondary">
-                    <td class="font-weight-bold">
-                        Net Income (Loss)
+                    <td></td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double" >
+                        @Model.TotalDebit.ToString("C")
                     </td>
                     <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
-                        @net.ToString("C")
+                        @Model.TotalCredit.ToString("C")
                     </td>
                 </tr>
             </tbody>
@@ -129,10 +130,10 @@
             <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
         </li>
         <li>
-            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-info btn-outline-light">Income Statement</a>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
         </li>
         <li>
-            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-info btn-outline-light">Trial Balance</a>
         </li>
         <li>
             <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>

@@ -1,0 +1,77 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.Message
+<br />
+<h2 class="text-center">Message User</h2>
+<br />
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Send" class="btn btn-info btn-outline-light">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+        </li>
+    </ul>
+</div>
+
+
+<div id="centerform">
+
+    <form id="message" method="post" asp-action="Send" asp-controller="Admin">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ToEmail">To: </label>
+            <div>
+                <select asp-for="ToEmail" asp-items="@ViewBag.Users" class="form-control">
+                    <option disabled selected>--Select User Email--</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="Subject">Subject:</label>
+            <div>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Body">Body:</label>
+            <div>
+                <textarea asp-for="Body" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="text-center">
+                <input type="submit" value="Send" class=" btn btn-primary" />
+            </div>
+        </div>
+
+    </form>
+
+</div>
