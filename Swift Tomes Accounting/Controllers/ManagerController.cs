@@ -1296,7 +1296,7 @@ namespace Swift_Tomes_Accounting.Controllers
             double totalCredit = 0;
             bool cje = false;
 
-            List<Journalize> journal = new List<Journalize>();
+            List<Journalize> journal = _db.Journalizes.ToList();
             List<AccountDB> accounts = new List<AccountDB>();
 
             foreach (var item in list)
