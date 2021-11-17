@@ -149,7 +149,7 @@ namespace Swift_Tomes_Accounting.Controllers
                             "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
 
                         var mailHelper = new MailHelper(_configuration);
-                        mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+                        mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body, null);
 
                         await _signInManager.SignOutAsync();
                         return View();
@@ -288,7 +288,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     var subject = "Add new user";
                     var body = "<a href='https://localhost:44316/Account/Login'>Click to Add User </a>";
                     var mailHelper = new MailHelper(_configuration);
-                    mailHelper.Send(_configuration["Gmail:Username"], admin_email, subject, body);
+                    mailHelper.Send(_configuration["Gmail:Username"], admin_email, subject, body, null);
                     
                     //adds user to database but without admin approval
                     await _userManager.AddToRoleAsync(user, "Unapproved");
@@ -337,7 +337,7 @@ namespace Swift_Tomes_Accounting.Controllers
             var subject = "Password Reset Confirmation";
             var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
             var mailHelper = new MailHelper(_configuration);
-            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body, null);
             
             TempData[SD.Success] = "Check email for password reset link.";
             return RedirectToAction("Index", "Admin");

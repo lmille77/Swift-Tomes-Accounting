@@ -142,7 +142,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 var subject = "Accepted";
                 var body = "<a href='https://localhost:44316/Account/Login'>Click here to sign in </a>";
                 var mailHelper = new MailHelper(_configuration);
-                mailHelper.Send(_configuration["Gmail:Username"], email, subject, body);
+                mailHelper.Send(_configuration["Gmail:Username"], email, subject, body, null);
                 objFromdb.isApproved = true;
                 TempData[SD.Success] = "User approved successfully.";
             }

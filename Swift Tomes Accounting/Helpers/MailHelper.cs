@@ -14,7 +14,7 @@ namespace Swift_Tomes_Accounting.Helpers
             configuration = _configuration;
         }
 
-        public bool Send(string from, string to, string subject, string content)
+        public bool Send(string from, string to, string subject, string content, List<string> attachments)
         {
             try
             {
@@ -36,6 +36,14 @@ namespace Swift_Tomes_Accounting.Helpers
                 mailMessage.Subject = subject;
                 mailMessage.Body = content;
                 mailMessage.IsBodyHtml = true;
+                if (attachments != null)
+                {
+                    foreach (var attachment in attachments)
+                    {
+                        mailMessage.Attachments.Add(new Attachment(attachment));
+                    }
+                }
+
                 smtpClient.Send(mailMessage);
 
                 return true;

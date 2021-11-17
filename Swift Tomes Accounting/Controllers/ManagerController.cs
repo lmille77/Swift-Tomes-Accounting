@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -166,13 +167,27 @@ namespace Swift_Tomes_Accounting.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Send(Message obj)
+        public IActionResult Send(Message obj, IFormFile[] attachments)
         {
             var toEmail = obj.ToEmail;
             var subject = obj.Subject;
             var body = obj.Body;
             var mailHelper = new MailHelper(_configuration);
-            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            List<string> fileNames = null;
+            if (attachments != null && attachments.Length > 0)
+            {
+                fileNames = new List<string>();
+                foreach (IFormFile attachment in attachments)
+                {
+                    var path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", attachment.FileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        attachment.CopyToAsync(stream);
+                    }
+                    fileNames.Add(path);
+                }
+            }
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body, fileNames);
             return RedirectToAction("Index", "Manager");
         }
 

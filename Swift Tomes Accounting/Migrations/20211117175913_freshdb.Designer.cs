@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211116000608_initial")]
-    partial class initial
+    [Migration("20211117175913_freshdb")]
+    partial class freshdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
