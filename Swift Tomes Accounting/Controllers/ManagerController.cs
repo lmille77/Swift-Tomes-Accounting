@@ -192,6 +192,25 @@ namespace Swift_Tomes_Accounting.Controllers
         }
 
         [HttpGet]
+        public IActionResult EventLog()
+        {
+            var userevents = _db.EventUser.ToList();
+            var accountevents = _db.EventAccount.ToList();
+
+
+
+            EventModel EventModel = new EventModel()
+            {
+                EventUser = userevents,
+                EventAccount = accountevents
+
+            };
+
+            return View(EventModel);
+        }
+
+
+        [HttpGet]
         public IActionResult ChartOfAccounts()
         {
             var accountlist= _db.Account.ToList();

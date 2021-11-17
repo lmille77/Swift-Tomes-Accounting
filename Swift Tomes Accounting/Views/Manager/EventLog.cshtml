@@ -1,12 +1,13 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.EventModel
-    <head>
-        <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
-    </head>
+<head>
+    <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/utils.min.js"></script>
+</head>
 <h3 class="text-center">Event Log</h3>
+
 <div class="sidebar-container border-dark">
     <div>
         <br />
@@ -15,46 +16,54 @@
     </div>
 
     <ul class="sidebar-navigation">
+
         <li>
-            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+            <a asp-controller="Manager" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
         </li>
         <li>
-            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
         </li>
         <li>
-            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+            <a asp-controller="Manager" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
-        </li>        
-        <li>
-            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-info btn-outline-light">Event Log</a>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
         </li>
+        <li>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="EventLog" class="btn btn-info btn-outline-light">Event Log</a>
+        </li>
+
     </ul>
 </div>
 
 @{
     List<DateTime> eventTime = new List<DateTime>();
-    foreach (var item in Model.EventUser)
-    {
-        eventTime.Add(item.eventTime);
-    }
     foreach (var item in Model.EventAccount)
     {
         eventTime.Add(item.eventTime);
     }
-    //Add both list datetimes to this list then sort
-    eventTime.Sort((x, y) => DateTime.Compare(y, x));
 }
 
 <div class="w-100">
     <table class="table table-striped" id="table"
-               data-toggle="table"
-               data-search="true"
-               data-filter-control="true">
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true">
 
         <thead class="thead-dark">
             <tr>
@@ -84,72 +93,6 @@
 
         @foreach (var time in eventTime)
         {
-            foreach (var user in Model.EventUser)
-            {
-                @if (time == user.eventTime)
-                {
-                    <tr>
-                        <td style="width:100px">
-                            User-@user.eventID.ToString("000")
-                        </td>
-                        <td>
-                            @user.eventType
-                        </td>
-                        <td style="width:100px">
-                            First Name:<br />
-                            Last Name:<br />
-                            Username:<br />
-                            Date of Birth:<br />
-                            Role:<br />
-                            Is Active? <br />
-                            Address:<br />
-
-                        </td>
-                        <td style="width:150px">
-                            @user.BeforeFname<br />
-                            @user.BeforeLname<br />
-                            @user.BeforeuserName<br />
-                            @user.BeforeDOB<br />
-                            @user.BeforeRole<br />
-                            @if (user.BeforeisActive == false)
-                            {
-                                <div>Not Active</div>
-                            }
-                            else
-                            {
-                                <div>Active</div>
-                            }
-
-                            @user.BeforeAddress<br />
-
-                        </td>
-                        <td style="width:150px">
-                            @user.AfterFname<br />
-                            @user.AfterLname<br />
-                            @user.AfteruserName<br />
-                            @user.AfterDOB<br />
-                            @user.AfterRole<br />
-                            @if (user.AfterisActive == false)
-                            {
-                                <div>Not Active</div>
-                            }
-                            else
-                            {
-                                <div>Active</div>
-                            }
-                            @user.AfterAddress<br />
-                        </td>
-                        <td style="width:150px">
-                            @user.eventPerformedBy
-                        </td>
-                        <td>
-                            @user.eventTime
-                        </td>
-
-                    </tr>
-
-                }
-            }
             foreach (var account in Model.EventAccount)
             {
                 @if (time == account.eventTime)
@@ -238,4 +181,3 @@
 
     </table>
 </div>
-
