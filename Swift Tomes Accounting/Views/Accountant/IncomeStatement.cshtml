@@ -3,7 +3,111 @@
     var net = Model.Total;
 }
 
+<div class="p-4 border w-100">
+    <div class="text-center p-1 border w-125">
+        <h2>Addams & Family Inc</h2>
+        <h2>Income Statement</h2>
+        <h2>For the period ending on @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+    </div>
+    <br />
+    <br />
 
+
+    <div>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>
+                        Revenues
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Accounts)
+                {
+
+                    <tr>
+
+                        @if (item.Category == "Revenue")
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td style="text-align:right">
+                                @item.Balance.ToString("C")
+                            </td>
+                        }
+                    </tr>
+                }
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Total Revenues
+                    </td>
+                    <td style="text-align:right; text-decoration: underline">
+                        @Model.TotalRev.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+
+                    <th class="font-weight-bold">
+                        Expenses
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+                @foreach (var item in Model.Accounts)
+                {
+                    <tr>
+
+                        @if (item.Category == "Expenses")
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td style="text-align:right; ">
+
+                                @item.Balance.ToString("C")
+                            </td>
+                        }
+                    </tr>
+
+                }
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Total Expenses
+                    </td>
+                    <td style="text-align:right; text-decoration:underline">
+                        @Model.TotalEx.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Net Income (Loss)
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                        @net.ToString("C")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div class="sidebar-container border-dark">
     <div>

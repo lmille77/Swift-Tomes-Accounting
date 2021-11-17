@@ -2,6 +2,7 @@
 @{ 
     var today = DateTime.Today;
     DateTime begin = new DateTime(today.Year, today.Month, 1);
+    double num = Model.BeginRE + Model.NetInc;
 }
 
 <div class="p-4 border w-100">
@@ -37,7 +38,7 @@
                     <td>
                         Add: Net Income
                     </td>
-                    <td style="text-align:right">
+                    <td style="text-align:right; text-decoration-line: underline">
                         @Model.NetInc.ToString("C")
                     </td>
                 </tr>
@@ -48,10 +49,24 @@
                     </td>
                 </tr>
                 <tr>
-                    <td >
+                    <td>
+                        <text> &nbsp; &nbsp;</text> Total
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline">
+                        @num.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         Less: Dividends
                     </td>
-                    <td style="text-align:right">
+                    <td style="text-align:right; text-decoration-line: underline">
                         @Model.Div.ToString("C")
                     </td>
                 </tr>
