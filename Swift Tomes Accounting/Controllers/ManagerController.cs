@@ -1226,7 +1226,9 @@ namespace Swift_Tomes_Accounting.Controllers
             var list = _db.Account.ToList();
             double totalDebit = 0;
             double totalCredit = 0;
-            
+            double exp = 0;
+            double serrev = 0;
+            bool cje = false;
 
 
             List<AccountDB> accounts = new List<AccountDB>();
@@ -1250,15 +1252,30 @@ namespace Swift_Tomes_Accounting.Controllers
                     }
 
                 }
+
+                if (item.Category == "Expenses")
+                {
+                    exp += item.Balance;
+                }
+
+                if (item.AccountName == "Service Revenue")
+                {
+                    serrev += item.Balance;
+                }
+
             }
 
-
+            if (exp == 0 && serrev == 0)
+            {
+                cje = true;
+            }
 
             TrialBalance trial = new TrialBalance()
             {
                 Accounts = accounts,
                 TotalDebit = totalDebit,
-                TotalCredit = totalCredit
+                TotalCredit = totalCredit,
+                CJE = cje
             };
 
             //_db.TrialBalance.Add(trial);
@@ -1324,59 +1341,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(earnings);
         }
 
-        public IActionResult PostTrialBalance()
-        {
-            var list = _db.Account.ToList();
-            double totalDebit = 0;
-            double totalCredit = 0;
-            bool cje = false;
-
-            List<Journalize> journal = _db.Journalizes.ToList();
-            List<AccountDB> accounts = new List<AccountDB>();
-
-            foreach (var item in list)
-            {
-                if (item.Balance > 0 || item.AccountName == "Dividends Declared"
-                    || item.AccountName == "Service Revenue" || (item.Category == "Expenses" && item.ChartOfAccounts))
-                {
-                    accounts.Add(item);
-
-                    if (item.NormSide == "Left")
-                    {
-                        totalDebit += item.Balance;
-                    }
-
-                    if (item.NormSide == "Right")
-                    {
-                        totalCredit += item.Balance;
-                    }
-
-                }
-
-            }
-
-            foreach (var item in journal)
-            {
-                if (item.isApproved && item.isCJE)
-                {
-                    cje = true;
-                    break;
-                }
-            }
-
-            PostTrialBalance ptrial = new PostTrialBalance()
-            {
-                Accounts = accounts,
-                TotalDebit = totalDebit,
-                TotalCredit = totalCredit,
-                CJE = cje
-            };
-
-            //_db.PostTrialBalance.Add(ptrial);
-            //_db.SaveChanges();
-
-            return View(ptrial);
-        }
     }
 }
 

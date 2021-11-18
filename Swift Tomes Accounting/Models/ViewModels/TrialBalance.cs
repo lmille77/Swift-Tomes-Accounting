@@ -18,6 +18,8 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         [DataType(DataType.Currency)]
         public double TotalCredit { get; set; }
 
+        public bool CJE { get; set; }
+
         public virtual List<AccountDB> Accounts { get; set; } = new List<AccountDB>();
     }
 }
