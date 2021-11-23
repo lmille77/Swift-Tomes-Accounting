@@ -370,6 +370,7 @@ namespace Swift_Tomes_Accounting.Controllers
             entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
             entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
             entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            entryTypes.Add(new SelectListItem() { Text = "Closing", Value = "Closing" });
             foreach (var s in sortList)
             {
                 foreach (var j in jList)

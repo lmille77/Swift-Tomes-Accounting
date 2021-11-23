@@ -85,9 +85,6 @@
                 <th data-field="accountName" data-sortable="true">
                     @Html.DisplayNameFor(model => model.AccountName)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
                 <th data-field="category" data-sortable="true">
                     @Html.DisplayNameFor(model => model.Category)
                 </th>
@@ -104,10 +101,6 @@
                 </th>
                 <th data-field="userName" data-sortable="true">
                     @Html.DisplayNameFor(model => model.UserName)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
                 </th>
 
             </tr>
@@ -129,17 +122,11 @@
                             @Html.ActionLink(@item.AccountName, "AccountLedger", "Manager", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-
-                        <td>
                             @Html.DisplayFor(modelItem => item.Category)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.SubCategory)
                         </td>
-
-
                         <td style="text-align:right">
                             @Html.DisplayFor(modelItem => item.Balance)
                         </td>
@@ -148,10 +135,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comments)
                         </td>
 
                     </tr>

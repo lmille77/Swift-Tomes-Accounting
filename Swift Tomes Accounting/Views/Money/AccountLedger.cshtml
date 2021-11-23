@@ -87,9 +87,6 @@
                         Entry Type
                     </th>
                     <th>
-                        Description
-                    </th>
-                    <th>
                         Post Reference
                     </th>
                     <th>
@@ -117,9 +114,6 @@
                         </td>
                         <td>
                             @item.Type
-                        </td>
-                        <td>
-                            @item.Description
                         </td>
                         <td>
                             @Html.ActionLink(@item.JournalId.ToString(), "PostRef", "Money", new { id = item.JournalId }, null)
