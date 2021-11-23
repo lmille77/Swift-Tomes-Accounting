@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Swift_Tomes_Accounting.Migrations
 {
-    public partial class freshdb : Migration
+    public partial class refresh : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
