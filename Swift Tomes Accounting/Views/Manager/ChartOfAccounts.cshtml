@@ -21,6 +21,9 @@
     <ul class="sidebar-navigation">
 
         <li>
+            <a asp-controller="Manager" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
             <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-info btn-outline-light">Chart of Accounts</a>
         </li>
         <li>
@@ -42,8 +45,9 @@
             <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
         </li>
         <li>
-            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+            <a asp-controller="Manager" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
+
     </ul>
 </div>
 
@@ -81,9 +85,6 @@
                 <th data-field="accountName" data-sortable="true">
                     @Html.DisplayNameFor(model => model.AccountName)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
                 <th data-field="category" data-sortable="true">
                     @Html.DisplayNameFor(model => model.Category)
                 </th>
@@ -100,10 +101,6 @@
                 </th>
                 <th data-field="userName" data-sortable="true">
                     @Html.DisplayNameFor(model => model.UserName)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
                 </th>
 
             </tr>
@@ -125,17 +122,11 @@
                             @Html.ActionLink(@item.AccountName, "AccountLedger", "Manager", new { id = item.AccountNumber }, null)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-
-                        <td>
                             @Html.DisplayFor(modelItem => item.Category)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.SubCategory)
                         </td>
-
-
                         <td style="text-align:right">
                             @Html.DisplayFor(modelItem => item.Balance)
                         </td>
@@ -144,10 +135,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comments)
                         </td>
 
                     </tr>

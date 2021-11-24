@@ -12,6 +12,9 @@
     <ul class="sidebar-navigation">
 
         <li>
+            <a asp-controller="Manager" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
             <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
@@ -33,15 +36,16 @@
             <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
         </li>
         <li>
-            <a asp-controller="Manager" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+            <a asp-controller="Manager" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
+
     </ul>
 </div>
 
 
 <div id="centerform">
 
-    <form id="message" method="post" asp-action="Send" asp-controller="Admin">
+    <form id="message" method="post" enctype="multipart/form-data" asp-action="Send" asp-controller="Manager">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="ToEmail">To: </label>
@@ -64,6 +68,12 @@
             <div>
                 <textarea asp-for="Body" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <label>Attachments: </label>
+            <div>
+                <input type="file" name="attachments" multiple="multiple" />
             </div>
         </div>
         <div class="form-group">

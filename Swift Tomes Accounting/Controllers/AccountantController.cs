@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -161,16 +162,47 @@ namespace Swift_Tomes_Accounting.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Send(Message obj)
+        public IActionResult Send(Message obj, IFormFile[] attachments)
         {
             var toEmail = obj.ToEmail;
             var subject = obj.Subject;
             var body = obj.Body;
             var mailHelper = new MailHelper(_configuration);
-            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
+            List<string> fileNames = null;
+            if (attachments != null && attachments.Length > 0)
+            {
+                fileNames = new List<string>();
+                foreach (IFormFile attachment in attachments)
+                {
+                    var path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", attachment.FileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        attachment.CopyToAsync(stream);
+                    }
+                    fileNames.Add(path);
+                }
+            }
+            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body, fileNames);
             return RedirectToAction("Index", "Accountant");
         }
 
+        [HttpGet]
+        public IActionResult EventLog()
+        {
+            var userevents = _db.EventUser.ToList();
+            var accountevents = _db.EventAccount.ToList();
+
+
+
+            EventModel EventModel = new EventModel()
+            {
+                EventUser = userevents,
+                EventAccount = accountevents
+
+            };
+
+            return View(EventModel);
+        }
 
         [HttpGet]
         public IActionResult PostRef(int? id)
@@ -630,6 +662,7 @@ namespace Swift_Tomes_Accounting.Controllers
             entryTypes.Add(new SelectListItem() { Text = "Regular", Value = "Regular" });
             entryTypes.Add(new SelectListItem() { Text = "Adjusting", Value = "Adjusting" });
             entryTypes.Add(new SelectListItem() { Text = "Reversing", Value = "Reversing" });
+            entryTypes.Add(new SelectListItem() { Text = "Closing", Value = "Closing" });
             ViewBag.types = entryTypes;
 
             foreach (var s in sortList)
@@ -957,7 +990,9 @@ namespace Swift_Tomes_Accounting.Controllers
             var list = _db.Account.ToList();
             double totalDebit = 0;
             double totalCredit = 0;
-
+            double exp = 0;
+            double serrev = 0;
+            bool cje = false;
 
 
             List<AccountDB> accounts = new List<AccountDB>();
@@ -979,16 +1014,30 @@ namespace Swift_Tomes_Accounting.Controllers
                         totalCredit += item.Balance;
 
                     }
+                }
 
+                if (item.Category == "Expenses")
+                {
+                    exp += item.Balance;
+                }
+
+                if (item.AccountName == "Service Revenue")
+                {
+                    serrev += item.Balance;
                 }
             }
 
+            if (exp == 0 && serrev == 0)
+            {
+                cje = true;
+            }
 
             TrialBalance trial = new TrialBalance()
             {
                 Accounts = accounts,
                 TotalDebit = totalDebit,
-                TotalCredit = totalCredit
+                TotalCredit = totalCredit,
+                CJE = cje
             };
 
             //_db.TrialBalance.Add(trial);
@@ -1054,59 +1103,6 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(earnings);
         }
 
-        public IActionResult PostTrialBalance()
-        {
-            var list = _db.Account.ToList();
-            double totalDebit = 0;
-            double totalCredit = 0;
-            bool cje = false;
-
-            List<Journalize> journal = _db.Journalizes.ToList();
-            List<AccountDB> accounts = new List<AccountDB>();
-
-            foreach (var item in list)
-            {
-                if (item.Balance > 0 || item.AccountName == "Dividends Declared"
-                     || item.AccountName == "Service Revenue" || (item.Category == "Expenses" && item.ChartOfAccounts))
-                {
-                    accounts.Add(item);
-
-                    if (item.NormSide == "Left")
-                    {
-                        totalDebit += item.Balance;
-                    }
-
-                    if (item.NormSide == "Right")
-                    {
-                        totalCredit += item.Balance;
-                    }
-
-                }
-
-            }
-
-            foreach (var item in journal)
-            {
-                if (item.isApproved && item.isCJE)
-                {
-                    cje = true;
-                    break;
-                }
-            }
-
-            PostTrialBalance ptrial = new PostTrialBalance()
-            {
-                Accounts = accounts,
-                TotalDebit = totalDebit,
-                TotalCredit = totalCredit,
-                CJE = cje
-            };
-
-            //_db.PostTrialBalance.Add(ptrial);
-            //_db.SaveChanges();
-
-            return View(ptrial);
-        }
 
     }
 }

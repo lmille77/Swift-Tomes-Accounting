@@ -23,6 +23,9 @@
     <ul class="sidebar-navigation">
 
         <li>
+            <a asp-controller="Accountant" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
             <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
@@ -44,7 +47,7 @@
             <a asp-controller="Accountant" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+            <a asp-controller="Accountant" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
     </ul>
 </div>
@@ -125,7 +128,9 @@
                 <th data-field="isApproved" data-sortable="true">
                     Approval
                 </th>
-                <th></th>
+                <th>
+                    Reason
+                </th>
             </tr>
         </thead>
         <tbody>

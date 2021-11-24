@@ -121,7 +121,7 @@ namespace NewSwift.Controllers
                         "Please create your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
 
                     var mailHelper = new MailHelper(_configuration);
-                    mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+                    mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body, null);
 
                     
                     await _userManager.AddToRoleAsync(user, obj.Role);

@@ -3,7 +3,14 @@
 <div class="p-4 border w-100">
     <div class="text-center p-1 border w-125">
         <h2>Addams & Family Inc</h2>
-        <h2>Trial Balance</h2>
+        @if (Model.CJE)
+        {
+            <h2>Post-Closing Trial Balance</h2>
+        }
+        else
+        {
+            <h2>Trial Balance</h2>
+        }
         <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
     </div>
     <br />
@@ -121,6 +128,9 @@
     <ul class="sidebar-navigation">
 
         <li>
+            <a asp-controller="Accountant" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
             <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
@@ -142,7 +152,7 @@
             <a asp-controller="Accountant" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="PostTrialBalance" class="btn btn-dark btn-outline-info">Closing Trial Balance</a>
+            <a asp-controller="Accountant" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
     </ul>
 </div>
