@@ -130,7 +130,7 @@
                     Approval
                 </th>
                 <th>
-                    Reason
+                   
                 </th>
             </tr>
         </thead>
@@ -150,7 +150,7 @@
                 </td>
                 <td style="width: 500px; vertical-align: top;">
 
-                    @Html.ActionLink(@arraylist[i].AccountNumber1.ToString() + " - " + @arraylist[i].AccountName1, "AccountLedger", "Manager", new { id = arraylist[i].AccountNumber1 }, null)
+                    @Html.ActionLink(@arraylist[i].AccountName1, "AccountLedger", "Manager", new { id = arraylist[i].AccountNumber1 }, null)
                     @{
                         for (int index = i; index < arraylist.Length - 1; index++)
                         {
@@ -158,13 +158,13 @@
                             {
                                 multipleDebit = true;
                                 <br />
-                                @Html.ActionLink(@arraylist[index + 1].AccountNumber1.ToString() + " - " + @arraylist[index + 1].AccountName1, "AccountLedger", "Manager", new { id = arraylist[index + 1].AccountNumber1 }, null)
+                                @Html.ActionLink(@arraylist[index + 1].AccountName1, "AccountLedger", "Manager", new { id = arraylist[index + 1].AccountNumber1 }, null)
 
                             }
                         }
                     }
                     <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;@Html.ActionLink(@arraylist[i].AccountNumber2.ToString() + " - " + @arraylist[i].AccountName2, "AccountLedger", "Manager", new { id = arraylist[i].AccountNumber2 }, null)
+                    &nbsp;&nbsp;&nbsp;&nbsp;@Html.ActionLink(@arraylist[i].AccountName2, "AccountLedger", "Manager", new { id = arraylist[i].AccountNumber2 }, null)
                     <br />
 
                     @{
@@ -174,7 +174,7 @@
                             {
                                 <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
                                 multipleCredit = true;
-                                @Html.ActionLink(@arraylist[index + 1].AccountNumber2.ToString() + " - " + @arraylist[index + 1].AccountName2, "AccountLedger", "Manager", new { id = arraylist[index + 1].AccountNumber2 }, null)
+                                @Html.ActionLink(@arraylist[index + 1].AccountName2, "AccountLedger", "Manager", new { id = arraylist[index + 1].AccountNumber2 }, null)
                                 <br />
                             }
                         }
