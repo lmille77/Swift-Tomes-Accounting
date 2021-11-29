@@ -364,6 +364,8 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult JournalIndex()
         {
             var sortList = _db.Journal_Accounts.ToList();
+            var accountlist = _db.Account.ToList();
+
             var jList = _db.Journalizes.ToList();
             var entryTypes = new List<SelectListItem>();
             entryTypes.Add(new SelectListItem() { Text = "All", Value = "All" });
@@ -393,7 +395,25 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 }
             }
+            foreach(var item in sortList)
+            {
+                foreach(var account in accountlist)
+                {
+                    if(item.AccountName1 == account.AccountName)
+                    {
+                        item.AccountNumber1 = account.AccountNumber;
+                    }
+                    if (item.AccountName2 == account.AccountName)
+                    {
+                        item.AccountNumber2 = account.AccountNumber;
+                    }
+                }
+            }
+
+
             ViewBag.types = entryTypes;
+
+
             return View(sortList);
         }
 
