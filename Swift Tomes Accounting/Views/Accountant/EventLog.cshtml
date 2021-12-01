@@ -194,9 +194,15 @@
                             Accounts:
                             @foreach (var item in journal.journal_accounts)
                             {
-                                <text><br /></text>
+                                if (item.AccountName1 != null)
+                                {
+                                    <text><br /></text>
+                                }
+                                if (item.AccountName2 != null)
+                                {
+                                    <text><br /></text>
+                                }
                             }
-                            <br />
                             Debits:
                             @foreach (var item in journal.journal_accounts)
                             {
@@ -226,68 +232,110 @@
                             @if (journal.isApproved == false && journal.isDenied == false)
                             {
                                 <text>
-                                    None<br /><br />
-                                    None<br />
-                                    None<br />
-                                    None<br />
-                                    None<br />
-                                    None<br />
-                                    None<br />
-                                </text>
-                            }
-                            else
-                            {
-                                <text>
-                                    @foreach (var item in journal.journal_accounts)
-                                    {
-                                        @item.AccountName1<br />
-                                    }
-                                    @foreach (var item in journal.journal_accounts)
-                                    {
-                                        <text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                @item.AccountName2<br />
-                            }
+                                    None
                                     @foreach (var item in journal.journal_accounts)
                                     {
                                         if (item.AccountName1 != null)
                                         {
-                                            @item.Debit<br />
+                                            <text><br /></text>
+                            }
+                            if (item.AccountName2 != null)
+                            {
+                                <text><br /></text>
+                            }
+                        }
+                                    None
+                                    @foreach (var item in journal.journal_accounts)
+                                    {
+                                        if (item.AccountName1 != null)
+                                        {
+                                            <text><br /></text>
                                         }
 
                                     }
-                                    @foreach (var item in journal.journal_accounts)
+                                    None @foreach (var item in journal.journal_accounts)
                                     {
                                         if (item.AccountName2 != null)
                                         {
-                                            <text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                            @item.Credit<br />
+                                            <text><br /></text>
                                         }
 
                                     }
-                                    @journal.journalId<br />
-                                    @journal.journal.Type<br />
-                                    Pending<br />
-                                    @if (journal.journal.Description == null)
-                                    {
-                                        <text>n/a</text>
-                                    }
-                                    else
-                                    {
-                                        @journal.journal.Description
-                                    }
+                                    None<br />
+                                    None<br />
+                                    None<br />
+                                    None<br />
                                     </text>
                                 }
+                                else
+                                {
+                                    <text>
+                                        @foreach (var item in journal.journal_accounts)
+                                        {
+                                            @if (item.AccountName1 != null)
+                                            {
+                                                @item.AccountName1<br />
+                                            }
+
+                                        }
+                                        @foreach (var item in journal.journal_accounts)
+                                        {
+                                            <text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                                    @if (item.AccountName2 != null)
+                                    {
+                                        @item.AccountName2<br />
+                                    }
+
+                                }
+                                        @foreach (var item in journal.journal_accounts)
+                                        {
+                                            if (item.AccountName1 != null)
+                                            {
+                                                @item.Debit<br />
+                                            }
+
+                                        }
+                                        @foreach (var item in journal.journal_accounts)
+                                        {
+                                            if (item.AccountName2 != null)
+                                            {
+                                                <text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                                                @item.Credit<br />
+                                            }
+
+                                        }
+                                        @journal.journalId<br />
+                                        @journal.journal.Type<br />
+                                        Pending<br />
+                                        @if (journal.journal.Description == null)
+                                        {
+                                            <text>n/a</text>
+                                        }
+                                        else
+                                        {
+                                            @journal.journal.Description
+                                        }
+                                        </text>
+                                    }
 
                         </td>
                         <td style="width:250px; vertical-align:top">
                             @foreach (var item in journal.journal_accounts)
                             {
-                                @item.AccountName1<br />
+                                @if (item.AccountName1 != null)
+                                {
+                                    @item.AccountName1<br />
+                                }
+
                             }
                             @foreach (var item in journal.journal_accounts)
                             {
                                 <text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
-                                @item.AccountName2<br />
+                                @if (item.AccountName2 != null)
+                                {
+                                    @item.AccountName2<br />
+                                }
+
                             }
                             @foreach (var item in journal.journal_accounts)
                             {
