@@ -196,14 +196,38 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var userevents = _db.EventUser.ToList();
             var accountevents = _db.EventAccount.ToList();
+            var journalevents = _db.EventJournal.ToList();
+            var journal_accounts =_db.Journal_Accounts.ToList();
+            var journal_entry = _db.Journalizes.ToList();
 
-
+            foreach(var journal in journalevents)
+            {
+                List<Journal_Accounts> templist = new List<Journal_Accounts>();
+                foreach (var ja in journal_accounts)
+                {
+                    
+                    if(ja.JournalId == journal.journalId)
+                    {
+                        templist.Add(ja);
+                    }
+                }
+                journal.journal_accounts = templist;
+                foreach(var je in journal_entry)
+                {
+                    if(je.JournalId == journal.journalId)
+                    {
+                        journal.journal = je;
+                    }
+                }
+            }
+           
+            
 
             EventModel EventModel = new EventModel()
             {
                 EventUser = userevents,
-                EventAccount = accountevents
-
+                EventAccount = accountevents,
+                EventJournal = journalevents
             };
 
             return View(EventModel);
@@ -349,9 +373,32 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     ModelState.AddModelError("", errorList[8].Message);                    
                     return View(journal);
-                }
+                }                
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
+
+                var journalId = _db.Journalizes.Where(u => u == journal).Select(u => u.JournalId).FirstOrDefault();
+                EventJournal new_entry = new EventJournal
+                {
+                    journalId = journalId,
+                    eventTime = DateTime.Now,
+                    eventType = "Created Journal Entry",
+                    isApproved = false,
+                    isDenied = false,
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventJournal.Add(new_entry);
+                _db.SaveChanges();
+
+
+
+
+
+
+
+
+
+
                 TempData[SD.Success] = "Journal entry submitted";
                 return RedirectToAction("JournalIndex", "Manager");
             }
@@ -837,7 +884,16 @@ namespace Swift_Tomes_Accounting.Controllers
                 total += RetainedEarnings.Balance;
                 ServiceRevenue.Balance -= total;
                 objFromdb.isApproved = true;
-                
+                EventJournal new_entry = new EventJournal
+                {
+                    journalId = objFromdb.JournalId,
+                    eventTime = DateTime.Now,
+                    eventType = "Approved Journal Entry",
+                    isApproved = true,
+                    isDenied = false,
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventJournal.Add(new_entry);
                 _db.SaveChanges();
                 return RedirectToAction("JournalIndex", "Manager");
             }
@@ -899,7 +955,16 @@ namespace Swift_Tomes_Accounting.Controllers
                     objFromdb.isApproved = true;
                     TempData[SD.Success] = "Entry approved successfully.";
                 }
-
+                EventJournal new_entry = new EventJournal
+                {
+                    journalId = objFromdb.JournalId,
+                    eventTime = DateTime.Now,
+                    eventType = "Approved Journal Entry",
+                    isApproved = true,
+                    isDenied = false,
+                    eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                };
+                _db.EventJournal.Add(new_entry);
 
 
 
@@ -950,6 +1015,18 @@ namespace Swift_Tomes_Accounting.Controllers
                 {
                     objFromDb.Reason = Journal.Reason;
                     objFromDb.IsRejected = true;
+                    EventJournal new_entry = new EventJournal
+                    {
+
+                        journalId = objFromDb.JournalId,
+                        eventTime = DateTime.Now,
+                        eventType = "Denied Journal Entry",
+                        reason = objFromDb.Reason,
+                        isApproved = false,
+                        isDenied = true,
+                        eventPerformedBy = _userManager.GetUserAsync(User).Result.FirstName + " " + _userManager.GetUserAsync(User).Result.LastName,
+                    };
+                    _db.EventJournal.Add(new_entry);
                     _db.SaveChanges();
                     TempData[SD.Success] = "Entry has been denied.";
   
@@ -965,6 +1042,7 @@ namespace Swift_Tomes_Accounting.Controllers
                         r.IsRejected = true;
                     }
                 }
+                
                 _db.SaveChanges();
 
                 return RedirectToAction("JournalIndex", "Manager");
