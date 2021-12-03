@@ -149,7 +149,7 @@
                     </td>
                     <td style="width: 300px; vertical-align: top;">
 
-                        @arraylist[i].AccountName1
+                        @Html.ActionLink(@arraylist[i].AccountName1, "AccountLedger", "Accountant", new { id = arraylist[i].AccountNumber1 }, null)
                         @{
                             for (int index = i; index < arraylist.Length - 1; index++)
                             {
@@ -157,12 +157,13 @@
                                 {
                                     multipleDebit = true;
                                     <br />
-                                    @arraylist[index + 1].AccountName1
+                                    @Html.ActionLink(@arraylist[index + 1].AccountName1, "AccountLedger", "Accountant", new { id = arraylist[index + 1].AccountNumber1 }, null)
+
                                 }
                             }
                         }
                         <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;@arraylist[i].AccountName2
+                        &nbsp;&nbsp;&nbsp;&nbsp;@Html.ActionLink(@arraylist[i].AccountName2, "AccountLedger", "Accountant", new { id = arraylist[i].AccountNumber2 }, null)
                         <br />
 
                         @{
@@ -172,7 +173,7 @@
                                 {
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
                                     multipleCredit = true;
-                                    @arraylist[index + 1].AccountName2
+                                    @Html.ActionLink(@arraylist[index + 1].AccountName2, "AccountLedger", "Accountant", new { id = arraylist[index + 1].AccountNumber2 }, null)
                                     <br />
                                 }
                             }

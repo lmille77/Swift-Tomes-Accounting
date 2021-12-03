@@ -162,13 +162,14 @@
         <br />
         <br />
         <div class="form-group text-center">
+
+            <a asp-action="JournalIndex" class="btn btn-warning">Go Back</a>
             <input type="submit" value="Create Journal Entry" class=" btn btn-success " />
-            <a asp-action="JournalIndex" class="btn btn-outline-primary">Go Back</a>
         </div>
     </form>
     <div>&nbsp;</div>
-    <form asp-controller="Accountant" asp-action="Journalize" method="get">
-        <input type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset Journal Entry">
+    <form asp-controller="Accountant" asp-action="Journalize" method="get" class="text-center">
+        <input class="btn btn-outline-danger" type="submit" value="Reset" data-toggle="tooltip" data-placement="bottom" title="Reset Journal Entry">
     </form>
 
 

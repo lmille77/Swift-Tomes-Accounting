@@ -23,6 +23,7 @@ namespace Swift_Tomes_Accounting.Data
         public DbSet<AccountDB> Account { get; set; }
         public DbSet<EventUser> EventUser { get; set; }
         public DbSet<EventAccount> EventAccount { get; set; }
+        public DbSet<EventJournal> EventJournal { get; set; }
         public DbSet<Journalize> Journalizes { get; set; }
         public DbSet<Journal_Accounts> Journal_Accounts { get; set; }
         public DbSet<ErrorTable> ErrorTable { get; set; }  

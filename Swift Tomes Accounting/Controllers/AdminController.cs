@@ -207,16 +207,40 @@ namespace Swift_Tomes_Accounting.Controllers
         {
             var userevents = _db.EventUser.ToList();
             var accountevents = _db.EventAccount.ToList();
+            var journalevents = _db.EventJournal.ToList();
+            var journal_accounts = _db.Journal_Accounts.ToList();
+            var journal_entry = _db.Journalizes.ToList();
 
-            
+            foreach (var journal in journalevents)
+            {
+                List<Journal_Accounts> templist = new List<Journal_Accounts>();
+                foreach (var ja in journal_accounts)
+                {
+
+                    if (ja.JournalId == journal.journalId)
+                    {
+                        templist.Add(ja);
+                    }
+                }
+                journal.journal_accounts = templist;
+                foreach (var je in journal_entry)
+                {
+                    if (je.JournalId == journal.journalId)
+                    {
+                        journal.journal = je;
+                    }
+                }
+            }
+
+
 
             EventModel EventModel = new EventModel()
             {
                 EventUser = userevents,
-                EventAccount = accountevents
-                
+                EventAccount = accountevents,
+                EventJournal = journalevents
             };
-            
+
             return View(EventModel);
         }
 

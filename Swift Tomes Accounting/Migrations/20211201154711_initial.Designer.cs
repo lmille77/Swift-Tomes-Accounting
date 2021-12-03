@@ -10,8 +10,8 @@ using Swift_Tomes_Accounting.Data;
 namespace Swift_Tomes_Accounting.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211123220250_refresh")]
-    partial class refresh
+    [Migration("20211201154711_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -446,6 +446,39 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.HasKey("eventID");
 
                     b.ToTable("EventAccount");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventJournal", b =>
+                {
+                    b.Property<int>("eventID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("eventPerformedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("eventTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("eventType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isDenied")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("journalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("eventID");
+
+                    b.ToTable("EventJournal");
                 });
 
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventUser", b =>
