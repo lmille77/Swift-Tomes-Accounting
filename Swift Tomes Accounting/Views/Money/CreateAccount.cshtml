@@ -1,53 +1,44 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
 <br />
 
-<div style="border: 1px solid; border-color: lightgray; width: 550px; margin: 0 auto;">
+<div style="width: 450px; margin: 0 auto;">
+ 
     <br />
-    <div class="text-center">
-        <img src="~/frontend/STLogo.png" alt=”Image” style="width:50px; height:50px">
-    </div>
-    <br />
-    <h4 class="text-center">Add an Account</h4>
-    <br />
+    <h4 class="text-center">Add Account</h4>
+    <hr />
     <form method="post" asp-action="CreateAccount" asp-controller="Money">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-xs">
                 <select asp-for="Category" class="form-control">
-                    <option disabled selected>--Select an Account Type--</option>
+                    <option disabled selected>Select Account Type</option>
                     <option value="Asset">Asset</option>
                     <option value="Expenses">Expenses</option>
                     <option value="Liability">Liability</option>
                     <option value="Equity">Equity</option>
                     <option value="Revenue">Revenue</option>
                 </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-        </div>
-        <br />
-        <div class="form-group row" id="SubCategoryDropDown">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+            <div class="col-lg-6" id="SubCategoryDropDown">
                 <select asp-for="SubCategory" class="form-control">
                     <option disabled>--Select a Sub-Type--</option>
                     <option>Current</option>
                     <option>Long-Term</option>
                 </select>
-                <span asp-validation-for="SubCategory" class="text-danger"></span>
             </div>
         </div>
         <br />
         <div class="form-group row">
             <div class="input-group">
                 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <label typeof="input-group-text" class="input-group-prepend" id="AcNum">
+                <label typeof="input-group-text" class="input-group-prepend; " id="AcNum">
                 </label>
-                <div class="col-xs-4">
+                <div class="col-xs">
                     <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />
                 </div>
-                &nbsp;
-                <div class="col-xs-4">
+
+                <div class="col-lg-6">
                     <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
                 </div>
             </div>
@@ -55,55 +46,50 @@
         <br />
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <label>Active Account: </label>
+            <div class="col-lg-4">
+                <label>Active: </label>
                 @Html.CheckBoxFor(m => m.Active)
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <label>Contra Account: </label>
+            </div>
+            <div class="col-lg-4">
+                <label>Contra: </label>
                 @Html.CheckBoxFor(m => m.Contra)
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <label>Chart of Accounts: </label>
+            </div>
+            <div class="col-lg-3">
+                <label>CoA: </label>
                 @Html.CheckBoxFor(m => m.ChartOfAccounts)
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-xs">
                 <input asp-for="Initial" class="form-control" placeholder="Initial Balance" />
-                <span asp-validation-for="Initial" class="text-danger"></span>
             </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+
+            <div class="col-lg-6">
                 <input asp-for="Order" class="form-control" placeholder="Liquidity Order" />
-                <span asp-validation-for="Order" class="text-danger"></span>
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-xs">
                 <input asp-for="Description" class="form-control" placeholder="Description" />
-                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+
+            <div class="col-lg-6">
                 <input asp-for="Comments" class="form-control" placeholder="Comments" />
-                <span asp-validation-for="Comments" class="text-danger"></span>
             </div>
         </div>
         <br />
 
         <div class="form-group">
             <div class=" col-md-10 offset-md-2">
-                <input type="submit" value="Create Account" class=" btn btn-outline-primary fa-align-center" />
-                <a asp-action="Accounts" class="btn btn-success w-25">Back</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
+                &nbsp;&nbsp;
+                <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
+
             </div>
         </div>
 
