@@ -29,7 +29,7 @@
     </ul>
 </div>
 
-<div id="centerform">
+<div id="centerform0">
     <br />
     <div class="text-center">
         <img src="~/frontend/STLogo.png" alt=”Image” style="width:50px; height:50px">
@@ -45,49 +45,48 @@
                 <input asp-for="FirstName" class="form-control" placeholder="First Name" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="col-xs-6">
+            <div class="col-lg-6">
                 <input asp-for="LastName" class="form-control" placeholder="Last Name" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <input asp-for="Email" class="form-control" placeholder="Email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <input asp-for="Password" class="form-control" placeholder="Password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
-        <br />
+        <br>
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <select class="col-lg-6 form-control" asp-for="Role">
-                <option disabled selected>--Select Role--</option>
-                <option>Admin</option>
-                <option>Manager</option>
-                <option>Accountant</option>
-            </select>
+            <div class="col-lg-12">
+                <select class="form-control" asp-for="Role">
+                    <option disabled selected>--Select Role--</option>
+                    <option>Admin</option>
+                    <option>Manager</option>
+                    <option>Accountant</option>
+                </select>
+            </div>           
         </div>
         <br />
-        <div class="form-group row col-lg-8 mx-auto">
+        <div class="text-center">
+            <a asp-action="Index" class="btn btn-warning">Back to List</a>
             <input type="submit" value="Create User" class=" btn btn-success" />
-            &nbsp;&nbsp;
-            <a asp-action="Index" class="btn btn-warning">Back to User List</a>
         </div>
-        <br />
         <br />
 
     </form>
