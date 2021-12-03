@@ -29,17 +29,15 @@
         </ul>
 </div>
 
+<h2 class="text-center">Add Account</h2>
 <br />
-<div style="width: 450px; margin: 0 auto;">
- 
-    <br />
-    <h4 class="text-center">Add Account</h4>
+<div style="width: 550px; margin: 0 auto;">    
     <hr />
     <form method="post" asp-action="CreateAccount" asp-controller="Money">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-xs" style="width:227px">
                 <select asp-for="Category" class="form-control">
                     <option disabled selected>Select Account Type</option>
                     <option value="Asset">Asset</option>
@@ -49,7 +47,8 @@
                     <option value="Revenue">Revenue</option>
                 </select>
             </div>
-            <div class="col-lg-6" id="SubCategoryDropDown">
+            &nbsp;&nbsp;&nbsp;
+            <div style="width:260px" id="SubCategoryDropDown">
                 <select asp-for="SubCategory" class="form-control">
                     <option disabled>--Select a Sub-Type--</option>
                     <option>Current</option>
@@ -63,7 +62,7 @@
                 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <label typeof="input-group-text" class="input-group-prepend; " id="AcNum">
                 </label>
-                <div class="col-xs">
+                <div class="col-xs-2">
                     <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />
                 </div>
 
@@ -116,14 +115,12 @@
         </div>
         <br />
 
-        <div class="form-group">
-            <div class="col-md-10 offset-md-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
-                &nbsp;&nbsp;
-                <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
-            </div>
+        <div class="text-center">
+            <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
+            <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
         </div>
+            
+        
 
         <script>
             $("#Category").on("change", function () {

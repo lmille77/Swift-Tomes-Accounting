@@ -28,30 +28,27 @@
         </li>
     </ul>
 </div>
+<h2 class="text-center">Edit an Account</h2>
 
-<br />
-<div style="width: 450px; margin: 0 auto;">
+<div id="centerform1">
     <br />
-    <h4 class="text-center">Edit an Account</h4>
+    
     <hr />
     <form asp-action="EditAccount">
 
         <div asp-validation-summary="All" class="text-danger"></div>
         <input type="hidden" asp-for="AccountNumber" />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-lg-6">
                 <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
             </div>
-
             <div class="col-lg-6">
                 <input asp-for="Order" class="form-control" placeholder="Liquidity Order" />
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-lg-6">
                 <select asp-for="Category" class="form-control">
                     <option disabled selected>Select Account Type</option>
                     <option value="Asset">Asset</option>
@@ -72,8 +69,7 @@
         <br />
 
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-lg-6">
                 <input asp-for="Description" class="form-control" placeholder="Description" />
             </div>
 
@@ -84,26 +80,23 @@
         <br />
 
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <label>Contra Account: </label>
                 @Html.CheckBoxFor(m => m.Contra)
             </div>
 
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <label>Chart of Accounts: </label>
                 @Html.CheckBoxFor(m => m.ChartOfAccounts)
             </div>
         </div>
         <br />
-        <div class="form-group">
-            <div class="col-md-10 offset-md-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
-                &nbsp;&nbsp;
-                <input type="submit" value="Update Account" class=" btn btn-success fa-align-center" />
-            </div>
+
+        <div class="text-center">
+            <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
+            <input type="submit" value="Update Account" class=" btn btn-success fa-align-center" />
         </div>
+
 
         <script>
             $("#Category").on("change", function () {
