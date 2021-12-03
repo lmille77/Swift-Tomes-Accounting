@@ -1,14 +1,8 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<br />
 <h2 class="text-center">Roles List</h2>
 
-<br />
-<div>
-    <div class="text-center">
-        <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary"> Create New Role</a>
-    </div>
-</div>
+
 <br />
 
 <div class="sidebar-container border-dark">
@@ -41,30 +35,27 @@
 </div>
 
 
-<div class="p-4 border rounded">
+<div id="centerform">
     @if (Model.Any())
     {
         <table class="table table-striped border">
             <thead class="thead-dark">
                 <tr class="table-secondary">
 
-                    <th>
-                        ID
-                    </th>
+
                     <th>
                         Name
                     </th>
 
-                    <th></th>
+                    <th>
+                        Actions
+                    </th>
                 </tr>
             </thead>
-            
+
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Id
-                    </td>
                     <td>
                         @item.Name
                     </td>
@@ -88,5 +79,15 @@
         </table>
     }
 </div>
+
+
+<br />
+<div class="text-center">
+        <a asp-action="Index" asp-controller="User" class="btn btn-warning">Back to List</a>
+        <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create New Role
+        </a>
+    </div>    
 
 
