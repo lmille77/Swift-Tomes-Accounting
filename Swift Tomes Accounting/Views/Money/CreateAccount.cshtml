@@ -1,6 +1,35 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
-<br />
+    
+<div class="sidebar-container border-dark">
+        <div>
+            <br />
+            <div class="text-center border-info">Quick Actions</div>
+            <br />
+        </div>
 
+        <ul class="sidebar-navigation">
+            <li>
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+            </li>
+            <li>
+                <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+            </li>
+            <li>
+                <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
+            </li>
+            <li>
+                <a asp-controller="Money" asp-action="Accounts" class="btn btn-info btn-outline-light">Account List</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+            </li>
+        </ul>
+</div>
+
+<br />
 <div style="width: 450px; margin: 0 auto;">
  
     <br />
@@ -45,22 +74,6 @@
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-lg-4">
-                <label>Active: </label>
-                @Html.CheckBoxFor(m => m.Active)
-            </div>
-            <div class="col-lg-4">
-                <label>Contra: </label>
-                @Html.CheckBoxFor(m => m.Contra)
-            </div>
-            <div class="col-lg-3">
-                <label>CoA: </label>
-                @Html.CheckBoxFor(m => m.ChartOfAccounts)
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-xs">
                 <input asp-for="Initial" class="form-control" placeholder="Initial Balance" />
@@ -83,13 +96,32 @@
         </div>
         <br />
 
+        <div class="form-group row">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-lg-4">
+                <label>Active: </label>
+                &nbsp;&nbsp;
+                @Html.CheckBoxFor(m => m.Active)
+            </div>
+            <div class="col-lg-4">
+                <label>Contra: </label>
+                &nbsp;&nbsp;
+                @Html.CheckBoxFor(m => m.Contra)
+            </div>
+            <div class="col-lg-3">
+                <label>CoA: </label>
+                &nbsp;&nbsp;
+                @Html.CheckBoxFor(m => m.ChartOfAccounts)
+            </div>
+        </div>
+        <br />
+
         <div class="form-group">
-            <div class=" col-md-10 offset-md-2">
+            <div class="col-md-10 offset-md-2">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
                 &nbsp;&nbsp;
                 <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
-
             </div>
         </div>
 
