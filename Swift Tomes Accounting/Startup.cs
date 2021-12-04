@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Rotativa.AspNetCore;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Models.ViewModels;
 using System;
@@ -70,6 +71,8 @@ namespace Swift_Tomes_Accounting
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            RotativaConfiguration.Setup((Microsoft.AspNetCore.Hosting.IHostingEnvironment)env);
 
             app.UseEndpoints(endpoints =>
             {

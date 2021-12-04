@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Rotativa.AspNetCore;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Helpers;
 using Swift_Tomes_Accounting.Models.ViewModels;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Swift_Tomes_Accounting.Controllers
 {
-   
+
     public class ManagerController : Controller
     {
         private IConfiguration _configuration;
@@ -197,31 +198,31 @@ namespace Swift_Tomes_Accounting.Controllers
             var userevents = _db.EventUser.ToList();
             var accountevents = _db.EventAccount.ToList();
             var journalevents = _db.EventJournal.ToList();
-            var journal_accounts =_db.Journal_Accounts.ToList();
+            var journal_accounts = _db.Journal_Accounts.ToList();
             var journal_entry = _db.Journalizes.ToList();
 
-            foreach(var journal in journalevents)
+            foreach (var journal in journalevents)
             {
                 List<Journal_Accounts> templist = new List<Journal_Accounts>();
                 foreach (var ja in journal_accounts)
                 {
-                    
-                    if(ja.JournalId == journal.journalId)
+
+                    if (ja.JournalId == journal.journalId)
                     {
                         templist.Add(ja);
                     }
                 }
                 journal.journal_accounts = templist;
-                foreach(var je in journal_entry)
+                foreach (var je in journal_entry)
                 {
-                    if(je.JournalId == journal.journalId)
+                    if (je.JournalId == journal.journalId)
                     {
                         journal.journal = je;
                     }
                 }
             }
-           
-            
+
+
 
             EventModel EventModel = new EventModel()
             {
@@ -237,11 +238,11 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpGet]
         public IActionResult ChartOfAccounts()
         {
-            var accountlist= _db.Account.ToList();
+            var accountlist = _db.Account.ToList();
             List<AccountDB> CoA_list = new List<AccountDB>();
-            foreach(var item in accountlist)
+            foreach (var item in accountlist)
             {
-                if(item.ChartOfAccounts && item.Active)
+                if (item.ChartOfAccounts && item.Active)
                 {
                     CoA_list.Add(item);
                 }
@@ -269,7 +270,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public IActionResult Report()
         {
-           
+
             return View();
 
         }
@@ -332,7 +333,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
                 var errorList = _db.ErrorTable.ToList();
-                
+
                 foreach (var item in journal.Journal_Accounts)
                 {
                     accountnames.Add(item.AccountName1);
@@ -342,18 +343,18 @@ namespace Swift_Tomes_Accounting.Controllers
                     item.CreatedOn = DateTime.Now;
                     item.docUrl = uniqueFileName;
                 }
-                foreach(var item in accountnames)
+                foreach (var item in accountnames)
                 {
                     int count = accountnames.Count(c => c == item && c != null);
-                    if(count > 1)
+                    if (count > 1)
                     {
                         accountnameError = true;
                         break;
                     }
                 }
-                for(int i = 0; i < journal.Journal_Accounts.Count(); i++)
+                for (int i = 0; i < journal.Journal_Accounts.Count(); i++)
                 {
-                    if(journal.Journal_Accounts[i].Credit <= 0 && journal.Journal_Accounts[i].Debit <= 0)
+                    if (journal.Journal_Accounts[i].Credit <= 0 && journal.Journal_Accounts[i].Debit <= 0)
                     {
                         ModelState.AddModelError("", errorList[6].Message);
                         return View(journal);
@@ -366,14 +367,14 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 if (totalcredit != totaldebit)
                 {
-                    ModelState.AddModelError("", errorList[7].Message);                    
+                    ModelState.AddModelError("", errorList[7].Message);
                     return View(journal);
                 }
-                else if(accountnameError)
+                else if (accountnameError)
                 {
-                    ModelState.AddModelError("", errorList[8].Message);                    
+                    ModelState.AddModelError("", errorList[8].Message);
                     return View(journal);
-                }                
+                }
                 _db.Journalizes.Add(journal);
                 _db.SaveChanges();
 
@@ -438,16 +439,16 @@ namespace Swift_Tomes_Accounting.Controllers
                     if (s.JournalId == j.JournalId && j.IsRejected == true)
                     {
                         s.Reason = j.Reason;
-                        
+
                     }
 
                 }
             }
-            foreach(var item in sortList)
+            foreach (var item in sortList)
             {
-                foreach(var account in accountlist)
+                foreach (var account in accountlist)
                 {
-                    if(item.AccountName1 == account.AccountName)
+                    if (item.AccountName1 == account.AccountName)
                     {
                         item.AccountNumber1 = account.AccountNumber;
                     }
@@ -522,7 +523,7 @@ namespace Swift_Tomes_Accounting.Controllers
                     counter++;
                 }
             }
-            counter ++;
+            counter++;
 
             //creates blank indicies for each account in the closing entry
             for (int i = 0; i < counter; i++)
@@ -565,7 +566,7 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult showEntryType(Journal_Accounts obj)
         {
-            
+
             var jaList = _db.Journal_Accounts.ToList();
             var jList = _db.Journalizes.ToList();
             List<Journal_Accounts> filteredResults = new List<Journal_Accounts>();
@@ -606,15 +607,15 @@ namespace Swift_Tomes_Accounting.Controllers
             }
             else
             {
-                foreach(var item in jaList)
+                foreach (var item in jaList)
                 {
-                    if(item.Type == obj.SelectedType)
+                    if (item.Type == obj.SelectedType)
                     {
                         filteredResults.Add(item);
                     }
                 }
                 return View("JournalIndex", filteredResults);
-            }            
+            }
 
         }
 
@@ -625,9 +626,9 @@ namespace Swift_Tomes_Accounting.Controllers
             List<Journal_Accounts> selected_accounts = new List<Journal_Accounts>();
             var jList = _db.Journalizes.ToList();
 
-            foreach(var s in all_accounts)
+            foreach (var s in all_accounts)
             {
-                if(s.JournalId == id)
+                if (s.JournalId == id)
                 {
                     selected_accounts.Add(s);
                 }
@@ -816,12 +817,12 @@ namespace Swift_Tomes_Accounting.Controllers
                 EventAccount = select_account
             };
             return View(eventlist);
-        }      
+        }
 
         public IActionResult Pending()
         {
             var all_entries = _db.Journalizes.ToList();
-            
+
 
             List<Journalize> unapproved_entries = new List<Journalize>();
             foreach (var entry in all_entries)
@@ -838,12 +839,12 @@ namespace Swift_Tomes_Accounting.Controllers
         public IActionResult DeleteEntry(int JournalId)
         {
             var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
-          
+
             if (objFromdb == null)
             {
                 return NotFound();
             }
-           
+
             _db.Journalizes.Remove(objFromdb);
             _db.SaveChanges();
             TempData[SD.Success] = "User rejected succesfully";
@@ -853,9 +854,9 @@ namespace Swift_Tomes_Accounting.Controllers
         [HttpPost]
         public IActionResult ApproveEntry(int JournalId)
         {
-            
+
             var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
-            if(objFromdb.isCJE)
+            if (objFromdb.isCJE)
             {
                 var accounts = _db.Account.ToList();
                 double total = 0;
@@ -869,7 +870,7 @@ namespace Swift_Tomes_Accounting.Controllers
                         total += item.Balance;
                         expense_total += item.Balance;
                         item.Balance -= item.Balance;
-                        
+
                     }
                     if (item.Category == "Revenue" && item.ChartOfAccounts)
                     {
@@ -877,7 +878,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
                     }
                 }
-                
+
                 var RetainedEarnings = _db.Account.Where(u => u.AccountName == "Retained Earnings").Select(u => u).FirstOrDefault();
                 var ServiceRevenue = _db.Account.Where(u => u.AccountName == "Service Revenue").Select(u => u).FirstOrDefault();
 
@@ -988,15 +989,15 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
 
-            
+
         }
 
         [HttpGet]
         public IActionResult DenyEntry(int? JournalId)
         {
-         
-            var objFromdb = _db.Journalizes.FirstOrDefault(u=>u.JournalId==JournalId);
-           
+
+            var objFromdb = _db.Journalizes.FirstOrDefault(u => u.JournalId == JournalId);
+
 
 
             return View(objFromdb);
@@ -1008,11 +1009,11 @@ namespace Swift_Tomes_Accounting.Controllers
 
             if (ModelState.IsValid)
             {
-              
-                
+
+
                 var objFromDb = _db.Journalizes.FirstOrDefault(u => u.JournalId == Journal.JournalId);
-                
-                if(objFromDb.IsRejected == false)
+
+                if (objFromDb.IsRejected == false)
                 {
                     objFromDb.Reason = Journal.Reason;
                     objFromDb.IsRejected = true;
@@ -1030,9 +1031,9 @@ namespace Swift_Tomes_Accounting.Controllers
                     _db.EventJournal.Add(new_entry);
                     _db.SaveChanges();
                     TempData[SD.Success] = "Entry has been denied.";
-  
+
                 }
-               
+
 
                 var JA = _db.Journal_Accounts.ToList();
 
@@ -1043,22 +1044,22 @@ namespace Swift_Tomes_Accounting.Controllers
                         r.IsRejected = true;
                     }
                 }
-                
+
                 _db.SaveChanges();
 
                 return RedirectToAction("JournalIndex", "Manager");
             }
             return View(Journal);
-        }      
+        }
 
-       public FileResult DownloadFile(int? id)
+        public FileResult DownloadFile(int? id)
         {
             var jList = _db.Journalizes.ToList();
 
             string fileName = "";
             foreach (var item in jList)
             {
-                if(item.JournalId == id)
+                if (item.JournalId == id)
                 {
                     fileName = item.docUrl;
                 }
@@ -1179,10 +1180,10 @@ namespace Swift_Tomes_Accounting.Controllers
 
 
             List<AccountDB> accounts = new List<AccountDB>();
-            
-            foreach(var item in list)
+
+            foreach (var item in list)
             {
-                if(item.Statement == "Income Statement" && item.Balance > 0)
+                if (item.Statement == "Income Statement" && item.Balance > 0)
                 {
                     accounts.Add(item);
 
@@ -1214,7 +1215,15 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(income);
         }
 
-        public IActionResult BalanceSheet()
+
+        public IActionResult IncomeStatementPDF()
+        {
+            return new ViewAsPdf("IncomeStatementPDF");
+        }
+
+
+
+            public IActionResult BalanceSheet()
         {
             var list = _db.Account.ToList();
             double totalAs = 0;
@@ -1320,7 +1329,16 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(balance);
         }
 
-        public IActionResult TrialBalance()
+        public IActionResult BalanceSheetPDF()
+        {
+            return new ViewAsPdf("BalanceSheetPDF");
+
+        }
+
+
+
+
+            public IActionResult TrialBalance()
         {
             var list = _db.Account.ToList();
             double totalDebit = 0;
@@ -1340,14 +1358,14 @@ namespace Swift_Tomes_Accounting.Controllers
                     accounts.Add(item);
 
                     if (item.NormSide == "Left")
-                    {      
-                            totalDebit += item.Balance;
+                    {
+                        totalDebit += item.Balance;
                     }
 
                     if (item.NormSide == "Right")
                     {
                         totalCredit += item.Balance;
-                       
+
                     }
 
                 }
@@ -1382,8 +1400,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
             return View(trial);
         }
-    
-        public IActionResult RetainedEarnings()
+
+
+        public IActionResult TrialBalancePDF()
+        {
+            return new ViewAsPdf("TrialBalancePDF");
+
+        }
+
+
+
+            public IActionResult RetainedEarnings()
         {
             var list = _db.Account.ToList();
             double beginRE = 0;
@@ -1440,6 +1467,12 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(earnings);
         }
 
+
+        public IActionResult RetainedEarningsPDF()
+        {
+
+            return new ViewAsPdf("RetainedEarningsPDF");
+        }
     }
 }
 
