@@ -16,6 +16,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="6.12.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.13" />
   </ItemGroup>
@@ -28,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\uploads\" />
     <Folder Include="wwwroot\uploads\" />

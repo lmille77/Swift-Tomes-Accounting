@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Rotativa.AspNetCore;
 using Swift_Tomes_Accounting.Data;
 using Swift_Tomes_Accounting.Helpers;
 using Swift_Tomes_Accounting.Models.ViewModels;
@@ -931,6 +932,13 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(income);
         }
 
+        public IActionResult IncomeStatementPDF()
+        {
+            return new ViewAsPdf("IncomeStatementPDF");
+        }
+
+
+
         public IActionResult BalanceSheet()
         {
             var list = _db.Account.ToList();
@@ -1037,6 +1045,15 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(balance);
         }
 
+
+        public IActionResult BalanceSheetPDF()
+        {
+            return new ViewAsPdf("BalanceSheetPDF");
+
+        }
+
+
+
         public IActionResult TrialBalance()
         {
             var list = _db.Account.ToList();
@@ -1098,6 +1115,13 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(trial);
         }
 
+        public IActionResult TrialBalancePDF()
+        {
+            return new ViewAsPdf("TrialBalancePDF");
+
+        }
+
+
         public IActionResult RetainedEarnings()
         {
             var list = _db.Account.ToList();
@@ -1155,6 +1179,10 @@ namespace Swift_Tomes_Accounting.Controllers
             return View(earnings);
         }
 
+        public IActionResult RetainedEarningsPDF()
+        {
 
+            return new ViewAsPdf("RetainedEarningsPDF");
+        }
     }
 }

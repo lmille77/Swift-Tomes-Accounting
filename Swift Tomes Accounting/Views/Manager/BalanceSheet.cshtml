@@ -1,7 +1,8 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.BalanceSheet
-@{ 
+@{
     var net = Model.TotalLi + Model.TotalEQ;
 }
+
 
 <div class="p-4 border w-100">
     <div class="text-center p-1 border w-125">
@@ -40,7 +41,7 @@
                                 @if (item.Contra)
                                 {
                                     <label>(</label>
-                                    @item.Balance.ToString("C") 
+                                    @item.Balance.ToString("C")
                                     <label>)</label>
                                 }
                                 else
@@ -99,9 +100,9 @@
                 }
 
                 <tr class="table-secondary">
-                     <td class="font-weight-bold">
+                    <td class="font-weight-bold">
                         Total Liabilities
-                     </td>
+                    </td>
                     <td style="text-align: right; text-decoration: underline">
                         @Model.TotalLi.ToString("C")
                     </td>
@@ -126,14 +127,14 @@
                                 <text> &nbsp; &nbsp;</text> @item.AccountName
                             </td>
                             <td style="text-align:right; ">
-                               @if (item.Contra)
-                               {
-                                    @item.Balance.ToString("("+"C"+")")
-                               }
-                               else
-                               {
+                                @if (item.Contra)
+                                {
+                                    @item.Balance.ToString("(" + "C" + ")")
+                                }
+                                else
+                                {
                                     @item.Balance.ToString("C")
-                               }
+                                }
                             </td>
                         }
                     </tr>
@@ -147,7 +148,7 @@
                         @Model.EndRE.ToString("C")
                     </td>
                 </tr>
-                
+
                 <tr class="table-secondary">
                     <td class="font-weight-bold">
                         Total Equity
@@ -173,6 +174,10 @@
             </tbody>
         </table>
     </div>
+</div>
+<br />
+<div style="text-align:right">
+    <a asp-action="BalanceSheetPDF" class="btn btn-danger btn-lg ">PDF</a>
 </div>
 
 
