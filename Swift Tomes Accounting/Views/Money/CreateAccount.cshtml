@@ -29,17 +29,14 @@
         </ul>
 </div>
 
+<h2 class="text-center">Add Account</h2>
 <br />
-<div style="width: 450px; margin: 0 auto;">
- 
-    <br />
-    <h2 class="text-center">Add Account</h2>
+<div id="centerform1">    
     <hr />
     <form method="post" asp-action="CreateAccount" asp-controller="Money">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-lg-6">
                 <select asp-for="Category" class="form-control">
                     <option disabled selected>Select Account Type</option>
                     <option value="Asset">Asset</option>
@@ -60,22 +57,21 @@
         <br />
         <div class="form-group row">
             <div class="input-group">
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div>&nbsp;&nbsp;&nbsp;</div>
                 <label typeof="input-group-text" class="input-group-prepend; " id="AcNum">
                 </label>
-                <div class="col-xs">
+                <div class="col-xs-2" style="width:190px">
                     <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />
                 </div>
-
-                <div class="col-lg-6">
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="col-lg-7">
                     <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
                 </div>
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-lg-6">
                 <input asp-for="Initial" class="form-control" placeholder="Initial Balance" />
             </div>
 
@@ -85,8 +81,7 @@
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs">
+            <div class="col-lg-6">
                 <input asp-for="Description" class="form-control" placeholder="Description" />
             </div>
 
@@ -97,33 +92,27 @@
         <br />
 
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <div class="col-lg-4">
                 <label>Active: </label>
-                &nbsp;&nbsp;
                 @Html.CheckBoxFor(m => m.Active)
             </div>
             <div class="col-lg-4">
                 <label>Contra: </label>
-                &nbsp;&nbsp;
                 @Html.CheckBoxFor(m => m.Contra)
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <label>CoA: </label>
-                &nbsp;&nbsp;
                 @Html.CheckBoxFor(m => m.ChartOfAccounts)
             </div>
         </div>
         <br />
 
-        <div class="form-group">
-            <div class="col-md-10 offset-md-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
-                &nbsp;&nbsp;
-                <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
-            </div>
+        <div class="text-center">
+            <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
+            <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
         </div>
+            
+        
 
         <script>
             $("#Category").on("change", function () {
