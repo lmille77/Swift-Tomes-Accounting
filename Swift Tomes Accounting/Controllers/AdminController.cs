@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Swift_Tomes_Accounting.Controllers
 {
@@ -20,7 +21,7 @@ namespace Swift_Tomes_Accounting.Controllers
         //variables used to host email service
         private IConfiguration _configuration;
         private IWebHostEnvironment _webHostEnvironment;
-
+        private readonly IEmailSender _emailsender;
 
         private readonly ApplicationDbContext _db;
 
@@ -31,7 +32,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public AdminController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
-         IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+         IConfiguration configuration, IWebHostEnvironment webHostEnvironment, IEmailSender emailsender)
         {
             _db = db;
             _userManager = userManager;
@@ -39,6 +40,7 @@ namespace Swift_Tomes_Accounting.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+            _emailsender = emailsender;
         }
 
         public IActionResult Index()
@@ -170,7 +172,7 @@ namespace Swift_Tomes_Accounting.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Send(Message obj, IFormFile[] attachments)
+        public async Task<IActionResult> Send(Message obj, IFormFile[] attachments)
         {
             var toEmail = obj.ToEmail;
             var subject = obj.Subject;
@@ -190,7 +192,8 @@ namespace Swift_Tomes_Accounting.Controllers
                     fileNames.Add(path);
                 }
             }
-            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body, fileNames);            
+            
+            await _emailsender.SendEmailAsync(toEmail, subject, body);
             return RedirectToAction("Index","Admin");
         }
         

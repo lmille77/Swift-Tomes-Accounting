@@ -96,6 +96,15 @@
     border-color: black;
 }
 
+#centerform0 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    padding: 20px;
+    border: 1px solid;
+    border-color: black;
+}
+
 
 #centerform1 {
     margin-left: auto;
@@ -108,7 +117,7 @@
 
 #AcNum {
     position: absolute;
-    left: 40px;
+    left: 17px;
     top: 50%;
     transform: translateY(-50%)
 }
