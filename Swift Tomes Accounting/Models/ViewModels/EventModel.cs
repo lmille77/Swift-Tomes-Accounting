@@ -9,6 +9,7 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
         public IEnumerable<EventUser> EventUser { get; set; }
         public IEnumerable<EventAccount> EventAccount { get; set; }
+        public IEnumerable<EventJournal> EventJournal{ get; set; }
 
     }
 }

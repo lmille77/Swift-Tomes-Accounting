@@ -194,7 +194,6 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("NormSide")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
@@ -315,6 +314,21 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.ErrorTable", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ErrorTable");
+                });
+
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventAccount", b =>
                 {
                     b.Property<int>("eventID")
@@ -432,6 +446,39 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.ToTable("EventAccount");
                 });
 
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventJournal", b =>
+                {
+                    b.Property<int>("eventID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("eventPerformedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("eventTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("eventType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isDenied")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("journalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("eventID");
+
+                    b.ToTable("EventJournal");
+                });
+
             modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.EventUser", b =>
                 {
                     b.Property<int>("eventID")
@@ -495,6 +542,83 @@ namespace Swift_Tomes_Accounting.Migrations
                     b.ToTable("EventUser");
                 });
 
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", b =>
+                {
+                    b.Property<int>("JAId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccountName1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountName2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Credit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Debit")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("JournalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("JAId");
+
+                    b.HasIndex("JournalId");
+
+                    b.ToTable("Journal_Accounts");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
+                {
+                    b.Property<int>("JournalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("docUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isCJE")
+                        .HasColumnType("bit");
+
+                    b.HasKey("JournalId");
+
+                    b.ToTable("Journalizes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -544,6 +668,22 @@ namespace Swift_Tomes_Accounting.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journal_Accounts", b =>
+                {
+                    b.HasOne("Swift_Tomes_Accounting.Models.ViewModels.Journalize", "Journalize")
+                        .WithMany("Journal_Accounts")
+                        .HasForeignKey("JournalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Journalize");
+                });
+
+            modelBuilder.Entity("Swift_Tomes_Accounting.Models.ViewModels.Journalize", b =>
+                {
+                    b.Navigation("Journal_Accounts");
                 });
 #pragma warning restore 612, 618
         }

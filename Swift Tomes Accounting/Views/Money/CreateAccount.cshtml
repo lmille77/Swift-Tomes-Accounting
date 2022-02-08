@@ -1,146 +1,144 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.AccountDB
-<br />
+    
+<div class="sidebar-container border-dark">
+        <div>
+            <br />
+            <div class="text-center border-info">Quick Actions</div>
+            <br />
+        </div>
 
-<div style="border: 1px solid; border-color: lightgray; width: 550px; margin: 0 auto;">
-    <br />
-    <div class="text-center">
-        <img src="~/frontend/STLogo.png" alt=”Image” style="width:50px; height:50px">
-    </div>
-    <br />
-    <h4 class="text-center">Add an Account</h4>
-    <br />
+        <ul class="sidebar-navigation">
+            <li>
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+            </li>
+            <li>
+                <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+            </li>
+            <li>
+                <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
+            </li>
+            <li>
+                <a asp-controller="Money" asp-action="Accounts" class="btn btn-info btn-outline-light">Account List</a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+            </li>
+        </ul>
+</div>
+
+<h2 class="text-center">Add Account</h2>
+<br />
+<div id="centerform1">    
+    <hr />
     <form method="post" asp-action="CreateAccount" asp-controller="Money">
         <div asp-validation-summary="All" class="text-danger"></div>
-
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-xs-2">
-                <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
-                <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-            <div>&nbsp;</div>
-            <div class="col-xs-2">
-                <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" />
-                <span asp-validation-for="AccountNumber" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Description" class="form-control" placeholder="Description" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <select asp-for="NormSide" class="form-control">
-                    <option disabled>--Select a Normal Side--</option>
-                    <option>Left</option>
-                    <option>Right</option>
-                </select>
-                <span asp-validation-for="NormSide" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+            <div class="col-lg-6">
                 <select asp-for="Category" class="form-control">
-                    <option disabled>--Select an Account Type--</option>
+                    <option disabled selected>Select Account Type</option>
                     <option value="Asset">Asset</option>
-                    <option>Expenses</option>
+                    <option value="Expenses">Expenses</option>
                     <option value="Liability">Liability</option>
-                    <option>Equity</option>
-                    <option>Revenue</option>
+                    <option value="Equity">Equity</option>
+                    <option value="Revenue">Revenue</option>
                 </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
+            <div class="col-lg-6" id="SubCategoryDropDown">
                 <select asp-for="SubCategory" class="form-control">
                     <option disabled>--Select a Sub-Type--</option>
                     <option>Current</option>
                     <option>Long-Term</option>
                 </select>
-                <span asp-validation-for="SubCategory" class="text-danger"></span>
             </div>
         </div>
         <br />
         <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <label>Active Account: </label>
+            <div class="input-group">
+                <div>&nbsp;&nbsp;&nbsp;</div>
+                <label typeof="input-group-text" class="input-group-prepend; " id="AcNum">
+                </label>
+                <div class="col-xs-2" style="width:190px">
+                    <input asp-for="AccountNumber" class="form-control" placeholder="Account Number" aria-describedby="AcNum" />
+                </div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="col-lg-7">
+                    <input asp-for="AccountName" class="form-control" placeholder="Account Name" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <input asp-for="Initial" class="form-control" placeholder="Initial Balance" />
+            </div>
+
+            <div class="col-lg-6">
+                <input asp-for="Order" class="form-control" placeholder="Liquidity Order" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+            </div>
+
+            <div class="col-lg-6">
+                <input asp-for="Comments" class="form-control" placeholder="Comments" />
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group row">
+            <div class="col-lg-4">
+                <label>Active: </label>
                 @Html.CheckBoxFor(m => m.Active)
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <label>Contra Account: </label>
+            </div>
+            <div class="col-lg-4">
+                <label>Contra: </label>
                 @Html.CheckBoxFor(m => m.Contra)
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <label>Chart of Accounts: </label>
+            </div>
+            <div class="col-lg-4">
+                <label>CoA: </label>
                 @Html.CheckBoxFor(m => m.ChartOfAccounts)
             </div>
         </div>
         <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Initial" class="form-control" placeholder="Initial Balance" />
-                <span asp-validation-for="Initial" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Balance" class="form-control" placeholder="Total Balance" />
-                <span asp-validation-for="Balance" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Order" class="form-control" placeholder="Liquidity Order" />
-                <span asp-validation-for="Order" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Statement" class="form-control" placeholder="Statement" />
-                <span asp-validation-for="Statement" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
-        <div class="form-group row">
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-md-8">
-                <input asp-for="Comments" class="form-control" placeholder="Comments" />
-                <span asp-validation-for="Comments" class="text-danger"></span>
-            </div>
-        </div>
-        <br />
 
-        <div class="form-group">
-            <div class=" col-md-10 offset-md-2">
-                <input type="submit" value="Create Account" class=" btn btn-outline-primary fa-align-center" />
-                <a asp-action="ChartOfAccounts" class="btn btn-success w-25">Back</a>
-            </div>
+        <div class="text-center">
+            <a asp-action="Accounts" class="btn btn-warning w-25">Back</a>
+            <input type="submit" value="Create Account" class=" btn btn-success fa-align-center" />
         </div>
+            
+        
 
         <script>
             $("#Category").on("change", function () {
                 if (($("#Category option:selected").val() == "Asset") || ($("#Category option:selected").val() == "Liability")) {
-                    $("#SubCategory").show();
+                    document.getElementById('SubCategoryDropDown').style.visibility = "visible";
                 } else {
-                    $("#SubCategory").hide();
+                    document.getElementById('SubCategoryDropDown').style.visibility = "hidden";
                 }
+
+                if ($("#Category option:selected").val() == "Asset") {
+                    document.getElementById('AcNum').textContent = 1;
+                }
+                else if ($("#Category option:selected").val() == "Expenses") {
+                    document.getElementById('AcNum').textContent = 5;
+                }
+                else if ($("#Category option:selected").val() == "Liability") {
+                    document.getElementById('AcNum').textContent = 2;
+                }
+                else if ($("#Category option:selected").val() == "Equity") {
+                    document.getElementById('AcNum').textContent = 3;
+                }
+                else if ($("#Category option:selected").val() == "Revenue") {
+                    document.getElementById('AcNum').textContent = 4;
+                }
+
+                document.getElementById('AccountNumber').placeholder = "";
             });
         </script>
 

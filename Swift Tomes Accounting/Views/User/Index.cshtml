@@ -1,33 +1,12 @@
 ﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+<h2 class="text-center">User List</h2>
 
-<br />
-<h2 class="text-center" style="margin-left:50px">User List</h2>
 
-<div style="margin-left: 350px; width:460px;border: 1px solid; border-color: lightgray;">
-    <div class="form-group row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px">
-        <a asp-action="Create" asp-controller="User"class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Create a New User">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            Create User
-        </a>
-        <div>&nbsp;&nbsp;</div>
-        <a asp-action="Index" asp-controller="Roles" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add, Edit,and Create Roles">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            Role List
-        </a>
-        <div>&nbsp;&nbsp;</div>
-        <a asp-action="Index" asp-controller="ExpiredPass" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="View all Users with Expired Passwords">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            Expired Password List
-        </a>
-    </div>
-
-</div>
-<br />
 
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center border-info">Quick Actions</div>
+        <div class="text-center">Quick Actions</div>
         <br />
     </div>
 
@@ -42,39 +21,36 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">User Management</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
-        </li>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
+        </li>     
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
     </ul>
 </div>
-<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
+<div class="p-4 border w-100">
     @if (Model.Count() > 0)
     {
         <table class="table table-striped border">
-            <tr class="table-secondary">
+            <thead class="table-dark">
+                <tr>
 
-                <th>
-                    Email
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Role
-                </th>
-                <th></th>
-            </tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            
             @foreach (var item in Model)
             {
                 @if (item.isApproved)
@@ -135,6 +111,26 @@
     }
 
 </div>
+<br />
+<div class="border col-lg-5 mx-auto">
+    <div class="form-group row justify-content-center" style="padding-top:15px">
+        <a asp-action="Create" asp-controller="User" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Create a New User">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create New User
+        </a>
+        <div>&nbsp;</div>
+        <a asp-action="Index" asp-controller="Roles" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add, Edit,and Create Roles">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Roles
+        </a>
+        <div>&nbsp;</div>
+        <a asp-action="ExpiredPass" asp-controller="Admin" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="View all Users with Expired Passwords">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Expired Passwords
+        </a>
+    </div>
+</div>
+<br />
 
 <script>
     $(document).ready(function () {

@@ -2,12 +2,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Rotativa.AspNetCore;
 using Swift_Tomes_Accounting.Data;
+using Swift_Tomes_Accounting.DbInitialize;
 using Swift_Tomes_Accounting.Models.ViewModels;
+using Swift_Tomes_Accounting.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +31,13 @@ namespace Swift_Tomes_Accounting
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IDbInitializer, DbInitialize.DbInitialize>(); 
             services.Configure<IdentityOptions>(opt =>
             {
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
@@ -46,11 +53,12 @@ namespace Swift_Tomes_Accounting
                 opt.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Home/Accessdenied");
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        [Obsolete]
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbinitializer)
         {
             if (env.IsDevelopment())
             {
@@ -68,6 +76,9 @@ namespace Swift_Tomes_Accounting
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            dbinitializer.initialize();
+            RotativaConfiguration.Setup((Microsoft.AspNetCore.Hosting.IHostingEnvironment)env);
 
             app.UseEndpoints(endpoints =>
             {

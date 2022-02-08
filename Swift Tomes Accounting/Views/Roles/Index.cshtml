@@ -1,20 +1,14 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<br />
-<h2 class="text-center" style="margin-left:50px">Roles List</h2>
+<h2 class="text-center">Roles List</h2>
 
-<br />
-<div>
-    <div class="text-center" style="margin-left:50px">
-        <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary"> Create New Role</a>
-    </div>
-</div>
+
 <br />
 
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center border-info">Quick Actions</div>
+        <div class="text-center">Quick Actions</div>
         <br />
     </div>
 
@@ -29,10 +23,10 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">Users List</a>
-        </li>       
+            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">User Management</a>
+        </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
         </li>
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
@@ -41,27 +35,26 @@
 </div>
 
 
-<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
+<div id="centerform">
     @if (Model.Any())
     {
         <table class="table table-striped border">
-            <tr class="table-secondary">
+            <thead class="thead-dark">
+                <tr class="table-secondary">
 
-                <th>
-                    ID
-                </th>
-                <th>
-                    Name
-                </th>
+                    <th>
+                        Name
+                    </th>
 
-                <th></th>
-            </tr>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Id
-                    </td>
                     <td>
                         @item.Name
                     </td>
@@ -85,5 +78,16 @@
         </table>
     }
 </div>
+
+
+<br />
+<div class="text-center" style="margin:0 auto">
+        <a asp-action="Index" asp-controller="User" class="btn btn-warning">Back to List</a>
+        &nbsp;
+        <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create New Role
+        </a>
+    </div>    
 
 

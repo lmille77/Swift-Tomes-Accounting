@@ -1,50 +1,43 @@
 ﻿@model Swift_Tomes_Accounting.Models.ViewModels.Message
 <br />
-<h2 class="text-center" style="margin-left:75px">Message User</h2>
+<h2 class="text-center">Message User</h2>
 <br />
 <div class="sidebar-container border-dark">
-<div>
-    <br />
-    <div class="text-center border-info">Quick Actions</div>
-    <br />
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-info btn-outline-light">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
+        </li>
+        <li>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+    </ul>
 </div>
 
-<ul class="sidebar-navigation">
-    <li>
-        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
-    </li>
-    <li>
-        <a asp-controller="Admin" asp-action="Send" class="btn btn-info btn-outline-light">Send Message </a>
-    </li>
-    <li>
-        <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
-    </li>
-    <li>
-        <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
-    </li>
-    <li>
-        <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
-    </li>
-    <li>
-        <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-    </li>
-    <li>
-        <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
-    </li>
-    <li>
-        <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
-    </li>
-</ul>
-</div>
+<div id="centerform">
 
-<div style="width: 600px; margin-left:300px; padding-left: 50px; border: 1px solid; border-color: black;">
-
-
-    <form id="message" method="post" asp-action="Send" asp-controller="Admin">
+    <form id="message" method="post" enctype="multipart/form-data" asp-action="Send" asp-controller="Admin">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="ToEmail">To: </label>
-            <div style="width:500px">
+            <div>
                 <select asp-for="ToEmail" asp-items="@ViewBag.Users" class="form-control">
                     <option disabled selected>--Select User Email--</option>
                 </select>
@@ -53,20 +46,26 @@
         </div>
         <div class="form-group">
             <label asp-for="Subject">Subject:</label>
-            <div style="width:500px">
+            <div>
                 <input asp-for="Subject" class="form-control" />
                 <span asp-validation-for="Subject" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Body">Body:</label>
-            <div style="width:500px">
+            <div>
                 <textarea asp-for="Body" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Body" class="text-danger"></span>
             </div>
         </div>
+        <div>
+            <label>Attachments: </label>
+            <div>
+                <input type="file" name="attachments" multiple="multiple" />
+            </div>
+        </div>
         <div class="form-group">
-            <div class=" col-md-10 offset-md-2">
+            <div class="text-center">
                 <input type="submit" value="Send" class=" btn btn-primary" />
             </div>
         </div>

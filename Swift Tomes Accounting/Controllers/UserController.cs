@@ -65,6 +65,7 @@ namespace NewSwift.Controllers
         {
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
+            var errorList = _db.ErrorTable.ToList();
 
             if (ModelState.IsValid)
             {
@@ -120,7 +121,7 @@ namespace NewSwift.Controllers
                         "Please create your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
 
                     var mailHelper = new MailHelper(_configuration);
-                    mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+                    mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body, null);
 
                     
                     await _userManager.AddToRoleAsync(user, obj.Role);
@@ -130,7 +131,7 @@ namespace NewSwift.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "An account with the entered email already exists.");
+                    ModelState.AddModelError("", errorList[4].Message);
                 }
 
             }

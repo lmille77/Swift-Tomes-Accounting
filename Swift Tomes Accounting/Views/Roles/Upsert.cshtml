@@ -2,63 +2,89 @@
 @{
     var title = "Create Role";
 }
+@if (Model != null && !String.IsNullOrEmpty(Model.Id))
+{
+    title = "Edit Role";
+    <input asp-for="@Model.Id" hidden />
+}
+
+<h2 class="text-center">@title</h2>
+<br />
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+        <li>
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
+        </li>
+        <li>
+            <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-dark btn-outline-info">Pending Approval</a>
+        </li>
+        <li>
+            <a asp-controller="User" asp-action="Index" class="btn btn-info btn-outline-light">User Management</a>
+        </li>
+        <li>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
+        </li>
+        <li>
+            <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+    </ul>
+</div>
 
 <form method="post">
-    @if (Model != null && !String.IsNullOrEmpty(Model.Id))
-    {
-        title = "Edit Role";
-        <input asp-for="@Model.Id" hidden />
-    }
-
-    <div class="border p-3 bg-white">
+    <div id="centerform">
+        <div class="col-8">
+            <div class="form-group row py-2">
+                <div class="col-4">
+                    <label asp-for="Id" hidden></label>
+                </div>
+                <div class="col-8">
+                    <label asp-for="Id" hidden></label>
+                    <input asp-for="Id" hidden />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-12">
+                <label asp-for="Name">Role Name:</label>
+            </div>
+        </div>
         <div class="form-group row">
-            <h2 class="text-info pl-3">@title</h2>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="form-group row py-2">
-                    <div class="col-4">
-                        <label asp-for="Id"></label>
 
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Id" readonly class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="form-group row py-2">
-                    <div class="col-4">
-                        <label asp-for="Name"></label>
-
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Name" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="form-group row py-2">
-                    <div class="col-8 offset-4 row">
-                        <div class="col">
-                            @if (Model != null && !String.IsNullOrEmpty(Model.Id))
-                            {
-                                //update
-                                <input type="submit" class="btn btn-info w-100" value="Update" />
-                            }
-                            else
-                            {
-                                //create
-                                <input type="submit" class="btn btn-primary w-100" value="Create" />
-                            }
-                        </div>
-                        <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100">Back</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-12">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
+        <br />
+
+        <div class="text-center">
+            @if (Model != null && !String.IsNullOrEmpty(Model.Id))
+            {
+                //update
+                <input type="submit" class="btn btn-info" value="Update" />
+            }
+            else
+            {
+                //create
+                <input type="submit" class="btn btn-primary" value="Create Role" />
+            }
+        </div>
+        <br />
+        <div class="text-center">
+            <a asp-action="Index">Go Back</a>
+        </div>
+        <br />
+
     </div>
+
 </form>

@@ -1,24 +1,26 @@
 ﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
 <br />
-<h2 style="margin-left:50px"class="text-center">Unapproved User List</h2>
+<h2 class="text-center">Unapproved User List</h2>
 
-<div class="p-4 border rounded" style="width: 900px; margin-left:175px;">
-    @if (Model.Count() > 0)
-    {
+<div class="p-4 border rounded w-100">
+   
         <table class="table table-striped border">
-            <tr class="table-secondary">
+            <thead class="thead-dark">
+                <tr>
 
-                <th>
-                    Email
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Role
-                </th>
-                <th></th>
-            </tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            
             @foreach (var item in Model)
             {
                 @if (item.isApproved == false)
@@ -68,13 +70,13 @@
                 }
             }
         </table>
-    }
+    
 </div>
 <br />
 <div class="sidebar-container border-dark">
     <div>
         <br />
-        <div class="text-center border-info">Quick Actions</div>
+        <div class="text-center">Quick Actions</div>
         <br />
     </div>
 
@@ -89,23 +91,16 @@
             <a asp-controller="UnapprovedUsers" asp-action="Index" class="btn btn-info btn-outline-light">Pending Approval</a>
         </li>
         <li>
-            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">Users List</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-dark btn-outline-info">User Management</a>
         </li>
         <li>
-            <a asp-controller="Money" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
-        </li>
-        <li>
-            <a asp-controller="Admin" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
-        </li>
+            <a asp-controller="Money" asp-action="Accounts" class="btn btn-dark btn-outline-info">Account List</a>
+        </li>       
         <li>
             <a asp-controller="Admin" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
         </li>
     </ul>
 </div>
-
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();

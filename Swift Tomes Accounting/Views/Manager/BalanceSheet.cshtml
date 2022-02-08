@@ -1,0 +1,222 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.BalanceSheet
+@{
+    var net = Model.TotalLi + Model.TotalEQ;
+}
+
+
+<div class="p-4 border w-100">
+    <div class="text-center p-1 border w-125">
+        <h2>Addams & Family Inc</h2>
+        <h2>Balance Sheet</h2>
+        <h2>As of @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+    </div>
+    <br />
+    <br />
+
+
+    <div>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>
+                        Assets
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Accounts)
+                {
+
+                    <tr>
+
+                        @if (item.Category == "Asset")
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td style="text-align:right">
+                                @if (item.Contra)
+                                {
+                                    <label>(</label>
+                                    @item.Balance.ToString("C")
+                                    <label>)</label>
+                                }
+                                else
+                                {
+                                    @item.Balance.ToString("C")
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Total Assets
+                    </td>
+                    <td style="text-align:right; text-decoration: underline">
+                        @Model.TotalAs.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+
+                    <th class="font-weight-bold">
+                        Liabilities
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+                @foreach (var item in Model.Accounts)
+                {
+                    <tr>
+
+                        @if (item.Category == "Liability")
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td style="text-align:right">
+                                @if (item.Contra)
+                                {
+                                    @item.Balance.ToString("(" + "C" + ")")
+                                }
+                                else
+                                {
+                                    @item.Balance.ToString("C")
+                                }
+                            </td>
+                        }
+                    </tr>
+
+                }
+
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Total Liabilities
+                    </td>
+                    <td style="text-align: right; text-decoration: underline">
+                        @Model.TotalLi.ToString("C")
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <th class="font-weight-bold">
+                        Equity
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+                @foreach (var item in Model.Accounts)
+                {
+                    <tr>
+
+                        @if (item.Category == "Equity")
+                        {
+                            <td>
+                                <text> &nbsp; &nbsp;</text> @item.AccountName
+                            </td>
+                            <td style="text-align:right; ">
+                                @if (item.Contra)
+                                {
+                                    @item.Balance.ToString("(" + "C" + ")")
+                                }
+                                else
+                                {
+                                    @item.Balance.ToString("C")
+                                }
+                            </td>
+                        }
+                    </tr>
+
+                }
+                <tr>
+                    <td>
+                        <text> &nbsp; &nbsp;</text> Retained Earnings
+                    </td>
+                    <td style="text-align:right">
+                        @Model.EndRE.ToString("C")
+                    </td>
+                </tr>
+
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Total Equity
+                    </td>
+                    <td style="text-align:right; text-decoration: underline">
+                        @Model.TotalEQ.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr class="table-secondary">
+                    <td class="font-weight-bold">
+                        Total Liabilities and Owner's Equity
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                        @net.ToString("C")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<div style="text-align:right">
+    <a asp-action="BalanceSheetPDF" class="btn btn-danger btn-lg" style="width: 150px">PDF</a>
+</div>
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Manager" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-info btn-outline-light">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+
+    </ul>
+</div>

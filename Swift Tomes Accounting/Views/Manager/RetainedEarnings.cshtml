@@ -1,0 +1,138 @@
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.RetainedEarnings
+@{
+    var today = DateTime.Today;
+    DateTime begin = new DateTime(today.Year, today.Month, 1);
+    double num = Model.BeginRE + Model.NetInc;
+}
+
+
+
+<div class="p-4 border w-100">
+    <div class="text-center p-1 border w-125">
+        <h2>Addams & Family Inc</h2>
+        <h2>Retained Earnings</h2>
+        <h2>For the period ending on @DateTime.Now.ToString("MMMM dd, yyyy")</h2>
+    </div>
+    <br />
+    <br />
+
+
+    <div>
+        <table class="table table-borderless">
+            <tbody>
+
+                <tr>
+                    <td>
+                        Retained Earnings, Beginning
+                    </td>
+                    <td style="text-align:right">
+                        @Model.BeginRE.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Add: Net Income
+                    </td>
+                    <td style="text-align:right; text-decoration-line: underline">
+                        @Model.NetInc.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <text> &nbsp; &nbsp;</text> Total
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline">
+                        @num.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Less: Dividends
+                    </td>
+                    <td style="text-align:right; text-decoration-line: underline">
+                        @Model.Div.ToString("C")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+                <tr class="table-secondary">
+                    <td>
+                        Retained Earnings, Ending
+                    </td>
+                    <td style="text-align:right; text-decoration-line:underline; text-decoration-style:double">
+                        @Model.EndRE.ToString("C")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<div style="text-align:right">
+    <a asp-action="RetainedEarningsPDF" class="btn btn-danger btn-lg" style="width: 150px">PDF</a>
+</div>
+
+
+<div class="sidebar-container border-dark">
+    <div>
+        <br />
+        <div class="text-center">Quick Actions</div>
+        <br />
+    </div>
+
+    <ul class="sidebar-navigation">
+
+        <li>
+            <a asp-controller="Manager" asp-action="Index" class="btn btn-dark btn-outline-info">Dashboard</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="RetainedEarnings" class="btn btn-info btn-outline-light">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Manager" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
+
+    </ul>
+</div>

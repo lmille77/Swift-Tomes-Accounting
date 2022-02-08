@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Swift_Tomes_Accounting.Models.ViewModels.ApplicationUser>
+﻿@model Swift_Tomes_Accounting.Models.ViewModels.Ratio
 @{
     ViewData["Title"] = "Manager Page";
 }
@@ -16,15 +16,32 @@
     <ul class="sidebar-navigation">
 
         <li>
+            <a asp-controller="Accountant" asp-action="Index" class="btn btn-info btn-outline-light">Dashboard</a>
+        </li>
+        <li>
             <a asp-controller="Accountant" asp-action="ChartOfAccounts" class="btn btn-dark btn-outline-info">Chart of Accounts</a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="Report" class="btn btn-dark btn-outline-info">Reports</a>
+            <a asp-controller="Accountant" asp-action="Send" class="btn btn-dark btn-outline-info">Send Message </a>
         </li>
         <li>
-            <a asp-controller="Accountant" asp-action="Journalize" class="btn btn-dark btn-outline-info">Journalize</a>
+            <a asp-controller="Accountant" asp-action="JournalIndex" class="btn btn-dark btn-outline-info">Journalize</a>
         </li>
-
+        <li>
+            <a asp-controller="Accountant" asp-action="IncomeStatement" class="btn btn-dark btn-outline-info">Income Statement</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="TrialBalance" class="btn btn-dark btn-outline-info">Trial Balance</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="BalanceSheet" class="btn btn-dark btn-outline-info">Balance Sheet</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="RetainedEarnings" class="btn btn-dark btn-outline-info">Retained Earnings</a>
+        </li>
+        <li>
+            <a asp-controller="Accountant" asp-action="EventLog" class="btn btn-dark btn-outline-info">Event Log</a>
+        </li>
     </ul>
 </div>
 
@@ -34,3 +51,120 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
+
+<html>
+@{
+    double roa = Model.RoA;
+    double roe = Model.RoE;
+    double margin = Model.Margin;
+    double quick = Model.Quick;
+    double current = Model.Current;
+    double turnover = Model.Turnover;
+}
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['gauge'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['ROA (%)', @roa],
+                ['NPM (%)', @margin]
+
+            ]);
+
+             var data1 = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['ROE (%)', @roe]
+
+            ]);
+
+             var data2 = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                 ['Quick', @quick],
+                 ['Current', @current]
+
+
+            ]);
+
+              var data3 = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                 ['Turnover', @turnover],
+
+            ]);
+
+            var options = {
+                width: 450, height: 170,
+                redFrom: 0, redTo: 5,
+                yellowFrom: 5, yellowTo: 20,
+                greenFrom: 20, greenTo: 50,
+                min: 0,
+                max: 50
+
+            };
+
+            var options1 = {
+                width: 450, height: 170,
+                redFrom: 0, redTo: 10,
+                yellowFrom: 10, yellowTo: 15,
+                greenFrom: 15, greenTo: 50,
+                min: 0,
+                max: 50
+
+            };
+
+            var options2 = {
+                width: 450, height: 170,
+                redFrom: 0, redTo: .6,
+                yellowFrom: .6, yellowTo: 1,
+                greenFrom: 1, greenTo: 20,
+                min: 0,
+                max: 20
+
+            };
+
+            var options3 = {
+                width: 450, height: 170,
+                redFrom: 0, redTo: .5,
+                yellowFrom: .5, yellowTo: 1,
+                greenFrom: 1, greenTo: 2,
+                min: 0,
+                max: 2
+
+            }
+
+            var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+            var chart1 = new google.visualization.Gauge(document.getElementById('chart_div1'));
+            var chart2 = new google.visualization.Gauge(document.getElementById('chart_div2'));
+            var chart3 = new google.visualization.Gauge(document.getElementById('chart_div3'));
+
+            chart.draw(data, options);
+            chart1.draw(data1, options1);
+            chart2.draw(data2, options2);
+            chart3.draw(data3, options3);
+
+
+        }
+    </script>
+</head>
+<body>
+    <div id="centerform1">
+        <div class="form-group row">
+            <div id="chart_div1"> </div>
+            <div id="chart_div"></div>
+        </div>
+        <div class="form-group row">
+            <div id="chart_div3"></div>
+            <div id="chart_div2"></div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,15 +13,15 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
     {
 
         [Key]
-        [Display(Name = "Number")]
+        [Display(Name = "Account Number")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public double AccountNumber { get; set; }
        
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Account Name")]
         public string AccountName { get; set; }
         public string Description { get; set; }
-        [Required]
+       
         public string NormSide { get; set; }
         [Required]
         public string Category { get; set; }
@@ -43,5 +44,18 @@ namespace Swift_Tomes_Accounting.Models.ViewModels
         public bool Active { get; set; }
         public bool Contra { get; set; }
         public bool ChartOfAccounts { get; set; }
+
+        //[ForeignKey("AccountNumber")]
+        //public ICollection<Journalize> Journalize { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> Accounts { get; set; }
+
+
+        [NotMapped]
+        public double TotalRev { get; set; }
+
+        [NotMapped]
+        public double TotalEx { get; set; }
     }
 }

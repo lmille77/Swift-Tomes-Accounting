@@ -73,9 +73,10 @@ namespace NewSwift.Controllers
             {
                 //updating
                 var objRoleFromDb = _db.Roles.FirstOrDefault(u => u.Id == roleObj.Id);
+                var errorList = _db.ErrorTable.ToList();
                 if (objRoleFromDb == null)
                 {
-                    TempData[SD.Error] = "Role nto found";
+                    TempData[SD.Error] = errorList[15].Message;
                     return RedirectToAction(nameof(Index));
                 }
                 objRoleFromDb.Name = roleObj.Name;
@@ -94,15 +95,16 @@ namespace NewSwift.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var objFromDb = _db.Roles.FirstOrDefault(u => u.Id == id);
+            var errorList = _db.ErrorTable.ToList();
             if (objFromDb == null)
             {
-               TempData[SD.Error] = "Role not found.";
+               TempData[SD.Error] = errorList[15].Message;
                 return RedirectToAction(nameof(Index));
             }
             var userRolesForThisRole = _db.UserRoles.Where(u => u.RoleId == id).Count();
             if (userRolesForThisRole > 0)
             {
-               TempData[SD.Error] = "Cannot delete this role, since there are users assigned to this role.";
+               TempData[SD.Error] = errorList[16].Message;
                 return RedirectToAction(nameof(Index));
             }
             await _roleManager.DeleteAsync(objFromDb);

@@ -100,7 +100,8 @@ namespace Swift_Tomes_Accounting.Controllers
             var roles = _db.Roles.ToList();
             var userRoles = _db.UserRoles.ToList();
             objFromdb.Role = roles.FirstOrDefault(u => u.Id == userRole.RoleId).Name;
-            
+            var errorList = _db.ErrorTable.ToList();
+
             foreach (var role in roleList)
             {
                 if (role.Name == "Unapproved")
@@ -141,13 +142,13 @@ namespace Swift_Tomes_Accounting.Controllers
                 var subject = "Accepted";
                 var body = "<a href='https://localhost:44316/Account/Login'>Click here to sign in </a>";
                 var mailHelper = new MailHelper(_configuration);
-                mailHelper.Send(_configuration["Gmail:Username"], email, subject, body);
+                mailHelper.Send(_configuration["Gmail:Username"], email, subject, body, null);
                 objFromdb.isApproved = true;
                 TempData[SD.Success] = "User approved successfully.";
             }
             else
             {
-                TempData[SD.Error] = "Assign a role before approving a user.";
+                TempData[SD.Error] = errorList[17].Message;
             }
 
 

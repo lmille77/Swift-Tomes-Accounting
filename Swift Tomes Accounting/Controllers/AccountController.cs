@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +25,8 @@ namespace Swift_Tomes_Accounting.Controllers
     {
         //variables used to host email service
         private IConfiguration _configuration;
-        private IWebHostEnvironment _webHostEnvironment;        
-
+        private IWebHostEnvironment _webHostEnvironment;
+        private readonly IEmailSender _emailsender;
         
         private readonly ApplicationDbContext _db;
 
@@ -36,7 +37,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
         public AccountController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, 
-         IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+         IConfiguration configuration, IWebHostEnvironment webHostEnvironment, IEmailSender emailsender)
         {
             _db = db;
             _userManager = userManager;
@@ -44,51 +45,32 @@ namespace Swift_Tomes_Accounting.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+            _emailsender = emailsender;
         }
 
+        
+
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
-            if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+            if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                await _roleManager.CreateAsync(new IdentityRole("Manager"));
-                await _roleManager.CreateAsync(new IdentityRole("Accountant"));
-                await _roleManager.CreateAsync(new IdentityRole("Unapproved"));
-                ApplicationUser user = new ApplicationUser()
-                {
-                    UserName = "miller4277@gmail.com",
-                    CustomUsername = "Admin1",
-                    FirstName = "Default",
-                    LastName = "Admin",
-                    Email = "miller4277@gmail.com",
-                    isApproved = true,
-                    Role = "Admin",
-                    PasswordDate = DateTime.Now
-                };
-                var result = await _userManager.CreateAsync(user, "Admin123!");
-                await _userManager.AddToRoleAsync(user, "Admin");
+                return RedirectToAction("Index", "Admin");
             }
-            else
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
             {
-                if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-                    return RedirectToAction("Index", "Admin");
-                }
-                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
-                {
-                    return RedirectToAction("Index", "Manager");
-                }
-                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
-                {
-                    return RedirectToAction("Index", "Accountant");
-                }
-                else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                return RedirectToAction("Index", "Manager");
             }
-                return View();
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Accountant"))
+            {
+                return RedirectToAction("Index", "Accountant");
+            }
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Unapproved"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+
         }
 
         
@@ -97,13 +79,22 @@ namespace Swift_Tomes_Accounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel obj)
         {
+            
+
             if (ModelState.IsValid)
             {
                 //checks database to see if user and password are correct
                 var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, false, lockoutOnFailure: true);
                 var user = await _userManager.FindByNameAsync(obj.Email);
-                var num = 3 - user.AccessFailedCount;
+                int num = 0;
 
+                if(user != null)
+                {
+                    num = 3 - user.AccessFailedCount;
+                }
+                
+                //error list
+                var errorList = _db.ErrorTable.ToList();
 
                 if (result.IsLockedOut)
                 {
@@ -120,9 +111,10 @@ namespace Swift_Tomes_Accounting.Controllers
                     //find DateTime of when password was created
                     var lastpassdate = curr_user.PasswordDate;
                     
+                    
                     if (lastpassdate.AddDays(30) < DateTime.Now)
                     {
-                        TempData[SD.Error] = "Your password has expired. You have been emailed a link to reset it.";
+                        TempData[SD.Error] = errorList[0].Message;
 
                         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                         var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
@@ -135,15 +127,17 @@ namespace Swift_Tomes_Accounting.Controllers
                             "You will not be able to login unless you reset your password.\n" +
                             "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";
 
-                        var mailHelper = new MailHelper(_configuration);
-                        mailHelper.Send(_configuration["Gmail:Username"], user.Email, subject, body);
+
+                        await _emailsender.SendEmailAsync(user.Email, subject, body);
+
+                        
 
                         await _signInManager.SignOutAsync();
                         return View();
                     }
                     if (lastpassdate.AddDays(27) < DateTime.Now)
                     {
-                        TempData[SD.Error] = "Your password will expire in three days.";
+                        TempData[SD.Error] = errorList[2].Message;
                     }
                     if(lastpassdate.AddDays(30) > DateTime.Now)
                     {
@@ -167,8 +161,12 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid Email or Password.");
-                    TempData[SD.Error] = "Attempts remaining: " + num;
+                    ModelState.AddModelError("", errorList[3].Message);
+                    if(user != null)
+                    {
+                        TempData[SD.Error] = "Attempts remaining: " + num;
+                    }
+                    
                 }
             }
             return View(obj);
@@ -206,6 +204,7 @@ namespace Swift_Tomes_Accounting.Controllers
 
             string _Firstname = obj.FirstName.ToLower();
             string _Lastname = obj.LastName.ToLower();
+            var errorList = _db.ErrorTable.ToList();
 
             if (ModelState.IsValid)
             {
@@ -265,13 +264,11 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result.Succeeded)
                 {
-                    
-                    //sends an email to admin requesting approval for new user
-                    var subject = "Add new user";
-                    var body = "<a href='https://localhost:44316/Account/Login'>Click to Add User </a>";
-                    var mailHelper = new MailHelper(_configuration);
-                    mailHelper.Send(_configuration["Gmail:Username"], admin_email, subject, body);
-                    
+                   
+                    var body = "<a href='https://swifttomesaccounting.azurewebsites.net/Account/Login'>Click to Add User </a>";                 
+
+                    await _emailsender.SendEmailAsync(admin_email, "Add New User", body);
+
                     //adds user to database but without admin approval
                     await _userManager.AddToRoleAsync(user, "Unapproved");
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -281,7 +278,7 @@ namespace Swift_Tomes_Accounting.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "An account with the entered email already exists.");
+                    ModelState.AddModelError("", errorList[4].Message);
                 }
             }
             return View(obj);
@@ -311,16 +308,14 @@ namespace Swift_Tomes_Accounting.Controllers
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             //sends them to 
-            var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-
-            //"<a href='https://localhost:44316/Account/Login'>Click to Add User </a>"
+            var callbackurl = Url.Action("ConfirmResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);            
 
             var toEmail = obj.ToEmail;
             var subject = "Password Reset Confirmation";
-            var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here";
-            var mailHelper = new MailHelper(_configuration);
-            mailHelper.Send(_configuration["Gmail:Username"], toEmail, subject, body);
-            
+            var body = "Please reset your password by clicking <a href=\"" + callbackurl + "\"> here</a>.";           
+
+            await _emailsender.SendEmailAsync(toEmail, subject, body);
+
             TempData[SD.Success] = "Check email for password reset link.";
             return RedirectToAction("Index", "Admin");
          
@@ -368,9 +363,8 @@ namespace Swift_Tomes_Accounting.Controllers
                 var curr_user = await _userManager.FindByNameAsync(obj.Email);
                 
                 bool passcheck = false;
-                
 
-
+                var errorList = _db.ErrorTable.ToList();
 
                 var result = await _userManager.CheckPasswordAsync(curr_user, obj.NewPass);
 
@@ -389,17 +383,17 @@ namespace Swift_Tomes_Accounting.Controllers
 
                 if (result == true)
                 {
-                    ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
+                    ViewBag.ErrorMessage = errorList[5].Message;
                 }
 
                 else if (passMatch == PasswordVerificationResult.Success)
                  {
-                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
+                        ViewBag.ErrorMessage = errorList[5].Message;
                  }
                 
                 else if (passMatch2 == PasswordVerificationResult.Success)
                     {
-                        ViewBag.ErrorMessage = "You cannot use one of your previous passwords.";
+                        ViewBag.ErrorMessage = errorList[5].Message;
                     }
                 
                 else
@@ -427,13 +421,6 @@ namespace Swift_Tomes_Accounting.Controllers
        
 
 
-        //[HttpPost]
-        //public IActionResult AjaxMethod()
-        //{
-        //    List<Account> customers = (from customer in this.Context.Customers
-        //                                select customer).ToList();
-        //    return Json(JsonConvert.SerializeObject(customers));
-        //}
 
     }
 }
